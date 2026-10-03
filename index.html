@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rajan Travel and Computers (RTC) | Premium Travel Agency</title>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- AOS Animation Library CSS -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+    <style>
+        /* Premium Color Palette & Variables */
+        :root {
+            --primary-blue: #1c4c96;
+            --primary-red: #e33524;
+            --gradient-bg: linear-gradient(135deg, #1c4c96 0%, #0d2a59 100%);
+            --text-dark: #2d3436;
+            --text-light: #636e72;
+            --bg-light: #f4f7f6;
+            --white: #ffffff;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; scroll-behavior: smooth; }
+        body { background-color: var(--bg-light); color: var(--text-dark); overflow-x: hidden; }
+        a { text-decoration: none; color: inherit; }
+
+        /* Modern Glassmorphism Navbar */
+        header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.05);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+        .navbar {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 15px 5%; max-width: 1300px; margin: auto;
+        }
+        .logo { display: flex; align-items: center; gap: 12px; font-weight: 800; font-size: 26px; color: var(--primary-blue); letter-spacing: 1px; }
+        .logo img { height: 55px; }
+        .nav-links { display: flex; list-style: none; gap: 30px; }
+        .nav-links li a { font-weight: 500; font-size: 15px; text-transform: uppercase; letter-spacing: 1px; transition: 0.3s; position: relative; }
+        .nav-links li a::after {
+            content: ''; position: absolute; width: 0; height: 2px; bottom: -5px; left: 0;
+            background-color: var(--primary-red); transition: 0.3s;
+        }
+        .nav-links li a:hover::after { width: 100%; }
+        .nav-links li a:hover { color: var(--primary-red); }
+
+        .btn-book {
+            background: linear-gradient(45deg, var(--primary-red), #ff6b6b);
+            color: var(--white); padding: 12px 28px; border-radius: 50px; font-weight: 600;
+            box-shadow: 0 10px 20px rgba(227, 53, 36, 0.3); transition: all 0.3s ease;
+        }
+        .btn-book:hover { transform: translateY(-3px); box-shadow: 0 15px 25px rgba(227, 53, 36, 0.4); color: white; }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(rgba(13, 42, 89, 0.85), rgba(227, 53, 36, 0.75)), url('https://images.unsplash.com/photo-1436491865332-7a61a109cc05?q=80&w=1920&auto=format&fit=crop') center/cover fixed;
+            height: 100vh; display: flex; align-items: center; justify-content: center; text-align: center; color: var(--white); padding: 0 20px;
+        }
+        .hero-content h1 { font-size: 60px; font-weight: 800; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 2px; text-shadow: 2px 4px 10px rgba(0,0,0,0.5); }
+        .hero-content p { font-size: 20px; margin-bottom: 40px; font-weight: 300; max-width: 800px; margin-inline: auto; }
+
+        /* Sections General */
+        .section-padding { padding: 100px 5%; max-width: 1300px; margin: auto; }
+        .section-title { text-align: center; font-size: 40px; color: var(--primary-blue); margin-bottom: 15px; font-weight: 800; text-transform: uppercase; }
+        .section-subtitle { text-align: center; color: var(--primary-red); font-size: 16px; font-weight: 600; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 60px; }
+
+        /* Services Grid */
+        .service-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 40px; }
+        .service-card {
+            background: var(--white); padding: 40px 30px; border-radius: 20px; text-align: center;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.05); transition: all 0.4s ease; position: relative; overflow: hidden;
+            border: 1px solid rgba(0,0,0,0.02);
+        }
+        .service-card::before {
+            content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 5px;
+            background: linear-gradient(90deg, var(--primary-blue), var(--primary-red));
+            transform: scaleX(0); transition: transform 0.4s ease; transform-origin: left;
+        }
+        .service-card:hover::before { transform: scaleX(1); }
+        .service-card:hover { transform: translateY(-10px); box-shadow: 0 25px 45px rgba(0,0,0,0.1); }
+        .service-icon { font-size: 50px; color: var(--primary-blue); margin-bottom: 25px; transition: 0.3s; }
+        .service-card:hover .service-icon { color: var(--primary-red); transform: scale(1.1); }
+        .service-card h3 { margin-bottom: 15px; font-size: 24px; font-weight: 700; color: var(--primary-blue); }
+        .service-card p { color: var(--text-light); line-height: 1.6; }
+
+        /* Team Section */
+        .team-section { background-color: var(--white); }
+        .owner-card {
+            background: var(--gradient-bg); color: var(--white); border-radius: 20px; padding: 40px;
+            display: flex; align-items: center; gap: 40px; max-width: 800px; margin: 0 auto 60px auto;
+            box-shadow: 0 20px 40px rgba(28, 76, 150, 0.2);
+        }
+        .owner-img { width: 150px; height: 150px; border-radius: 50%; object-fit: cover; border: 5px solid rgba(255,255,255,0.2); }
+        .owner-info h3 { font-size: 28px; margin-bottom: 5px; }
+        .owner-info span { color: #ff6b6b; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; font-size: 14px; }
+        .owner-info p { margin-top: 15px; font-weight: 300; opacity: 0.9; }
+
+        .staff-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 30px; }
+        .staff-card { text-align: center; background: var(--bg-light); padding: 30px 20px; border-radius: 15px; transition: 0.3s; }
+        .staff-card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,0,0,0.08); background: var(--white); }
+        .staff-img { width: 100px; height: 100px; border-radius: 50%; object-fit: cover; margin-bottom: 15px; border: 3px solid var(--primary-blue); }
+        .staff-card h4 { color: var(--primary-blue); font-size: 18px; margin-bottom: 5px; }
+        .staff-card span { color: var(--primary-red); font-size: 13px; font-weight: 600; }
+
+        /* Contact Section */
+        .contact-wrapper { display: flex; flex-wrap: wrap; gap: 50px; background: var(--white); padding: 50px; border-radius: 20px; box-shadow: 0 20px 50px rgba(0,0,0,0.05); }
+        .contact-details { flex: 1; min-width: 300px; }
+        .contact-item { display: flex; align-items: flex-start; gap: 20px; margin-bottom: 30px; }
+        .icon-box { background: rgba(28, 76, 150, 0.1); width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--primary-blue); font-size: 20px; flex-shrink: 0; transition: 0.3s;}
+        .contact-item:hover .icon-box { background: var(--primary-red); color: var(--white); }
+        .contact-text h4 { font-size: 18px; margin-bottom: 5px; color: var(--primary-blue); }
+        .contact-text p, .contact-text a { color: var(--text-light); font-size: 15px; transition: 0.3s; }
+        .contact-text a:hover { color: var(--primary-red); }
+        
+        .map-container { flex: 1; min-width: 300px; border-radius: 15px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+
+        /* Footer */
+        footer { background: var(--gradient-bg); color: var(--white); padding: 60px 5% 30px; }
+        .footer-content { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 30px; max-width: 1300px; margin: auto; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 30px; margin-bottom: 30px; }
+        .footer-logo img { height: 60px; filter: brightness(0) invert(1); margin-bottom: 15px; }
+        .social-icons a { display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 50%; background: rgba(255,255,255,0.1); color: var(--white); margin-right: 10px; transition: 0.3s; }
+        .social-icons a:hover { background: var(--primary-red); transform: translateY(-3px); }
+        .footer-bottom { text-align: center; font-size: 14px; opacity: 0.7; }
+    </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <header>
+        <div class="navbar">
+            <div class="logo">
+                <img src="1000173521.png" alt="RTC Logo">
+                RTC
+            </div>
+            <ul class="nav-links">
+                <li><a href="#">Home</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#team">Our Team</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+            <a href="https://wa.me/8801711773086" target="_blank" class="btn-book"><i class="fab fa-whatsapp"></i> Book Now</a>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content" data-aos="fade-up" data-aos-duration="1200">
+            <h1>Experience the World<br>With Premium Service</h1>
+            <p>From seamless Visa processing to instant flight ticketing and unforgettable tour packages, Rajan Travel and Computers (RTC) makes your journey extraordinary.</p>
+            <a href="#services" class="btn-book" style="font-size: 18px; padding: 15px 40px; margin-top: 20px; display: inline-block;">Explore Services</a>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="section-padding">
+        <h6 class="section-subtitle" data-aos="fade-up">What We Offer</h6>
+        <h2 class="section-title" data-aos="fade-up">Our Premium Services</h2>
+        
+        <div class="service-grid" style="margin-top: 50px;">
+            <div class="service-card" data-aos="fade-up" data-aos-delay="100">
+                <i class="fas fa-passport service-icon"></i>
+                <h3>Global Visa Processing</h3>
+                <p>Expert processing for India, Malaysia, Dubai, and more. Complete guidance on documents and fast submission.</p>
+            </div>
+            <div class="service-card" data-aos="fade-up" data-aos-delay="200">
+                <i class="fas fa-plane-departure service-icon"></i>
+                <h3>Ticketing Solutions</h3>
+                <p>Instant domestic and international flight bookings. We also assist with date changes and hassle-free ticket cancellations.</p>
+            </div>
+            <div class="service-card" data-aos="fade-up" data-aos-delay="300">
+                <i class="fas fa-map-marked-alt service-icon"></i>
+                <h3>Custom Tour Packages</h3>
+                <p>Tailor-made holiday packages for families, couples, and corporate groups. Experience luxury without the stress.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Team Section -->
+    <section id="team" class="section-padding team-section">
+        <h6 class="section-subtitle" data-aos="fade-up">Meet The Experts</h6>
+        <h2 class="section-title" data-aos="fade-up">Our Dedicated Team</h2>
+
+        <!-- Owner Details -->
+        <div class="owner-card" data-aos="zoom-in" data-aos-duration="1000">
+            <!-- UPDATE OWNER IMAGE HERE: replace 'rajan-saha.jpg' with actual image name -->
+            <img src="https://ui-avatars.com/api/?name=Rajan+Saha&background=e33524&color=fff&size=150" alt="Rajan Saha" class="owner-img">
+            <div class="owner-info">
+                <span>Founder & CEO</span>
+                <h3>Rajan Saha</h3>
+                <p>With years of experience in the travel and IT sector, Rajan Saha founded RTC to provide seamless, trustworthy, and premium travel solutions to every client. Our commitment is your satisfaction.</p>
+            </div>
+        </div>
+
+        <!-- Staff Details -->
+        <div class="staff-grid" data-aos="fade-up" data-aos-delay="200">
+            <!-- Staff 1 -->
+            <div class="staff-card">
+                <!-- UPDATE STAFF IMAGE HERE -->
+                <img src="https://ui-avatars.com/api/?name=Mitul+Roy&background=1c4c96&color=fff" alt="Mitul" class="staff-img">
+                <h4>Mitul Roy</h4>
+                <span>Operations & IT Support</span>
+            </div>
+            <!-- Staff 2 -->
+            <div class="staff-card">
+                <img src="https://ui-avatars.com/api/?name=Anik&background=1c4c96&color=fff" alt="Anik" class="staff-img">
+                <h4>Anik</h4>
+                <span>Visa Consultant</span>
+            </div>
+            <!-- Staff 3 -->
+            <div class="staff-card">
+                <img src="https://ui-avatars.com/api/?name=Rabbi&background=1c4c96&color=fff" alt="Rabbi" class="staff-img">
+                <h4>Rabbi</h4>
+                <span>Ticketing Executive</span>
+            </div>
+            <!-- Staff 4 -->
+            <div class="staff-card">
+                <img src="https://ui-avatars.com/api/?name=Omey&background=1c4c96&color=fff" alt="Omey" class="staff-img">
+                <h4>Omey</h4>
+                <span>Customer Support</span>
+            </div>
+            <!-- Staff 5 -->
+            <div class="staff-card">
+                <img src="https://ui-avatars.com/api/?name=Tonmoy&background=1c4c96&color=fff" alt="Tonmoy" class="staff-img">
+                <h4>Tonmoy</h4>
+                <span>Travel Advisor</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="section-padding" style="background: var(--bg-light);">
+        <h6 class="section-subtitle" data-aos="fade-up">Get In Touch</h6>
+        <h2 class="section-title" data-aos="fade-up">Contact & Location</h2>
+        
+        <div class="contact-wrapper" data-aos="fade-up" data-aos-delay="200">
+            <div class="contact-details">
+                <div class="contact-item">
+                    <div class="icon-box"><i class="fas fa-map-marker-alt"></i></div>
+                    <div class="contact-text">
+                        <h4>Our Office</h4>
+                        <p>Kandapara, Narsingdi, Dhaka, Bangladesh</p>
+                    </div>
+                </div>
+                <div class="contact-item">
+                    <div class="icon-box"><i class="fas fa-phone-alt"></i></div>
+                    <div class="contact-text">
+                        <h4>Phone Number</h4>
+                        <p><a href="tel:+8802227720014">+880 2227720014</a></p>
+                    </div>
+                </div>
+                <div class="contact-item">
+                    <div class="icon-box"><i class="fab fa-whatsapp"></i></div>
+                    <div class="contact-text">
+                        <h4>WhatsApp</h4>
+                        <p><a href="https://wa.me/8801711773086" target="_blank">+880 1711 773086</a></p>
+                    </div>
+                </div>
+                <div class="contact-item">
+                    <div class="icon-box"><i class="fas fa-envelope"></i></div>
+                    <div class="contact-text">
+                        <h4>Email Address</h4>
+                        <p><a href="mailto:rajantravelrtc@gmail.com">rajantravelrtc@gmail.com</a></p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Google Map -->
+            <div class="map-container">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3647.458739982755!2d90.7166567!3d23.9169997!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x37543aa8ab4639eb%3A0xc6c764ed2e7379f6!2sNarsingdi!5e0!3m2!1sen!2sbd!4v1690000000000!5m2!1sen!2sbd" width="100%" height="100%" style="border:0; min-height: 350px;" allowfullscreen="" loading="lazy"></iframe>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div style="max-width: 350px;">
+                <div class="logo footer-logo">
+                    <img src="1000173521.png" alt="RTC Logo">
+                </div>
+                <p style="opacity: 0.8; font-size: 15px; margin-bottom: 20px; line-height: 1.6;">Your most trusted partner for premium travel, ticketing, and visa processing services.</p>
+                <div class="social-icons">
+                    <a href="https://www.facebook.com/rajantravelrtc" target="_blank"><i class="fab fa-facebook-f"></i></a>
+                    <a href="https://wa.me/8801711773086" target="_blank"><i class="fab fa-whatsapp"></i></a>
+                </div>
+            </div>
+            <div>
+                <h4 style="font-size: 20px; margin-bottom: 20px; color: #ff6b6b;">Legal Certifications</h4>
+                <!-- ========================================== -->
+                <!-- UPDATE TRADE LICENSE NUMBER BELOW EKHANE -->
+                <!-- ========================================== -->
+                <p style="margin-bottom: 10px; opacity: 0.9;"><i class="fas fa-certificate" style="margin-right: 10px;"></i> Trade License: <strong>[Update Number Here]</strong></p>
+                <p style="opacity: 0.9;"><i class="fas fa-check-shield" style="margin-right: 10px;"></i> Govt. Approved Travel Agent</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Rajan Travel and Computers (RTC). All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <!-- AOS Animation Library JS -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        // Initialize Scroll Animations
+        AOS.init({
+            duration: 800, // Animation speed
+            offset: 100, // Trigger point
+            once: true // Animate only once on scroll
+        });
+    </script>
+</body>
+</html>
