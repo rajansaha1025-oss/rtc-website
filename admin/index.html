@@ -42,6 +42,17 @@ select option{color:#000}
 .pv{display:block;width:100%;max-height:160px;object-fit:cover;border-radius:12px;margin-top:8px}
 #cnt{background:var(--red);color:#fff;border-radius:10px;padding:0 6px;font-size:11px;margin-left:2px}#cnt:empty{display:none}
 .inq{flex-direction:column;align-items:stretch;gap:6px}.inq.done{opacity:.55}.inq p{font-size:14px;color:var(--mist)}.acts{display:flex;gap:8px;flex-wrap:wrap;margin-top:4px}.acts a{text-decoration:none;color:inherit}
+body{background:radial-gradient(900px 420px at 100% -10%,rgba(28,76,150,.45),transparent 60%),radial-gradient(700px 360px at -10% 25%,rgba(232,194,106,.12),transparent 60%),var(--ink);background-attachment:fixed}
+header{background:linear-gradient(90deg,rgba(13,33,80,.92),rgba(7,18,43,.92));box-shadow:0 8px 24px rgba(0,0,0,.35)}
+header b{background:linear-gradient(90deg,#fff,var(--gold));-webkit-background-clip:text;background-clip:text;color:transparent;letter-spacing:.6px}
+h2{font-family:Georgia,"Times New Roman",serif;letter-spacing:.3px}
+.row{border-radius:16px;box-shadow:0 12px 26px -16px rgba(0,0,0,.7);transition:.25s}.row:hover{border-color:var(--gold);transform:translateY(-2px)}
+.btn{box-shadow:0 10px 22px rgba(227,53,36,.35);transition:.25s}.btn:hover{transform:translateY(-2px)}
+nav{background:rgba(5,13,32,.9);backdrop-filter:blur(14px)}nav button.on{color:var(--gold);text-shadow:0 0 14px rgba(232,194,106,.55)}
+input:focus,select:focus,textarea:focus{outline:0;border-color:var(--gold);box-shadow:0 0 0 3px rgba(232,194,106,.18)}
+#login{background:var(--glass);border:1px solid var(--line);border-radius:24px;padding:30px 24px;box-shadow:0 30px 60px -20px rgba(0,0,0,.7)}
+.tip{background:rgba(232,194,106,.12);border:1px dashed var(--gold);border-radius:14px;padding:12px 14px;margin:0 0 16px;font-size:14px;line-height:1.55}
+nav button{font-size:13px}.btn.full{padding:15px}.row .t small{display:block;margin-top:2px;font-size:13px}.row{padding:15px 16px}
 </style>
 </head>
 <body>
@@ -54,7 +65,7 @@ select option{color:#000}
 </div>
 
 <div id="app" class="hide">
-  <header><b>RTC Admin</b><button class="ghost" id="out">Sign out</button></header>
+  <header><b>RTC Admin</b><span style="display:flex;gap:6px"><a class="ghost" href="../?fresh" target="_blank" title="Website" style="text-decoration:none">🌐</a><button class="ghost" id="bell" title="Alerts">🔔</button><button class="ghost" id="lg"></button><button class="ghost" id="out">Sign out</button></span></header>
   <main id="main"></main>
   <nav id="nav">
     <button data-t="inbox"><span>📥</span>Inbox<b id="cnt"></b></button>
@@ -89,12 +100,33 @@ const T = {
   service: { h: "Services", s: "Switch off to hide a service. Add new ones at the bottom.", f: [["title","Service name"],["title_bn","Name (Bangla)"],["price","Category","cat"]], row: d => [d.title, d.price] }
 };
 const SUB = MORE.map(m => m[0]);
+let al = "bn"; try { al = localStorage.getItem("rtc-al") || "bn"; } catch (e) {}
+const X = o => o[al === "bn" ? 1 : 0];
+const HINT = { photos: ["Change website logo and country photos", "ওয়েবসাইটের লোগো ও দেশের ছবি বদলান"], status: ["Open/closed badge on the website (auto 10 AM–9 PM)", "ওয়েবসাইটের খোলা/বন্ধ ব্যাজ (অটো সকাল ১০–রাত ৯টা)"], review: ["Client reviews with stars on the website", "ক্লায়েন্টদের মতামত, স্টার সহ ওয়েবসাইটে দেখায়"], svc: ["Hide a service or add a new one", "সার্ভিস লুকান বা নতুন সার্ভিস যোগ করুন"], team: ["Team names, roles and photos", "টিমের নাম, পদ ও ছবি"], contact: ["Phone, WhatsApp, address, map, licence numbers", "ফোন, হোয়াটসঅ্যাপ, ঠিকানা, ম্যাপ, লাইসেন্স নম্বর"], notice: ["A bar at the very top of the website", "ওয়েবসাইটের একদম উপরে একটি খবরের বার"] };
+const TIPS = { inbox: ["Shows what visitors send from the website form. 🔴 = new. Tap 💬 WhatsApp to reply, then ✓ Done. Tap 🔔 above to turn on sound/pop-up alerts.", "ওয়েবসাইটের ফর্মে কেউ লিখলে এখানে আসে। 🔴 = নতুন। 💬 চেপে উত্তর দিন, তারপর ✓ শেষ। উপরে 🔔 চাপলে নতুন এনকোয়ারিতে শব্দ ও পপ-আপ আসবে।"], hot: ["Switch ON a service that is selling well. It gets a 🔥 badge on the website.", "যে সার্ভিস এখন বেশি চলছে তার সুইচ ON করুন। ওয়েবসাইটে 🔥 ব্যাজ আসবে।"], package: ["Example: Cox's Bazar 3 Days, price ৳8,500. Tap + Add.", "উদাহরণ: কক্সবাজার ৩ দিন, দাম ৳৮,৫০০। + নতুন যোগ চাপুন।"], req: ["Which papers a service needs. + Add → pick the service → one paper per line → Save. It appears under that service on the home page.", "কোন সার্ভিসে কী কী কাগজ লাগবে। + যোগ → সার্ভিস বাছুন → এক লাইনে একটি কাগজ → সেভ। হোম পেজে ওই সার্ভিসের নিচে দেখাবে।"], svc: ["Switch OFF to hide a service from the website. Use + Add below for a new service, then add its papers in Documents.", "সুইচ OFF করলে সার্ভিস ওয়েবসাইট থেকে লুকাবে। নতুন সার্ভিসে নিচের + যোগ চাপুন, তারপর কাগজের তালিকা Documents-এ দিন।"], team: ["The first person is the big Founder card. Tap Edit to change a photo.", "প্রথম জন বড় ফাউন্ডার কার্ডে দেখায়। ছবি বদলাতে Edit চাপুন।"], review: ["Example: Karim, Narsingdi — 5 stars — 'Visa came on time.' The Reviews section appears once there is one.", "উদাহরণ: করিম, নরসিংদী — ৫ স্টার — 'সময়মতো ভিসা পেয়েছি।' একটি দিলেই রিভিউ সেকশন আসবে।"], notice: ["Example: 'Eid special: ticket booking open'. Shows at the top of the website. Delete it to hide.", "উদাহরণ: 'ঈদ স্পেশাল: টিকেট বুকিং চলছে'। ওয়েবসাইটের উপরে দেখাবে। মুছলে লুকাবে।"], status: ["Auto = website shows Open 10 AM–9 PM every day by itself. For a holiday pick Manual: Closed, then switch back to Auto.", "অটো = ওয়েবসাইট নিজেই প্রতিদিন সকাল ১০–রাত ৯টা 'খোলা' দেখায়। ছুটির দিনে 'ম্যানুয়াল: বন্ধ' দিন, পরে আবার অটো করুন।"], contact: ["Leave a box empty to keep the website's built-in value.", "ঘর খালি রাখলে ওয়েবসাইটের আগের তথ্যই থাকবে।"], photos: ["Pick a photo — it is resized automatically and goes live.", "ছবি বাছুন — নিজেই ছোট হয়ে ওয়েবসাইটে চলে যাবে।"] };
+const WHERE = { package: ["Shows in the 'Tour packages' section of the home page.", "হোম পেজের 'ট্যুর প্যাকেজ' সেকশনে দেখাবে।"], req: ["Shows under that service in 'What we handle'.", "'আমাদের সেবা' সেকশনে ওই সার্ভিসের নিচে দেখাবে।"], notice: ["Shows as a bar at the very top of the website.", "ওয়েবসাইটের একদম উপরে বার হিসেবে দেখাবে।"], review: ["Shows in 'What clients say'.", "'ক্লায়েন্টদের কথা' সেকশনে দেখাবে।"], member: ["Shows in the Team section.", "টিম সেকশনে দেখাবে।"], service: ["Shows in the Services section under the category you pick.", "সার্ভিস সেকশনে আপনার বাছা ক্যাটাগরির নিচে দেখাবে।"] };
+const PH = { package: { title: "Cox's Bazar 3 Days 2 Nights", details: "Hotel, transport, breakfast. Family and group plans.", price: "From ৳8,500 per person", title_bn: "কক্সবাজার ৩ দিন ২ রাত", details_bn: "হোটেল, যাতায়াত ও সকালের নাস্তা সহ।" }, req: { details: "Passport (valid 6+ months)\nPassport-size photos\nBank statement" }, notice: { title: "Eid special: ticket booking open", details: "Call 01711-773086" }, review: { title: "Karim, Narsingdi", details: "Very helpful, visa came on time." }, member: { title: "Rajan Saha", details: "Founder & CEO", details_bn: "ফাউন্ডার ও সিইও" }, service: { title: "Thailand Visa", title_bn: "থাইল্যান্ড ভিসা" } };
+const D = {"Inbox":"ইনবক্স","Popular":"জনপ্রিয়","Packages":"প্যাকেজ","Documents":"কাগজপত্র","More":"আরও","Sign out":"লগআউট","Sign in":"লগইন","Email":"ইমেইল","Password":"পাসওয়ার্ড","Sign in to update the website.":"ওয়েবসাইট আপডেট করতে লগইন করুন।","Save":"সেভ করুন","Cancel":"বাতিল","+ Add":"+ নতুন যোগ করুন","Add":"নতুন যোগ","Edit":"এডিট","Nothing here yet.":"এখনও কিছু নেই।","No enquiries yet.":"এখনও কোনো এনকোয়ারি নেই।","Reopen":"আবার খুলুন","✓ Done":"✓ শেষ","💬 WhatsApp":"💬 হোয়াটসঅ্যাপ","📞 Call":"📞 কল","Enquiries from the website form. Reply on WhatsApp or call, then mark done.":"ওয়েবসাইটের ফর্মের এনকোয়ারি।","Popular right now":"এখন যা জনপ্রিয়","Badge text":"ব্যাজের লেখা","Everything else you can change on the website.":"ওয়েবসাইটের আর যা যা বদলাতে পারবেন।","Tour packages":"ট্যুর প্যাকেজ","Document lists":"কাগজের তালিকা","Website notice":"ওয়েবসাইট নোটিশ","Client reviews":"ক্লায়েন্টদের মতামত","Team":"টিম","Services":"সার্ভিস","Office status":"অফিস স্ট্যাটাস","Contact, location and licences":"যোগাযোগ, ঠিকানা ও লাইসেন্স","Logo and country photos":"লোগো ও দেশের ছবি","Package name":"প্যাকেজের নাম","Details":"বিবরণ","Price":"দাম","Name (Bangla)":"নাম (বাংলা)","Details (Bangla)":"বিবরণ (বাংলা)","Photo":"ছবি","Service":"সার্ভিস","Documents needed (one per line)":"যে কাগজ লাগবে (এক লাইনে একটি)","Headline":"শিরোনাম","Extra text (optional)":"অতিরিক্ত লেখা (ঐচ্ছিক)","Customer name":"গ্রাহকের নাম","Review":"মতামত","Stars (1 to 5)":"স্টার (১ থেকে ৫)","Name":"নাম","Role":"পদ","Role (Bangla)":"পদ (বাংলা)","Service name":"সার্ভিসের নাম","Category":"ক্যাটাগরি","Show on website":"ওয়েবসাইটে দেখান","Your own services":"আপনার নিজের সার্ভিস","Office status (open / closed)":"অফিস খোলা / বন্ধ","Services: show, hide, add":"সার্ভিস: দেখান, লুকান, যোগ করুন","Phone":"ফোন","Address":"ঠিকানা","Mode":"মোড","Message (Bangla)":"মেসেজ (বাংলা)","Upload":"আপলোড","Saved":"সেভ হয়েছে","Saved. Website updated.":"সেভ হয়েছে। ওয়েবসাইট আপডেট হয়েছে।","Deleted":"মুছে গেছে","Add the 6 default team members":"৬ জন ডিফল্ট সদস্য যোগ করুন"};
+const tr = root => { if (al !== "bn" || !root) return; const w = document.createTreeWalker(root, NodeFilter.SHOW_TEXT); let n; while ((n = w.nextNode())) { const k = n.nodeValue.trim(); if (D[k]) n.nodeValue = n.nodeValue.replace(k, D[k]); }
+  if (root.querySelectorAll) root.querySelectorAll("[placeholder]").forEach(e => { if (D[e.placeholder]) e.placeholder = D[e.placeholder]; }); };
+let seen = false;
+const ping = s => { if (seen) s.docChanges().forEach(c => { if (c.type === "added" && c.doc.data().status !== "done") alertNew(c.doc.data()); }); seen = true; };
+function alertNew(x) {
+  try { const c = new (window.AudioContext || window.webkitAudioContext)(), o = c.createOscillator(), g = c.createGain(); o.connect(g); g.connect(c.destination); o.frequency.value = 880; g.gain.setValueAtTime(.25, c.currentTime); o.start(); o.stop(c.currentTime + .6); } catch (e) {}
+  try { navigator.vibrate && navigator.vibrate([250, 120, 250]); } catch (e) {}
+  const t0 = document.title; document.title = "🔴 New enquiry!"; setTimeout(() => document.title = t0, 15000);
+  const ttl = "New enquiry · " + (x.service || ""), o2 = { body: (x.name || "") + " · " + (x.phone || ""), icon: "icon-192.png", tag: "enq" };
+  try { if (Notification.permission === "granted") (navigator.serviceWorker ? navigator.serviceWorker.ready.then(r => r.showNotification(ttl, o2)) : Promise.reject()).catch(() => { try { new Notification(ttl, o2); } catch (e) {} }); } catch (e) {}
+  toast("🔴 " + (x.name || "") + " · " + (x.service || ""));
+}
+const K = () => ({ svc: "service", team: "member" }[tab] || tab);
 const $ = s => document.querySelector(s);
 const slug = s => s.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
 const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;" }[c]));
 const toast = m => { const t = $("#toast"); t.textContent = m; t.classList.add("on"); setTimeout(() => t.classList.remove("on"), 2400); };
 const fail = e => toast("Not allowed: " + e.code);
-const save = (id, data) => setDoc(doc(db, COLLECTION, id), data, { merge: true });
+const bump = () => setDoc(doc(db, COLLECTION, "_v"), { type: "ver", title: String(Date.now()) }).catch(() => {});
+const save = (id, data) => setDoc(doc(db, COLLECTION, id), data, { merge: true }).then(r => { bump(); return r; });
 /* Resize a chosen photo in the browser (crop to w x h, or fit width w when h = 0) and return a small data URL. */
 const shrink = (file, w, h, q = .8) => new Promise((ok, no) => { const im = new Image(); im.onload = () => {
   const c = document.createElement("canvas"); let sw = im.width, sh = im.height, sx = 0, sy = 0;
@@ -103,7 +135,7 @@ const shrink = (file, w, h, q = .8) => new Promise((ok, no) => { const im = new 
   c.getContext("2d").drawImage(im, sx, sy, sw, sh, 0, 0, c.width, c.height);
   let u = c.toDataURL("image/webp", q); if (!u.startsWith("data:image/webp")) u = c.toDataURL("image/jpeg", q); ok(u); }; im.onerror = no; im.src = URL.createObjectURL(file); });
 const CTRY = [["India","🇮🇳"],["Malaysia","🇲🇾"],["Australia","🇦🇺"],["Dubai and other countries","🇦🇪"]];
-const del = id => deleteDoc(doc(db, COLLECTION, id));
+const del = id => deleteDoc(doc(db, COLLECTION, id)).then(r => { bump(); return r; });
 
 if (!firebaseConfig.projectId) { document.body.innerHTML = '<p style="padding:30px">Open <b>firebase-config.js</b> and paste your Firebase config first.</p>'; throw 0; }
 const app = initializeApp(firebaseConfig), auth = getAuth(app), db = getFirestore(app);
@@ -121,7 +153,7 @@ onAuthStateChanged(auth, u => {
   unsubs.forEach(f => f()); unsubs = [];
   if (u) unsubs = [
     onSnapshot(collection(db, COLLECTION), s => { docs = s.docs.map(d => ({ id: d.id, ...d.data() })); render(); }, e => toast("Cannot read: " + e.code)),
-    onSnapshot(collection(db, "inquiries"), s => { inq = s.docs.map(d => ({ id: d.id, ...d.data() })).sort((a, b) => (a.status === "done") - (b.status === "done") || (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0)); render(); }, e => toast("Cannot read inbox: " + e.code))
+    onSnapshot(collection(db, "inquiries"), s => { ping(s); inq = s.docs.map(d => ({ id: d.id, ...d.data() })).sort((a, b) => (a.status === "done") - (b.status === "done") || (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0)); render(); }, e => toast("Cannot read inbox: " + e.code))
   ];
 });
 $("#nav").onclick = e => { const b = e.target.closest("button"); if (b) { tab = b.dataset.t; render(); window.scrollTo(0, 0); } };
@@ -133,6 +165,7 @@ function render() {
   const nw = inq.filter(x => x.status !== "done").length; $("#cnt").textContent = nw || "";
   const ae = document.activeElement; if (ae && m.contains(ae) && (/TEXTAREA|SELECT/.test(ae.tagName) || (ae.tagName === "INPUT" && ae.type !== "checkbox" && ae.type !== "file"))) return; // do not wipe what you are typing
   ({ inbox, hot, more, svc, team, status, contact, photos }[tab] || (() => list(m)))(m);
+  if (TIPS[tab]) m.insertAdjacentHTML("afterbegin", `<div class="tip">💡 ${X(TIPS[tab])}</div>`);
 }
 
 function inbox(m) {
@@ -162,7 +195,7 @@ function hot(m) {
 }
 
 function more(m) {
-  m.innerHTML = `<h2>More</h2><p class="sub">Everything else you can change on the website.</p>` + MORE.map(([k, i, l]) => `<button class="row" data-go="${k}" style="width:100%;text-align:left;cursor:pointer"><span style="font-size:22px">${i}</span><div class="t"><b>${l}</b></div>›</button>`).join("");
+  m.innerHTML = `<h2>More</h2><p class="sub">Everything else you can change on the website.</p>` + MORE.map(([k, i, l]) => `<button class="row" data-go="${k}" style="width:100%;text-align:left;cursor:pointer"><span style="font-size:22px">${i}</span><div class="t"><b>${l}</b><small>${X(HINT[k])}</small></div>›</button>`).join("");
 }
 
 function svc(m) {
@@ -177,13 +210,13 @@ function team(m) {
 }
 
 function status(m) {
-  const s = val("status") || {};
-  m.innerHTML = bk + `<h2>Office status</h2><p class="sub">A small badge above the website headline.</p>
-  <label>Status<select id="sm"><option value="open" ${s.title === "open" ? "selected" : ""}>🟢 Open</option><option value="closed" ${s.title === "closed" ? "selected" : ""}>🔴 Closed</option><option value="off" ${s.title ? "" : "selected"}>Hide the badge</option></select></label>
-  <label>Message<input id="se" value="${esc(s.details)}" placeholder="Open today, 10 AM to 8 PM"></label>
-  <label>Message (Bangla)<input id="sb" value="${esc(s.details_bn)}" placeholder="আজ খোলা, সকাল ১০টা থেকে রাত ৮টা"></label>
+  const s = val("status") || {}, md = s.title || "auto", o = (v, l) => `<option value="${v}" ${md === v ? "selected" : ""}>${l}</option>`;
+  m.innerHTML = bk + `<h2>Office status</h2><p class="sub">The green/red badge above the website headline.</p>
+  <label>Mode<select id="sm">${o("auto", al === "bn" ? "🤖 অটো: প্রতিদিন সকাল ১০ – রাত ৯টা" : "🤖 Auto: every day 10 AM – 9 PM")}${o("open", al === "bn" ? "🟢 ম্যানুয়াল: এখন খোলা" : "🟢 Manual: Open now")}${o("closed", al === "bn" ? "🔴 ম্যানুয়াল: এখন বন্ধ (ছুটি)" : "🔴 Manual: Closed (holiday)")}${o("off", al === "bn" ? "🙈 ব্যাজ লুকান" : "🙈 Hide the badge")}</select></label>
+  <label>Message (Manual only, optional)<input id="se" value="${esc(s.details)}" placeholder="Closed today for Eid, open tomorrow 10 AM"></label>
+  <label>Message (Bangla)<input id="sb" value="${esc(s.details_bn)}" placeholder="আজ ঈদের ছুটি, কাল সকাল ১০টায় খোলা"></label>
   <button class="btn full" id="ss">Save</button>`;
-  $("#ss").onclick = () => ($("#sm").value === "off" ? del("status") : save("status", { type: "status", title: $("#sm").value, details: $("#se").value.trim(), details_bn: $("#sb").value.trim() })).then(() => toast("Saved")).catch(fail);
+  $("#ss").onclick = () => save("status", { type: "status", title: $("#sm").value, details: $("#se").value.trim(), details_bn: $("#sb").value.trim() }).then(() => toast("Saved. Website updated.")).catch(fail);
 }
 
 function contact(m) {
@@ -202,7 +235,7 @@ function photos(m) {
 }
 
 function list(m, extra = "") {
-  const c = T[tab], l = of(tab);
+  const c = T[K()], l = of(K());
   m.innerHTML = (SUB.includes(tab) ? bk : "") + `<h2>${c.h}</h2><p class="sub">${c.s}</p>${extra}<button class="btn full alt" id="add" style="margin:0 0 14px">+ Add</button>` +
   (l.length ? l.map(d => { const [a, b] = c.row(d); return `<div class="row"><div class="t"><b>${esc(a)}</b><small>${esc(b)}</small></div><button class="ic" data-e="${d.id}">Edit</button><button class="ic" data-x="${d.id}">🗑</button></div>`; }).join("") : '<p class="sub">Nothing here yet.</p>');
   $("#add").onclick = () => edit(null);
@@ -211,29 +244,34 @@ function list(m, extra = "") {
 }
 
 function edit(d) {
-  const c = T[tab];
-  $("#form").innerHTML = `<h2>${d ? "Edit" : "Add"}</h2>` + c.f.map(([k, l, kind, fw, fh]) => {
+  const c = T[K()];
+  $("#form").innerHTML = `<h2>${d ? "Edit" : "Add"}</h2><div class="tip">📍 ${X(WHERE[K()] || ["", ""])}</div>` + c.f.map(([k, l, kind, fw, fh]) => {
     const v = d ? d[k] ?? "" : "";
     if (kind === "svc") return `<label>${l}<select name="${k}" ${d ? "disabled" : ""}>${svcNames().map(s => `<option ${s === v ? "selected" : ""}>${esc(s)}</option>`).join("")}</select></label>`;
     if (kind === "cat") return `<label>${l}<select name="${k}">${CATN.map(s => `<option ${s === v ? "selected" : ""}>${s}</option>`).join("")}</select></label>`;
-    if (kind === "lines") return `<label>${l}<textarea name="${k}" rows="7">${esc(String(v).split("|").map(x => x.trim()).filter(Boolean).join("\n"))}</textarea></label>`;
-    if (kind === "area") return `<label>${l}<textarea name="${k}" rows="3">${esc(v)}</textarea></label>`;
+    if (kind === "lines") return `<label>${l}<textarea name="${k}" rows="7" placeholder="${esc((PH[K()] || {})[k] || "")}">${esc(String(v).split("|").map(x => x.trim()).filter(Boolean).join("\n"))}</textarea></label>`;
+    if (kind === "area") return `<label>${l}<textarea name="${k}" rows="3" placeholder="${esc((PH[K()] || {})[k] || "")}">${esc(v)}</textarea></label>`;
     if (kind === "num") return `<label>${l}<input name="${k}" type="number" min="1" max="5" value="${esc(v || 5)}"></label>`;
     if (kind === "img") return `<label>${l}<input type="file" accept="image/*" data-w="${fw}" data-h="${fh}"></label><img class="pv" src="${esc(v)}" ${v ? "" : 'style="display:none"'}><input type="hidden" name="${k}" value="${esc(v)}">`;
-    return `<label>${l}<input name="${k}" value="${esc(v)}"></label>`;
+    return `<label>${l}<input name="${k}" value="${esc(v)}" placeholder="${esc((PH[K()] || {})[k] || "")}"></label>`;
   }).join("") + `<button class="btn full" id="sv">Save</button><button class="btn full alt" id="cx">Cancel</button>`;
   $("#form").querySelectorAll("input[type=file]").forEach(f => f.onchange = async () => { try { const u = await shrink(f.files[0], +f.dataset.w, +f.dataset.h); if (u.length > 700000) return toast("Photo too big, try another"); const p = f.parentElement.nextElementSibling; p.src = u; p.style.display = ""; p.nextElementSibling.value = u; } catch (e) { toast("Cannot read that photo"); } });
   $("#sheet").style.display = "flex";
   $("#cx").onclick = () => $("#sheet").style.display = "none";
   $("#sv").onclick = async () => {
-    const data = { type: tab };
+    const data = { type: K() };
     $("#form").querySelectorAll("[name]").forEach(el => { data[el.name] = el.value.trim(); });
     if (tab === "req") { data.details = data.details.split("\n").map(x => x.trim()).filter(Boolean).join(" | "); if (d) data.title = d.title; }
     if (!data.title) return toast("Please fill the name");
-    const id = d ? d.id : ({ package: () => "package_" + String(9e12 - Date.now()).padStart(13, "0"), req: () => "req_" + slug(data.title), service: () => "service_" + slug(data.title) }[tab] || (() => tab + "_" + Date.now()))();
+    const id = d ? d.id : ({ package: () => "package_" + String(9e12 - Date.now()).padStart(13, "0"), req: () => "req_" + slug(data.title), service: () => "service_" + slug(data.title) }[K()] || (() => K() + "_" + Date.now()))();
     try { await save(id, data); $("#sheet").style.display = "none"; toast("Saved. Website updated."); } catch (e) { fail(e); }
   };
 }
+$("#lg").textContent = al === "bn" ? "EN" : "বাংলা";
+$("#lg").onclick = () => { try { localStorage.setItem("rtc-al", al === "bn" ? "en" : "bn"); } catch (e) {} location.reload(); };
+$("#bell").onclick = async () => { if (!("Notification" in window)) return toast("Alerts not supported on this browser"); const p = await Notification.requestPermission(); toast(p === "granted" ? "🔔 Alerts on (keep Admin open)" : "Alerts blocked — allow notifications in browser settings"); try { const c = new (window.AudioContext || window.webkitAudioContext)(); c.resume(); } catch (e) {} };
+const obs = new MutationObserver(ms => { obs.disconnect(); ms.forEach(x => x.addedNodes.forEach(n => tr(n.nodeType === 1 ? n : n.parentNode))); obs.observe(document.body, { childList: true, subtree: true }); });
+tr(document.body); obs.observe(document.body, { childList: true, subtree: true });
 if ("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js").catch(() => {});
 </script>
 </body>

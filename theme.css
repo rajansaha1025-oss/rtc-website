@@ -1,0 +1,4 @@
+html[data-theme="light"]{--ink:#f6f3ec;--mist:#56627f;--gold:#b8860b;--line:rgba(13,33,80,.14)}
+html[data-theme="light"] body{color:#0d1b3d;background:radial-gradient(1000px 480px at 90% -8%,rgba(28,76,150,.12),transparent 60%),radial-gradient(800px 400px at -10% 30%,rgba(232,194,106,.2),transparent 60%),#f6f3ec;background-attachment:fixed}
+html[data-theme="light"] .s div{background:#fff;box-shadow:0 12px 30px -18px rgba(13,33,80,.3)}{}
+html[data-theme="light"] .g{background:#fff;color:#0d1b3d}html[data-theme="light"] h1{background:linear-gradient(120deg,#0d2150,#1c4c96 65%,#b8860b);-webkit-background-clip:text;background-clip:text;color:transparent}
