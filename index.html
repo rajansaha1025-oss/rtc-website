@@ -37,3 +37,359 @@ header{position:sticky;top:0;z-index:1000;background:rgba(7,18,43,.82);backdrop-
 .nav-r{display:flex;align-items:center;gap:12px}
 .lang{display:flex;border:1px solid var(--line);border-radius:30px;overflow:hidden}
 .lang button{background:none;border:0;color:var(--mist);padding:6px 12px;cursor:pointer;font-size:13px;font-family:inherit}
+.lang button.on{background:var(--gold);color:#241a00;font-weight:600}
+.nav .btn{padding:9px 20px;font-size:14px}
+
+/* hero */
+.hero{padding:70px 0 90px;position:relative;overflow:hidden}
+.hero::before{content:"";position:absolute;width:700px;height:700px;right:-200px;top:-200px;background:radial-gradient(circle,rgba(28,76,150,.55),transparent 65%);animation:drift 14s ease-in-out infinite alternate}
+@keyframes drift{to{transform:translate(-60px,50px)}}
+.hero .wrap{display:grid;grid-template-columns:1.15fr .85fr;gap:50px;align-items:center;position:relative}
+.hero h1{font-size:clamp(36px,5.6vw,66px);font-weight:800;margin-bottom:22px}
+.hero p{color:var(--mist);font-size:18px;max-width:540px;margin-bottom:34px}
+.cta{display:flex;flex-wrap:wrap;gap:14px}
+.chips{display:flex;flex-wrap:wrap;gap:10px;margin-top:34px;font-size:13px;color:var(--mist)}
+.chips span{border:1px solid var(--line);border-radius:30px;padding:5px 14px}
+.chips i{color:var(--gold);margin-right:6px}
+.pp{position:relative;background:#dde5f2;color:#14213d;border-radius:14px;max-width:370px;aspect-ratio:4/5;margin:auto;padding:26px;transform:rotate(3deg);box-shadow:0 40px 80px rgba(0,0,0,.5);background-image:repeating-linear-gradient(#dde5f2 0 33px,#c9d4e8 33px 34px)}
+.pp small{font-weight:600;letter-spacing:2px;font-size:11px;color:#4b5b7c}
+.pp b{display:block;font-family:'Fraunces',serif;font-size:26px;margin-top:2px}
+.st{position:absolute;border:3px solid;border-radius:10px;padding:5px 12px;font-weight:700;letter-spacing:2px;font-size:15px;opacity:0;animation:stamp .55s cubic-bezier(.2,.9,.3,1.25) forwards;background:rgba(221,229,242,.5)}
+@keyframes stamp{0%{opacity:0;transform:scale(2.4) rotate(var(--r))}55%{opacity:.95}100%{opacity:.88;transform:scale(1) rotate(var(--r))}}
+
+/* services */
+.svc{display:grid;grid-template-columns:260px 1fr;gap:28px;align-items:start}
+.tabs{display:flex;flex-direction:column;gap:8px;position:sticky;top:90px}
+.tab{display:flex;align-items:center;gap:14px;padding:14px 18px;border-radius:14px;border:1px solid var(--line);background:var(--glass);color:var(--txt);cursor:pointer;font-family:inherit;font-size:15px;text-align:left;transition:.3s}
+.tab i{width:22px;color:var(--gold)}
+.tab:hover{border-color:var(--gold)}
+.tab.on{background:linear-gradient(135deg,var(--blue),var(--navy));border-color:var(--gold)}
+.panel{border:1px solid var(--line);background:var(--glass);border-radius:20px;padding:30px;animation:fade .45s ease}
+@keyframes fade{from{opacity:0;transform:translateX(16px)}}
+.panel h3{font-size:26px;margin-bottom:6px}
+.panel h4{margin:22px 0 8px;font-size:15px;color:var(--gold);font-weight:600}
+details{border-bottom:1px solid var(--line)}
+summary{list-style:none;cursor:pointer;padding:14px 4px;display:flex;justify-content:space-between;align-items:center;font-weight:500}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+";font-size:22px;color:var(--gold);transition:.3s}
+details[open] summary::after{transform:rotate(45deg)}
+details ul{padding:0 4px 8px 20px;color:var(--mist);font-size:14px}
+details .note{font-size:13px;color:var(--mist);padding:0 4px 10px;opacity:.8}
+details .btn{margin:4px 0 16px;padding:9px 20px;font-size:13px}
+
+/* packages */
+.pk{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:24px}
+.card{border-radius:20px;overflow:hidden;border:1px solid var(--line);background:var(--glass);transition:.35s;display:flex;flex-direction:column}
+.card:hover{transform:translateY(-8px);border-color:var(--gold)}
+.card .top{height:120px;display:flex;align-items:flex-end;padding:16px;font-size:34px}
+.card .body{padding:20px;display:flex;flex-direction:column;gap:10px;flex:1}
+.card h3{font-size:21px}
+.card p{color:var(--mist);font-size:14px;flex:1}
+.price{color:var(--gold);font-weight:600}
+
+/* how */
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:22px;counter-reset:s}
+.step{position:relative;padding:26px;border-left:2px solid var(--gold);background:var(--glass);border-radius:0 16px 16px 0;counter-increment:s}
+.step::before{content:counter(s);font-family:'Fraunces',serif;font-size:36px;color:var(--gold);display:block;line-height:1}
+.step h3{font-size:19px;margin:8px 0 4px}.step p{color:var(--mist);font-size:14px}
+.area{margin-top:30px;display:grid;grid-template-columns:1fr 1fr;gap:22px}
+.area div{border:1px solid var(--line);border-radius:18px;padding:24px;background:var(--glass)}
+.area i{font-size:26px;color:var(--gold);margin-bottom:10px;display:block}
+.area p{color:var(--mist);font-size:14px}
+
+/* form */
+.formbox{display:grid;grid-template-columns:1fr 1fr;gap:40px;border:1px solid var(--line);border-radius:24px;padding:40px;background:linear-gradient(145deg,rgba(28,76,150,.35),rgba(255,255,255,.04))}
+form{display:grid;gap:14px}
+label{font-size:13px;color:var(--mist)}
+input,select,textarea{width:100%;padding:12px 14px;margin-top:4px;border-radius:12px;border:1px solid var(--line);background:rgba(7,18,43,.7);color:var(--txt);font:inherit}
+select option{color:#000}
+.radio{display:flex;gap:18px;flex-wrap:wrap;margin-top:6px}.radio label{color:var(--txt);display:flex;gap:6px;align-items:center}.radio input{width:auto;margin:0}
+
+/* trust + team */
+.trust{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:22px}
+.tcard{border:1px solid var(--gold);border-radius:18px;padding:24px;display:flex;gap:18px;align-items:center;background:var(--glass)}
+.tcard img{width:90px;height:110px;object-fit:cover;border-radius:8px;cursor:zoom-in;background:#fff}
+.tcard i{font-size:34px;color:var(--gold)}
+.tcard strong{display:block;font-size:20px;font-family:'Fraunces',serif}
+.tcard span{color:var(--mist);font-size:14px}
+.team{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:20px}
+.mem{text-align:center;padding:24px 14px;border-radius:18px;border:1px solid var(--line);background:var(--glass);transition:.3s}
+.mem:hover{transform:translateY(-6px);border-color:var(--gold)}
+.mem.big{grid-column:1/-1;display:flex;align-items:center;gap:28px;text-align:left;padding:30px;background:linear-gradient(135deg,var(--blue),var(--navy))}
+.ph{width:96px;height:96px;border-radius:50%;object-fit:cover;margin:0 auto 12px;border:3px solid var(--gold);display:flex;align-items:center;justify-content:center;font:800 34px 'Fraunces',serif;background:var(--navy);color:var(--gold)}
+.big .ph{width:140px;height:140px;margin:0;flex-shrink:0;font-size:50px}
+.mem h4{font-size:17px}.mem span{color:var(--gold);font-size:13px}
+.big p{color:var(--txt);opacity:.85;margin-top:8px;font-size:15px}
+
+/* contact + footer */
+.contact{display:grid;grid-template-columns:1fr 1fr;gap:34px}
+.ci{display:flex;gap:16px;margin-bottom:22px}
+.ci i{width:46px;height:46px;border-radius:50%;background:var(--glass);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;color:var(--gold);flex-shrink:0}
+.ci h4{font-size:16px}.ci p,.ci a{color:var(--mist);font-size:14px}.ci a:hover{color:var(--gold)}
+.map{border-radius:20px;overflow:hidden;border:1px solid var(--line);min-height:320px}
+.map iframe{width:100%;height:100%;min-height:320px;border:0;filter:grayscale(.3) contrast(.95)}
+footer{background:#040a1a;padding:34px 5%;text-align:center;color:var(--mist);font-size:14px}
+footer .soc a{display:inline-flex;width:40px;height:40px;border-radius:50%;background:var(--glass);align-items:center;justify-content:center;margin:0 5px 14px;transition:.3s}
+footer .soc a:hover{background:var(--red);color:#fff}
+.fab-wa{position:fixed;right:20px;bottom:20px;z-index:999;width:58px;height:58px;border-radius:50%;background:#25d366;color:#fff;display:flex;align-items:center;justify-content:center;font-size:30px;box-shadow:0 10px 25px rgba(0,0,0,.4);animation:pulse 2.4s infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(37,211,102,.6)}70%{box-shadow:0 0 0 18px rgba(37,211,102,0)}100%{box-shadow:0 0 0 0 rgba(37,211,102,0)}}
+#lb{display:none;position:fixed;inset:0;z-index:2000;background:rgba(0,0,0,.85);align-items:center;justify-content:center;cursor:zoom-out}
+#lb img{max-height:90vh;max-width:92vw;border-radius:8px}
+.rv{opacity:0;transform:translateY(24px);transition:.7s}.rv.in{opacity:1;transform:none}
+
+@media(max-width:860px){
+.links{display:none}.hero .wrap,.formbox,.contact,.area{grid-template-columns:1fr}
+.svc{grid-template-columns:1fr}.tabs{position:static;flex-direction:row;overflow-x:auto;padding-bottom:6px}.tab{flex-shrink:0;padding:10px 16px}
+.pp{max-width:300px}.mem.big{flex-direction:column;text-align:center}.formbox{padding:24px}section{padding:70px 0}
+}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.st{opacity:.88}.rv{opacity:1;transform:none}}
+</style>
+</head>
+<body>
+
+<div id="notice"></div>
+<header><div class="nav">
+  <a href="#top" class="logo"><img src="1000173521.png" alt="" onerror="this.remove()"> RTC</a>
+  <ul class="links">
+    <li><a href="#services" data-bn="সেবা">Services</a></li>
+    <li><a href="#packages" data-bn="প্যাকেজ">Packages</a></li>
+    <li><a href="#how" data-bn="কিভাবে কাজ করি">How it works</a></li>
+    <li><a href="#team" data-bn="আমাদের টিম">Team</a></li>
+    <li><a href="#contact" data-bn="যোগাযোগ">Contact</a></li>
+  </ul>
+  <div class="nav-r">
+    <div class="lang"><button class="on" data-l="en">EN</button><button data-l="bn">বাংলা</button></div>
+    <a href="#enquiry" class="btn red" data-bn="যোগাযোগ করুন">Enquire</a>
+  </div>
+</div></header>
+
+<main id="top">
+<section class="hero"><div class="wrap">
+  <div>
+    <h1 data-bn="ভিসা, টিকেট ও ডকুমেন্টের কাজ — নরসিংদী থেকে, সারা দেশের জন্য">Visa, tickets and documents, handled from Narsingdi for anyone, anywhere.</h1>
+    <p data-bn="রাজন ট্রাভেল অ্যান্ড কম্পিউটার্স। অফিসে আসুন কান্দাপাড়ায়, অথবা পুরো কাজ করুন হোয়াটসঅ্যাপে।">Rajan Travel and Computers. Walk in at Kandapara, or do the whole process over WhatsApp.</p>
+    <div class="cta">
+      <a href="#services" class="btn red" data-bn="আমাদের সেবা দেখুন">See our services</a>
+      <a href="https://wa.me/8801711773086" target="_blank" rel="noopener" class="btn ghost"><i class="fab fa-whatsapp"></i> <span data-bn="হোয়াটসঅ্যাপে কথা বলুন">Chat on WhatsApp</span></a>
+    </div>
+    <div class="chips"><span><i class="fas fa-passport"></i><b data-bn="ভিসা" style="font-weight:500">Visa</b></span><span><i class="fas fa-plane"></i><b data-bn="টিকেট" style="font-weight:500">Tickets</b></span><span><i class="fas fa-id-card"></i><b data-bn="ডকুমেন্ট" style="font-weight:500">Documents</b></span><span><i class="fas fa-graduation-cap"></i><b data-bn="ভর্তি" style="font-weight:500">Admission</b></span><span><i class="fas fa-umbrella-beach"></i><b data-bn="ট্যুর" style="font-weight:500">Tours</b></span></div>
+  </div>
+  <div class="pp" aria-hidden="true">
+    <small>RTC · VISA</small><b>Entry stamps</b>
+    <div class="st" style="--r:-10deg;top:22%;left:8%;color:#1c4c96;animation-delay:.6s">INDIA</div>
+    <div class="st" style="--r:7deg;top:38%;right:6%;color:#c8281a;animation-delay:1.4s">MALAYSIA</div>
+    <div class="st" style="--r:-5deg;top:56%;left:10%;color:#16794f;animation-delay:2.2s">AUSTRALIA</div>
+    <div class="st" style="--r:9deg;top:74%;right:10%;color:#8a6508;animation-delay:3s">DUBAI</div>
+  </div>
+</div></section>
+
+<section id="services"><div class="wrap">
+  <h2 class="rv" data-bn="আমাদের সেবাসমূহ">What we handle</h2>
+  <p class="lead rv" data-bn="একটি ক্যাটাগরি বেছে নিন, তারপর সেবার ওপর ট্যাপ করে কী কী কাগজ লাগবে দেখুন।">Pick a category, then tap a service to see the documents you need.</p>
+  <div class="svc rv"><div class="tabs" id="tabs" role="tablist"></div><div class="panel" id="panel"></div></div>
+</div></section>
+
+<section id="packages" style="background:linear-gradient(180deg,var(--ink),var(--navy) 50%,var(--ink))"><div class="wrap">
+  <h2 class="rv" data-bn="ট্যুর প্যাকেজ">Tour packages</h2>
+  <p class="lead rv" data-bn="পরিবার, দম্পতি ও গ্রুপের জন্য। দাম ও তারিখ বদলায়, তাই বুকিংয়ের আগে নিশ্চিত করে নিন।">For families, couples and groups. Prices and dates change, so confirm before booking.</p>
+  <div class="pk" id="pk"></div>
+</div></section>
+
+<section id="how"><div class="wrap">
+  <h2 class="rv" data-bn="কাজ কিভাবে হয়">How your work gets done</h2>
+  <p class="lead rv" data-bn="নরসিংদীর বাইরে থাকলেও অফিসে আসার দরকার নেই।">Living outside Narsingdi? You never need to visit the office.</p>
+  <div class="steps rv">
+    <div class="step"><h3 data-bn="মেসেজ করুন">Message us</h3><p data-bn="হোয়াটসঅ্যাপ, ফোন বা সরাসরি অফিসে জানান আপনার কী প্রয়োজন।">Tell us what you need on WhatsApp, by phone, or at the office.</p></div>
+    <div class="step"><h3 data-bn="কাগজ পাঠান">Send documents</h3><p data-bn="কাগজের স্পষ্ট ছবি হোয়াটসঅ্যাপে পাঠান, অথবা অফিসে জমা দিন।">Send clear photos of your papers on WhatsApp, or hand them in at the office.</p></div>
+    <div class="step"><h3 data-bn="আমরা প্রসেস করি">We process</h3><p data-bn="প্রতিটি ধাপের আপডেট আপনাকে জানিয়ে দেওয়া হয়।">You get an update at every stage.</p></div>
+    <div class="step"><h3 data-bn="হাতে পান">Get the result</h3><p data-bn="নরসিংদীতে অফিস থেকে নিন; অন্য জায়গায় কুরিয়ার বা ডিজিটাল কপি।">Collect at the Narsingdi office, or receive by courier or digital copy.</p></div>
+  </div>
+  <div class="area rv">
+    <div><i class="fas fa-store"></i><h3 style="font-size:20px" data-bn="নরসিংদীতে আছেন?">In Narsingdi?</h3><p data-bn="কান্দাপাড়া অফিসে আসুন। কাগজ দেখিয়ে সামনাসামনি কাজ বুঝে নিন।">Visit us at Kandapara and sort everything out face to face.</p></div>
+    <div><i class="fas fa-laptop-house"></i><h3 style="font-size:20px" data-bn="অন্য জেলা বা বিদেশে?">Another district or abroad?</h3><p data-bn="ঘরে বসে অনলাইনে পুরো কাজ হবে। আপনার জেলা জানিয়ে ফর্ম পূরণ করুন।">The whole process runs online. Fill in the form below and tell us where you are.</p></div>
+  </div>
+</div></section>
+
+<section id="enquiry"><div class="wrap"><div class="formbox rv">
+  <div>
+    <h2 data-bn="আপনার প্রয়োজন জানান">Tell us what you need</h2>
+    <p class="lead" style="margin:0" data-bn="ফর্ম পূরণ করে পাঠালে হোয়াটসঅ্যাপে আপনার মেসেজ তৈরি হয়ে যাবে। শুধু Send চাপুন।">Submit the form and your message opens ready-written in WhatsApp. Just press Send.</p>
+  </div>
+  <form id="f">
+    <label><span data-bn="আপনার নাম">Your name</span><input name="n" required></label>
+    <label><span data-bn="ফোন নম্বর">Phone number</span><input name="p" type="tel" required></label>
+    <label><span data-bn="সেবা">Service</span><select name="s" id="sel"></select></label>
+    <div><label><span data-bn="আপনি কোথায়?">Where are you?</span></label>
+      <div class="radio"><label><input type="radio" name="w" value="Narsingdi (will visit office)" checked><span data-bn="নরসিংদী (অফিসে আসব)">Narsingdi (will visit)</span></label>
+      <label><input type="radio" name="w" value="Other district / abroad (online)"><span data-bn="অন্য জেলা বা বিদেশ (অনলাইনে)">Elsewhere (online)</span></label></div></div>
+    <label><span data-bn="অতিরিক্ত তথ্য">Anything else</span><textarea name="m" rows="3"></textarea></label>
+    <button class="btn red" type="submit"><i class="fab fa-whatsapp"></i> <span data-bn="হোয়াটসঅ্যাপে পাঠান">Send on WhatsApp</span></button>
+  </form>
+</div></div></section>
+
+<section id="trust" style="padding-top:0"><div class="wrap">
+  <h2 class="rv" data-bn="আমাদের লাইসেন্স">Our licences</h2>
+  <p class="lead rv" data-bn="আমরা নিবন্ধিত প্রতিষ্ঠান। সার্টিফিকেটের ছবিতে ট্যাপ করে বড় করে দেখুন।">We are a registered business. Tap a certificate to view it full size.</p>
+  <div class="trust rv" id="trust-grid"></div>
+</div></section>
+
+<section id="team" style="padding-top:0"><div class="wrap">
+  <h2 class="rv" data-bn="আমাদের টিম">The team behind your file</h2>
+  <p class="lead rv" data-bn="যাদের সঙ্গে আপনি কথা বলবেন।">The people you will be speaking with.</p>
+  <div class="team rv" id="team-grid"></div>
+</div></section>
+
+<section id="contact" style="padding-top:0"><div class="wrap">
+  <h2 class="rv" data-bn="যোগাযোগ ও ঠিকানা">Find us</h2>
+  <div class="contact rv" style="margin-top:30px"><div>
+    <div class="ci"><i class="fas fa-map-marker-alt"></i><div><h4 data-bn="অফিস">Office</h4><p data-bn="কান্দাপাড়া, নরসিংদী, ঢাকা, বাংলাদেশ">Kandapara, Narsingdi, Dhaka, Bangladesh</p></div></div>
+    <div class="ci"><i class="fas fa-phone-alt"></i><div><h4 data-bn="ফোন">Phone</h4><a href="tel:+8802227720014">+880 2227720014</a></div></div>
+    <div class="ci"><i class="fab fa-whatsapp"></i><div><h4>WhatsApp</h4><a href="https://wa.me/8801711773086" target="_blank" rel="noopener">+880 1711 773086</a></div></div>
+    <div class="ci"><i class="fas fa-envelope"></i><div><h4 data-bn="ইমেইল">Email</h4><a href="mailto:rajantravelrtc@gmail.com">rajantravelrtc@gmail.com</a></div></div>
+  </div>
+  <div class="map"><iframe title="Map" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3647.458739982755!2d90.7166567!3d23.9169997!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x37543aa8ab4639eb%3A0xc6c764ed2e7379f6!2sNarsingdi!5e0!3m2!1sen!2sbd!4v1690000000000!5m2!1sen!2sbd" loading="lazy" allowfullscreen></iframe></div></div>
+</div></section>
+</main>
+
+<footer>
+  <div class="soc"><a href="https://www.facebook.com/rajantravelrtc" target="_blank" rel="noopener" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a><a href="https://wa.me/8801711773086" target="_blank" rel="noopener" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a></div>
+  &copy; 2026 Rajan Travel and Computers (RTC). All rights reserved.
+</footer>
+<a class="fab-wa" href="https://wa.me/8801711773086" target="_blank" rel="noopener" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+<div id="lb"><img alt=""></div>
+
+<script>
+/* ================= SETTINGS: edit only this block ================= */
+const CFG = {
+  whatsapp: "8801711773086",
+  // Paste your Google Sheet "Publish to web" CSV link between the quotes to control
+  // packages, notices and document lists without touching code. Leave "" to use defaults below.
+  sheetCSV: "",
+  // Licences: write the number, add the picture, or both. Picture files go in the same folder.
+  licences: [
+    { en: "Trade License", bn: "ট্রেড লাইসেন্স", no: "", img: "tradelicense.png" },
+    { en: "Travel Agency License", bn: "ট্রাভেল এজেন্সি লাইসেন্স", no: "", img: "travellicense.png" }
+  ],
+  // Photo files go in the same folder with exactly these names.
+  team: [
+    ["Rajan Saha", "Founder & CEO", "ফাউন্ডার ও সিইও", "rajanpic.png"],
+    ["Mitul Roy", "Operations & IT Support", "অপারেশন্স ও আইটি সাপোর্ট", "mitulpic.png"],
+    ["Anik", "Visa Consultant", "ভিসা কনসালটেন্ট", "anikpic.png"],
+    ["Rabbi", "Ticketing Executive", "টিকেটিং এক্সিকিউটিভ", "rabbipic.png"],
+    ["Omey", "Customer Support", "কাস্টমার সাপোর্ট", "omeypic.png"],
+    ["Tonmoy", "Travel Advisor", "ট্রাভেল অ্যাডভাইজার", "tonmoypic.png"]
+  ],
+  founderNote: ["With years in travel and IT, Rajan founded RTC to give every client a clear, trustworthy process.", "ভ্রমণ ও আইটি খাতের অভিজ্ঞতা নিয়ে রাজন RTC শুরু করেছেন, যাতে প্রতিটি ক্লায়েন্ট স্বচ্ছ ও বিশ্বস্ত সেবা পায়।"],
+  packages: [
+    { title: "Cox's Bazar", details: "Sea beach, hotel stay and transport. Group and family plans.", price: "Call for price", title_bn: "কক্সবাজার", details_bn: "সমুদ্রসৈকত, হোটেল ও যাতায়াত। গ্রুপ ও ফ্যামিলি প্ল্যান।" },
+    { title: "Thailand", details: "Flights, hotel and sightseeing with visa support.", price: "Call for price", title_bn: "থাইল্যান্ড", details_bn: "ফ্লাইট, হোটেল ও ঘোরাঘুরি, ভিসা সহায়তাসহ।" },
+    { title: "Dubai", details: "Visa, flights and city tours in one package.", price: "Call for price", title_bn: "দুবাই", details_bn: "ভিসা, ফ্লাইট ও সিটি ট্যুর এক প্যাকেজে।" }
+  ]
+};
+
+/* Default document lists. The Google Sheet can override any of these. */
+const REQ = {
+  visa: ["Passport (valid 6+ months)", "Passport-size photos", "NID or birth certificate", "Bank statement and income proof", "Travel dates"],
+  medical: ["Passport (valid 6+ months)", "Passport-size photos", "Doctor's prescription or hospital letter", "Patient and attendant details", "Bank statement"],
+  pass: ["NID or birth certificate", "Passport-size photos", "Old passport (if any)", "Address proof"],
+  tkt: ["Passport copy (international)", "Route and travel date", "Passenger name exactly as in passport"],
+  tkt2: ["Existing ticket or booking reference", "New date or reason", "Passport copy"],
+  nid: ["Birth certificate or old NID", "Parents' NID", "Address proof", "Photo"],
+  tin: ["NID copy", "Photo", "Phone and email", "Job or business details"],
+  pol: ["NID or passport copy", "Photos", "Purpose (job, visa, abroad)", "Address details"],
+  brta: ["NID copy", "Photos", "Existing licence or vehicle papers (if any)", "Blood group and address"],
+  adm: ["Previous certificates and mark sheets", "Photos", "Guardian's NID", "Preferred institution"],
+  tour: ["Number of travellers", "Travel dates", "Budget range", "Passport copies (international trips)"]
+};
+const CATS = [
+  { icon: "fa-passport", en: "Visa", bn: "ভিসা", groups: [
+    { en: "India", bn: "ভারত", items: [["Tourist Visa", "ট্যুরিস্ট ভিসা", "visa"], ["Medical Visa", "মেডিকেল ভিসা", "medical"], ["Tirtha (Pilgrim) Visa", "তীর্থ ভিসা", "visa"], ["Double Entry Visa", "ডাবল এন্ট্রি ভিসা", "visa"]] },
+    { en: "Malaysia", bn: "মালয়েশিয়া", items: [["Malaysia Visit Visa", "মালয়েশিয়া ভিজিট ভিসা", "visa"], ["Malaysia Business Visa", "মালয়েশিয়া বিজনেস ভিসা", "visa"]] },
+    { en: "Australia", bn: "অস্ট্রেলিয়া", items: [["Australia Visitor Visa", "অস্ট্রেলিয়া ভিজিটর ভিসা", "visa"], ["Australia Student Visa", "অস্ট্রেলিয়া স্টুডেন্ট ভিসা", "adm"]] },
+    { en: "Dubai and other countries", bn: "দুবাই ও অন্যান্য দেশ", items: [["Dubai / UAE Visa", "দুবাই / UAE ভিসা", "visa"], ["Other Country Visa", "অন্যান্য দেশের ভিসা", "visa"]] }
+  ]},
+  { icon: "fa-book-open", en: "Passport", bn: "পাসপোর্ট", items: [["New Passport", "নতুন পাসপোর্ট", "pass"], ["Passport Renewal", "পাসপোর্ট নবায়ন", "pass"], ["Lost or Damaged Re-issue", "হারানো/নষ্ট পাসপোর্ট পুনরায় ইস্যু", "pass"], ["Passport Correction", "পাসপোর্ট তথ্য সংশোধন", "pass"]] },
+  { icon: "fa-plane-departure", en: "Air Tickets", bn: "এয়ার টিকেট", items: [["New Ticket", "নতুন টিকেট", "tkt"], ["Date Change", "তারিখ পরিবর্তন", "tkt2"], ["Ticket Refund", "টিকেট রিফান্ড", "tkt2"], ["Ticket Cancellation", "টিকেট বাতিল", "tkt2"]] },
+  { icon: "fa-id-card", en: "Documents", bn: "ডকুমেন্ট", items: [["NID Service", "এনআইডি সেবা", "nid"], ["TIN Certificate", "টিআইএন সার্টিফিকেট", "tin"], ["Police Clearance", "পুলিশ ক্লিয়ারেন্স", "pol"], ["BRTA Service", "বিআরটিএ সেবা", "brta"]] },
+  { icon: "fa-graduation-cap", en: "Admission", bn: "ভর্তি", items: [["School Admission", "স্কুলে ভর্তি", "adm"], ["College Admission", "কলেজে ভর্তি", "adm"], ["University Admission", "বিশ্ববিদ্যালয়ে ভর্তি", "adm"]] },
+  { icon: "fa-umbrella-beach", en: "Tours", bn: "ট্যুর", items: [["Domestic Tour", "দেশের ভেতরে ট্যুর", "tour"], ["International Tour", "বিদেশ ট্যুর", "tour"]] }
+];
+
+/* ================= Engine ================= */
+let lang = "en", cur = 0, over = {}, pkgs = CFG.packages;
+const $ = s => document.querySelector(s);
+const t = (en, bn) => (lang === "bn" && bn) ? bn : en;
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const wa = txt => `https://wa.me/${CFG.whatsapp}?text=${encodeURIComponent(txt)}`;
+const allItems = () => CATS.flatMap(c => c.groups ? c.groups.flatMap(g => g.items) : c.items);
+
+function item(it) {
+  const list = over[it[0]] || REQ[it[2]] || [];
+  const msg = lang === "bn" ? `আসসালামু আলাইকুম, আমি "${it[1]}" সম্পর্কে জানতে চাই।` : `Hello RTC, I would like to know about: ${it[0]}`;
+  return `<details><summary>${esc(t(it[0], it[1]))}</summary><ul>${list.map(x => `<li>${esc(x)}</li>`).join("")}</ul>
+  <p class="note">${t("Your exact list depends on your case. We confirm it on WhatsApp.", "আপনার ক্ষেত্র অনুযায়ী তালিকা বদলাতে পারে। হোয়াটসঅ্যাপে নিশ্চিত করে দেওয়া হবে।")}</p>
+  <a class="btn red" target="_blank" rel="noopener" href="${wa(msg)}"><i class="fab fa-whatsapp"></i> ${t("Ask about this", "এ বিষয়ে জানুন")}</a></details>`;
+}
+function renderServices() {
+  $("#tabs").innerHTML = CATS.map((c, i) => `<button class="tab ${i === cur ? "on" : ""}" role="tab" data-i="${i}"><i class="fas ${c.icon}"></i>${t(c.en, c.bn)}</button>`).join("");
+  const c = CATS[cur];
+  $("#panel").innerHTML = `<h3>${t(c.en, c.bn)}</h3>` + (c.groups ? c.groups.map(g => `<h4>${t(g.en, g.bn)}</h4>${g.items.map(item).join("")}`).join("") : c.items.map(item).join(""));
+}
+function renderPkgs() {
+  const g = ["#1c4c96,#0d2150", "#e33524,#7a1a12", "#0f766e,#0d2150", "#8a6508,#3a2a00"];
+  $("#pk").innerHTML = pkgs.map((p, i) => `<div class="card"><div class="top" style="background:linear-gradient(135deg,${g[i % 4]})"><i class="fas fa-location-dot"></i></div>
+  <div class="body"><h3>${esc(t(p.title, p.title_bn))}</h3><p>${esc(t(p.details, p.details_bn))}</p><div class="price">${esc(p.price || "")}</div>
+  <a class="btn red" target="_blank" rel="noopener" href="${wa("Hello RTC, I am interested in the package: " + p.title)}"><i class="fab fa-whatsapp"></i> ${t("Book on WhatsApp", "হোয়াটসঅ্যাপে বুক করুন")}</a></div></div>`).join("");
+}
+function renderTrust() {
+  $("#trust-grid").innerHTML = CFG.licences.map(l => `<div class="tcard"><img src="${l.img}" alt="${esc(l.en)}" onerror="this.outerHTML='<i class=&quot;fas fa-certificate&quot;></i>'" onclick="lb(this.src)">
+  <div><strong>${esc(t(l.en, l.bn))}</strong><span>${l.no ? esc(l.no) : t("Number coming soon", "নম্বর শীঘ্রই যুক্ত হবে")}</span></div></div>`).join("");
+}
+function renderTeam() {
+  $("#team-grid").innerHTML = CFG.team.map((m, i) => {
+    const ph = `<img class="ph" src="${m[3]}" alt="${esc(m[0])}" onerror="this.outerHTML='<div class=&quot;ph&quot;>${m[0][0]}</div>'">`;
+    return i === 0 ? `<div class="mem big">${ph}<div><span>${t(m[1], m[2])}</span><h4 style="font-size:26px;font-family:Fraunces,serif">${m[0]}</h4><p>${t(CFG.founderNote[0], CFG.founderNote[1])}</p></div></div>`
+      : `<div class="mem">${ph}<h4>${m[0]}</h4><span>${t(m[1], m[2])}</span></div>`;
+  }).join("");
+}
+function renderSelect() {
+  $("#sel").innerHTML = allItems().map(i => `<option value="${esc(i[0])}">${esc(t(i[0], i[1]))}</option>`).join("") + `<option value="Tour package">${t("Tour package", "ট্যুর প্যাকেজ")}</option><option value="Other">${t("Other", "অন্যান্য")}</option>`;
+}
+function renderAll() { renderServices(); renderPkgs(); renderTrust(); renderTeam(); renderSelect(); }
+
+function setLang(l) {
+  lang = l; document.documentElement.lang = l;
+  document.querySelectorAll("[data-bn]").forEach(e => { if (!e.dataset.en) e.dataset.en = e.textContent; e.textContent = l === "bn" ? e.dataset.bn : e.dataset.en; });
+  document.querySelectorAll(".lang button").forEach(b => b.classList.toggle("on", b.dataset.l === l));
+  try { localStorage.setItem("rtc-lang", l); } catch (e) {}
+  renderAll();
+}
+document.querySelectorAll(".lang button").forEach(b => b.onclick = () => setLang(b.dataset.l));
+$("#tabs").onclick = e => { const b = e.target.closest(".tab"); if (b) { cur = +b.dataset.i; renderServices(); } };
+$("#f").onsubmit = e => {
+  e.preventDefault(); const d = new FormData(e.target);
+  const m = `Hello RTC,\nName: ${d.get("n")}\nPhone: ${d.get("p")}\nService: ${d.get("s")}\nLocation: ${d.get("w")}\nNote: ${d.get("m") || "-"}`;
+  window.open(wa(m), "_blank");
+};
+function lb(src) { const b = $("#lb"); b.querySelector("img").src = src; b.style.display = "flex"; }
+$("#lb").onclick = () => $("#lb").style.display = "none";
+
+/* Google Sheet loader. Columns: type, title, details, price, title_bn, details_bn
+   type = package | notice | req   (req: title = service name, details = items separated by | ) */
+function csv(s) { const r = []; let row = [], c = "", q = false; for (let i = 0; i < s.length; i++) { const ch = s[i]; if (q) { if (ch == '"') { if (s[i + 1] == '"') { c += '"'; i++; } else q = false; } else c += ch; } else if (ch == '"') q = true; else if (ch == ",") { row.push(c); c = ""; } else if (ch == "\n") { row.push(c); r.push(row); row = []; c = ""; } else if (ch != "\r") c += ch; } row.push(c); r.push(row); return r; }
+if (CFG.sheetCSV) fetch(CFG.sheetCSV).then(r => r.text()).then(x => {
+  const rows = csv(x).slice(1).filter(r => r[0]); const P = [];
+  rows.forEach(r => { const k = r[0].trim().toLowerCase(), ti = (r[1] || "").trim();
+    if (k == "package") P.push({ title: ti, details: r[2], price: r[3], title_bn: r[4], details_bn: r[5] });
+    else if (k == "req") over[ti] = (r[2] || "").split("|").map(s => s.trim()).filter(Boolean);
+    else if (k == "notice") { const n = $("#notice"); n.textContent = ti + (r[2] ? " - " + r[2] : ""); n.style.display = "block"; } });
+  if (P.length) pkgs = P; renderAll();
+}).catch(() => {});
+
+let saved = "en"; try { saved = localStorage.getItem("rtc-lang") || "en"; } catch (e) {}
+setLang(saved);
+const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } }), { threshold: .12 });
+document.querySelectorAll(".rv").forEach(e => io.observe(e));
+</script>
+</body>
+</html>
