@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#07122b">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<title>RTC Admin</title>
+<style>
+:root{--ink:#07122b;--navy:#0d2150;--blue:#1c4c96;--red:#e33524;--gold:#e8c26a;--mist:#9fb0d0;--txt:#e8edf8;--line:rgba(255,255,255,.14);--glass:rgba(255,255,255,.06)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;background:var(--ink);color:var(--txt);min-height:100vh;padding-bottom:84px}
+button,input,select,textarea{font:inherit;color:inherit}
+header{position:sticky;top:0;z-index:5;display:flex;justify-content:space-between;align-items:center;padding:calc(12px + env(safe-area-inset-top)) 18px 12px;background:rgba(7,18,43,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+header b{font-size:18px}.ghost{background:none;border:1px solid var(--line);border-radius:20px;padding:6px 14px;color:var(--mist);cursor:pointer}
+main{max-width:640px;margin:auto;padding:18px}
+h2{font-size:20px;margin-bottom:4px}.sub{color:var(--mist);font-size:14px;margin-bottom:16px}
+.row{display:flex;align-items:center;gap:12px;padding:13px 14px;border:1px solid var(--line);background:var(--glass);border-radius:14px;margin-bottom:10px}
+.row .t{flex:1;min-width:0}.row .t b{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.row .t small{color:var(--mist)}
+.btn{background:linear-gradient(45deg,var(--red),#ff6b4a);border:0;border-radius:30px;padding:11px 22px;font-weight:600;color:#fff;cursor:pointer}
+.btn.full{width:100%;margin-top:6px}.btn.alt{background:var(--glass);border:1px solid var(--line)}
+.ic{background:none;border:1px solid var(--line);border-radius:10px;padding:7px 11px;cursor:pointer}
+nav{position:fixed;bottom:0;left:0;right:0;display:grid;grid-template-columns:repeat(5,1fr);background:#050d20;border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom)}
+nav button{background:none;border:0;padding:12px 4px;color:var(--mist);font-size:12px;cursor:pointer}
+nav button span{display:block;font-size:22px}nav button.on{color:var(--gold)}
+.sw{position:relative;width:48px;height:28px;flex-shrink:0}.sw input{opacity:0;position:absolute;inset:0;width:100%;height:100%;cursor:pointer;z-index:2}
+.sw i{position:absolute;inset:0;border-radius:20px;background:#34426a;transition:.25s}.sw i::after{content:"";position:absolute;width:22px;height:22px;border-radius:50%;background:#fff;top:3px;left:3px;transition:.25s}
+.sw input:checked+i{background:var(--red)}.sw input:checked+i::after{transform:translateX(20px)}
+label{display:block;font-size:13px;color:var(--mist);margin-top:12px}
+input,select,textarea{width:100%;margin-top:4px;padding:12px;border-radius:12px;border:1px solid var(--line);background:rgba(255,255,255,.07)}
+select option{color:#000}
+#sheet{display:none;position:fixed;inset:0;z-index:20;background:rgba(0,0,0,.65);align-items:flex-end;justify-content:center}
+#sheet>div{background:var(--navy);width:100%;max-width:640px;max-height:92vh;overflow:auto;border-radius:22px 22px 0 0;padding:22px 20px calc(24px + env(safe-area-inset-bottom));animation:up .3s}
+@keyframes up{from{transform:translateY(60px);opacity:0}}
+#login{max-width:380px;margin:12vh auto;padding:0 20px}
+#toast{position:fixed;left:50%;bottom:100px;transform:translateX(-50%);background:#fff;color:#111;padding:10px 20px;border-radius:30px;font-size:14px;opacity:0;pointer-events:none;transition:.3s;z-index:30}
+#toast.on{opacity:1}
+.hide{display:none!important}
+.pv{display:block;width:100%;max-height:160px;object-fit:cover;border-radius:12px;margin-top:8px}
+#cnt{background:var(--red);color:#fff;border-radius:10px;padding:0 6px;font-size:11px;margin-left:2px}#cnt:empty{display:none}
+.inq{flex-direction:column;align-items:stretch;gap:6px}.inq.done{opacity:.55}.inq p{font-size:14px;color:var(--mist)}.acts{display:flex;gap:8px;flex-wrap:wrap;margin-top:4px}.acts a{text-decoration:none;color:inherit}
+</style>
+</head>
+<body>
+<div id="login" class="hide">
+  <h2 style="font-size:28px">RTC Admin</h2><p class="sub">Sign in to update the website.</p>
+  <label>Email<input id="em" type="email" autocomplete="username"></label>
+  <label>Password<input id="pw" type="password" autocomplete="current-password"></label>
+  <p id="err" style="color:#ff8a7a;font-size:14px;margin-top:10px"></p>
+  <button class="btn full" id="go">Sign in</button>
+</div>
+
+<div id="app" class="hide">
+  <header><b>RTC Admin</b><button class="ghost" id="out">Sign out</button></header>
+  <main id="main"></main>
+  <nav id="nav">
+    <button data-t="inbox"><span>📥</span>Inbox<b id="cnt"></b></button>
+    <button data-t="hot"><span>🔥</span>Popular</button>
+    <button data-t="package"><span>🧳</span>Packages</button>
+    <button data-t="req"><span>📄</span>Documents</button>
+    <button data-t="more"><span>☰</span>More</button>
+  </nav>
+</div>
+<div id="sheet"><div id="form"></div></div>
+<div id="toast"></div>
+
+<script type="module">
+import { firebaseConfig, COLLECTION } from "./firebase-config.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getFirestore, collection, onSnapshot, doc, setDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+/* Built-in service names. Must match the public website exactly. */
+const SERVICES = ["India Tourist Visa","India Medical Visa","India Tirtha (Pilgrim) Visa","India Double Entry Visa","Malaysia Visit Visa","Malaysia Business Visa","Australia Visitor Visa","Australia Student Visa","Dubai / UAE Visa","Other Country Visa","New Passport","Passport Renewal","Lost or Damaged Re-issue","Passport Correction","New Ticket","Date Change","Ticket Refund","Ticket Cancellation","NID Service","TIN Certificate","Police Clearance","BRTA Service","School Admission","College Admission","University Admission","Domestic Tour","International Tour"];
+const CATN = ["Visa","Passport","Air Tickets","Documents","Admission","Tours"];
+const BADGES = { "Most requested": "সবচেয়ে বেশি চাহিদা", "Running now": "এখন চলছে", "Special offer": "বিশেষ অফার" };
+const DT = [["Rajan Saha","Founder & CEO","ফাউন্ডার ও সিইও","rajanpic.png"],["Mitul Roy","Operations & IT Support","অপারেশন্স ও আইটি সাপোর্ট","mitulpic.png"],["Anik","Visa Consultant","ভিসা কনসালটেন্ট","anikpic.png"],["Rabbi","Ticketing Executive","টিকেটিং এক্সিকিউটিভ","rabbipic.png"],["Omey","Customer Support","কাস্টমার সাপোর্ট","omeypic.png"],["Tonmoy","Travel Advisor","ট্রাভেল অ্যাডভাইজার","tonmoypic.png"]];
+const CONTACT = [["phone","Phone","+880 2227720014"],["whatsapp","WhatsApp number (digits only)","8801711773086"],["email","Email","rajantravelrtc@gmail.com"],["facebook","Facebook page link","https://www.facebook.com/rajantravelrtc"],["address","Address","Kandapara, Narsingdi, Dhaka, Bangladesh"],["address_bn","Address (Bangla)",""],["map","Shop location: Google Maps link or coordinates","https://maps.app.goo.gl/..."],["trade_no","Trade License number",""],["travel_no","Travel Agency License number",""]];
+const MORE = [["photos","🖼️","Logo and country photos"],["status","🟢","Office status (open / closed)"],["review","⭐","Client reviews"],["svc","🧩","Services: show, hide, add"],["team","👥","Team"],["contact","📍","Contact, location and licences"],["notice","📢","Website notice"]];
+const T = {
+  package: { h: "Tour packages", s: "Newest first. Shown in the Packages section.", f: [["title","Package name"],["details","Details","area"],["price","Price"],["title_bn","Name (Bangla)"],["details_bn","Details (Bangla)","area"],["img","Photo","img",900,600]], row: d => [d.title, d.price] },
+  req: { h: "Document lists", s: "Replaces the default document list of a service.", f: [["title","Service","svc"],["details","Documents needed (one per line)","lines"]], row: d => [d.title, d.details] },
+  notice: { h: "Website notice", s: "Shows as a bar at the top of the website.", f: [["title","Headline"],["details","Extra text (optional)"]], row: d => [d.title, d.details] },
+  review: { h: "Client reviews", s: "Shown in a reviews section. Hidden while empty.", f: [["title","Customer name"],["details","Review","area"],["price","Stars (1 to 5)","num"],["details_bn","Review (Bangla, optional)","area"]], row: d => [d.title, "★".repeat(+d.price || 5)] },
+  member: { h: "Team", s: "The first person shows as the large founder card.", f: [["title","Name"],["details","Role"],["details_bn","Role (Bangla)"],["img","Photo (face in the middle)","img",400,400]], row: d => [d.title, d.details] },
+  service: { h: "Services", s: "Switch off to hide a service. Add new ones at the bottom.", f: [["title","Service name"],["title_bn","Name (Bangla)"],["price","Category","cat"]], row: d => [d.title, d.price] }
+};
+const SUB = MORE.map(m => m[0]);
+const $ = s => document.querySelector(s);
+const slug = s => s.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;" }[c]));
+const toast = m => { const t = $("#toast"); t.textContent = m; t.classList.add("on"); setTimeout(() => t.classList.remove("on"), 2400); };
+const fail = e => toast("Not allowed: " + e.code);
+const save = (id, data) => setDoc(doc(db, COLLECTION, id), data, { merge: true });
+/* Resize a chosen photo in the browser (crop to w x h, or fit width w when h = 0) and return a small data URL. */
+const shrink = (file, w, h, q = .8) => new Promise((ok, no) => { const im = new Image(); im.onload = () => {
+  const c = document.createElement("canvas"); let sw = im.width, sh = im.height, sx = 0, sy = 0;
+  if (h) { const r = w / h; if (sw / sh > r) { const nw = sh * r; sx = (sw - nw) / 2; sw = nw; } else { const nh = sw / r; sy = (sh - nh) / 2; sh = nh; } c.width = w; c.height = h; }
+  else { const k = Math.min(1, w / sw); c.width = Math.round(sw * k); c.height = Math.round(sh * k); }
+  c.getContext("2d").drawImage(im, sx, sy, sw, sh, 0, 0, c.width, c.height);
+  let u = c.toDataURL("image/webp", q); if (!u.startsWith("data:image/webp")) u = c.toDataURL("image/jpeg", q); ok(u); }; im.onerror = no; im.src = URL.createObjectURL(file); });
+const CTRY = [["India","🇮🇳"],["Malaysia","🇲🇾"],["Australia","🇦🇺"],["Dubai and other countries","🇦🇪"]];
+const del = id => deleteDoc(doc(db, COLLECTION, id));
+
+if (!firebaseConfig.projectId) { document.body.innerHTML = '<p style="padding:30px">Open <b>firebase-config.js</b> and paste your Firebase config first.</p>'; throw 0; }
+const app = initializeApp(firebaseConfig), auth = getAuth(app), db = getFirestore(app);
+let docs = [], inq = [], tab = "inbox", unsubs = [], badge = "Most requested";
+const of = type => docs.filter(d => d.type === type);
+const svcNames = () => [...SERVICES, ...of("service").map(s => s.title)];
+const val = id => docs.find(d => d.id === id);
+const bk = '<button class="ghost" data-go="more" style="margin-bottom:12px">← More</button>';
+
+/* login */
+$("#go").onclick = async () => { $("#err").textContent = ""; try { await signInWithEmailAndPassword(auth, $("#em").value.trim(), $("#pw").value); } catch (e) { $("#err").textContent = "Wrong email or password."; } };
+$("#out").onclick = () => signOut(auth);
+onAuthStateChanged(auth, u => {
+  $("#login").classList.toggle("hide", !!u); $("#app").classList.toggle("hide", !u);
+  unsubs.forEach(f => f()); unsubs = [];
+  if (u) unsubs = [
+    onSnapshot(collection(db, COLLECTION), s => { docs = s.docs.map(d => ({ id: d.id, ...d.data() })); render(); }, e => toast("Cannot read: " + e.code)),
+    onSnapshot(collection(db, "inquiries"), s => { inq = s.docs.map(d => ({ id: d.id, ...d.data() })).sort((a, b) => (a.status === "done") - (b.status === "done") || (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0)); render(); }, e => toast("Cannot read inbox: " + e.code))
+  ];
+});
+$("#nav").onclick = e => { const b = e.target.closest("button"); if (b) { tab = b.dataset.t; render(); window.scrollTo(0, 0); } };
+$("#main").onclick = e => { const b = e.target.closest("[data-go]"); if (b) { tab = b.dataset.go; render(); window.scrollTo(0, 0); } };
+
+function render() {
+  const top = ["inbox","hot","package","req"], m = $("#main");
+  document.querySelectorAll("#nav button").forEach(b => b.classList.toggle("on", b.dataset.t === (top.includes(tab) ? tab : "more")));
+  const nw = inq.filter(x => x.status !== "done").length; $("#cnt").textContent = nw || "";
+  const ae = document.activeElement; if (ae && m.contains(ae) && (/TEXTAREA|SELECT/.test(ae.tagName) || (ae.tagName === "INPUT" && ae.type !== "checkbox" && ae.type !== "file"))) return; // do not wipe what you are typing
+  ({ inbox, hot, more, svc, team, status, contact, photos }[tab] || (() => list(m)))(m);
+}
+
+function inbox(m) {
+  const num = p => { const n = String(p || "").replace(/\D/g, ""); return n.startsWith("880") ? n : n.startsWith("0") ? "88" + n : "880" + n; };
+  const when = x => x.createdAt?.seconds ? new Date(x.createdAt.seconds * 1000).toLocaleString("en-GB", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" }) : "";
+  m.innerHTML = `<h2>Inbox</h2><p class="sub">Enquiries from the website form. Reply on WhatsApp or call, then mark done.</p>` +
+  (inq.length ? inq.map(x => `<div class="row inq ${x.status === "done" ? "done" : ""}"><b>${x.status === "done" ? "" : "🔴 "}${esc(x.name)} · ${esc(x.service)}</b>
+    <p>${esc(x.phone)} · ${esc(x.location)} · ${when(x)}${x.source ? " · via " + esc(x.source) : ""}</p>${x.note ? `<p>“${esc(x.note)}”</p>` : ""}
+    <div class="acts"><a class="ic" target="_blank" href="https://wa.me/${num(x.phone)}?text=${encodeURIComponent("Assalamu alaikum " + x.name + ", this is Rajan Travel (RTC). Regarding your enquiry for " + x.service + ": ")}">💬 WhatsApp</a>
+    <a class="ic" href="tel:${esc(x.phone)}">📞 Call</a><button class="ic" data-s="${x.id}" data-v="${x.status === "done" ? "new" : "done"}">${x.status === "done" ? "Reopen" : "✓ Done"}</button><button class="ic" data-d="${x.id}">🗑</button></div></div>`).join("") : '<p class="sub">No enquiries yet.</p>');
+  m.querySelectorAll("[data-s]").forEach(b => b.onclick = () => setDoc(doc(db, "inquiries", b.dataset.s), { status: b.dataset.v }, { merge: true }).catch(fail));
+  m.querySelectorAll("[data-d]").forEach(b => b.onclick = () => { if (confirm("Delete this enquiry?")) deleteDoc(doc(db, "inquiries", b.dataset.d)).catch(fail); });
+}
+
+function toggles(m, names, isOn, change) {
+  m.querySelectorAll(".sw input").forEach(c => c.onchange = async () => { try { await change(names[c.dataset.n], c.checked); toast("Saved"); } catch (e) { c.checked = !c.checked; fail(e); } });
+}
+const swRow = (n, i, on, small = "") => `<div class="row"><div class="t"><b>${esc(n)}</b>${small ? `<small>${esc(small)}</small>` : ""}</div><label class="sw" style="margin:0"><input type="checkbox" data-n="${i}" ${on ? "checked" : ""}><i></i></label></div>`;
+
+function hot(m) {
+  const names = [...svcNames(), ...of("package").map(p => p.title)], hs = of("hot");
+  m.innerHTML = `<h2>Popular right now</h2><p class="sub">Switch on what is running well. It gets a 🔥 badge on the website.</p>
+  <label style="margin:0 0 14px">Badge text<select id="bd">${Object.keys(BADGES).map(b => `<option ${b === badge ? "selected" : ""}>${b}</option>`).join("")}</select></label>` +
+  names.map((n, i) => { const h = hs.find(x => x.title === n); return swRow(n, i, h, h?.details); }).join("");
+  $("#bd").onchange = e => badge = e.target.value;
+  toggles(m, names, 0, (n, on) => on ? save("hot_" + slug(n), { type: "hot", title: n, details: badge, details_bn: BADGES[badge] }) : del("hot_" + slug(n)));
+}
+
+function more(m) {
+  m.innerHTML = `<h2>More</h2><p class="sub">Everything else you can change on the website.</p>` + MORE.map(([k, i, l]) => `<button class="row" data-go="${k}" style="width:100%;text-align:left;cursor:pointer"><span style="font-size:22px">${i}</span><div class="t"><b>${l}</b></div>›</button>`).join("");
+}
+
+function svc(m) {
+  const hid = of("hide");
+  list(m, `<h4 style="margin:6px 0 10px;color:var(--gold)">Show on website</h4>` + SERVICES.map((n, i) => swRow(n, i, !hid.some(h => h.title === n))).join("") + `<h4 style="margin:20px 0 10px;color:var(--gold)">Your own services</h4>`);
+  toggles(m, SERVICES, 0, (n, on) => on ? del("hide_" + slug(n)) : save("hide_" + slug(n), { type: "hide", title: n }));
+}
+
+function team(m) {
+  list(m, of("member").length ? "" : '<button class="btn full alt" id="seed" style="margin:0 0 14px">Add the 6 default team members</button>');
+  const b = $("#seed"); if (b) b.onclick = () => Promise.all(DT.map((x, i) => save("member_0" + (i + 1), { type: "member", title: x[0], details: x[1], details_bn: x[2], price: x[3] }))).then(() => toast("Added")).catch(fail);
+}
+
+function status(m) {
+  const s = val("status") || {};
+  m.innerHTML = bk + `<h2>Office status</h2><p class="sub">A small badge above the website headline.</p>
+  <label>Status<select id="sm"><option value="open" ${s.title === "open" ? "selected" : ""}>🟢 Open</option><option value="closed" ${s.title === "closed" ? "selected" : ""}>🔴 Closed</option><option value="off" ${s.title ? "" : "selected"}>Hide the badge</option></select></label>
+  <label>Message<input id="se" value="${esc(s.details)}" placeholder="Open today, 10 AM to 8 PM"></label>
+  <label>Message (Bangla)<input id="sb" value="${esc(s.details_bn)}" placeholder="আজ খোলা, সকাল ১০টা থেকে রাত ৮টা"></label>
+  <button class="btn full" id="ss">Save</button>`;
+  $("#ss").onclick = () => ($("#sm").value === "off" ? del("status") : save("status", { type: "status", title: $("#sm").value, details: $("#se").value.trim(), details_bn: $("#sb").value.trim() })).then(() => toast("Saved")).catch(fail);
+}
+
+function contact(m) {
+  m.innerHTML = bk + `<h2>Contact, location and licences</h2><p class="sub">Leave a box empty to use the website's built-in value.</p>` +
+  CONTACT.map(([k, l, ph]) => `<label>${l}<input data-k="${k}" value="${esc(val("setting_" + k)?.details)}" placeholder="${esc(ph)}"></label>`).join("") +
+  `<p class="sub" style="margin-top:12px">Moving the shop? Open Google Maps on the new place, tap the pin, and copy the long link from the browser (not the short maps.app.goo.gl one) or the coordinates, e.g. 23.9170, 90.7167. The map picture then moves too.</p><button class="btn full" id="sc">Save</button>`;
+  $("#sc").onclick = () => Promise.all([...m.querySelectorAll("[data-k]")].map(i => { const k = i.dataset.k, v = i.value.trim(); return v ? save("setting_" + k, { type: "setting", title: k, details: v }) : (val("setting_" + k) ? del("setting_" + k) : 0); })).then(() => toast("Saved. Website updated.")).catch(fail);
+}
+
+function photos(m) {
+  const it = [["logo", "Website logo", "image_logo", "image", 500, 0], ...CTRY.map(([n, f]) => [n, f + " " + n, "country_" + slug(n), "country", 900, 450])];
+  m.innerHTML = bk + `<h2>Logo and country photos</h2><p class="sub">Pick a photo. It is resized automatically and goes live on the website. Country photos appear above each country in the Visa section.</p>` +
+  it.map(([k, l, id], i) => { const d = val(id); return `<div class="row"><div class="t"><b>${l}</b>${d?.img ? `<img class="pv" src="${esc(d.img)}" style="max-height:80px;width:auto">` : "<small>No photo yet</small>"}</div><label class="ic" style="margin:0;cursor:pointer;color:inherit;font-size:14px">Upload<input type="file" accept="image/*" data-i="${i}" hidden></label>${d?.img ? `<button class="ic" data-r="${i}">🗑</button>` : ""}</div>`; }).join("");
+  m.querySelectorAll("input[type=file]").forEach(f => f.onchange = async () => { const [k, , id, type, w, h] = it[f.dataset.i]; try { const u = await shrink(f.files[0], w, h); if (u.length > 700000) return toast("Photo too big, try another"); await save(id, { type, title: k, img: u }); toast("Saved. Website updated."); } catch (e) { toast("Could not save that photo"); } });
+  m.querySelectorAll("[data-r]").forEach(b => b.onclick = () => del(it[b.dataset.r][2]).then(() => toast("Removed")).catch(fail));
+}
+
+function list(m, extra = "") {
+  const c = T[tab], l = of(tab);
+  m.innerHTML = (SUB.includes(tab) ? bk : "") + `<h2>${c.h}</h2><p class="sub">${c.s}</p>${extra}<button class="btn full alt" id="add" style="margin:0 0 14px">+ Add</button>` +
+  (l.length ? l.map(d => { const [a, b] = c.row(d); return `<div class="row"><div class="t"><b>${esc(a)}</b><small>${esc(b)}</small></div><button class="ic" data-e="${d.id}">Edit</button><button class="ic" data-x="${d.id}">🗑</button></div>`; }).join("") : '<p class="sub">Nothing here yet.</p>');
+  $("#add").onclick = () => edit(null);
+  m.querySelectorAll("[data-e]").forEach(b => b.onclick = () => edit(val(b.dataset.e)));
+  m.querySelectorAll("[data-x]").forEach(b => b.onclick = () => { if (confirm("Delete this?")) del(b.dataset.x).then(() => toast("Deleted")).catch(fail); });
+}
+
+function edit(d) {
+  const c = T[tab];
+  $("#form").innerHTML = `<h2>${d ? "Edit" : "Add"}</h2>` + c.f.map(([k, l, kind, fw, fh]) => {
+    const v = d ? d[k] ?? "" : "";
+    if (kind === "svc") return `<label>${l}<select name="${k}" ${d ? "disabled" : ""}>${svcNames().map(s => `<option ${s === v ? "selected" : ""}>${esc(s)}</option>`).join("")}</select></label>`;
+    if (kind === "cat") return `<label>${l}<select name="${k}">${CATN.map(s => `<option ${s === v ? "selected" : ""}>${s}</option>`).join("")}</select></label>`;
+    if (kind === "lines") return `<label>${l}<textarea name="${k}" rows="7">${esc(String(v).split("|").map(x => x.trim()).filter(Boolean).join("\n"))}</textarea></label>`;
+    if (kind === "area") return `<label>${l}<textarea name="${k}" rows="3">${esc(v)}</textarea></label>`;
+    if (kind === "num") return `<label>${l}<input name="${k}" type="number" min="1" max="5" value="${esc(v || 5)}"></label>`;
+    if (kind === "img") return `<label>${l}<input type="file" accept="image/*" data-w="${fw}" data-h="${fh}"></label><img class="pv" src="${esc(v)}" ${v ? "" : 'style="display:none"'}><input type="hidden" name="${k}" value="${esc(v)}">`;
+    return `<label>${l}<input name="${k}" value="${esc(v)}"></label>`;
+  }).join("") + `<button class="btn full" id="sv">Save</button><button class="btn full alt" id="cx">Cancel</button>`;
+  $("#form").querySelectorAll("input[type=file]").forEach(f => f.onchange = async () => { try { const u = await shrink(f.files[0], +f.dataset.w, +f.dataset.h); if (u.length > 700000) return toast("Photo too big, try another"); const p = f.parentElement.nextElementSibling; p.src = u; p.style.display = ""; p.nextElementSibling.value = u; } catch (e) { toast("Cannot read that photo"); } });
+  $("#sheet").style.display = "flex";
+  $("#cx").onclick = () => $("#sheet").style.display = "none";
+  $("#sv").onclick = async () => {
+    const data = { type: tab };
+    $("#form").querySelectorAll("[name]").forEach(el => { data[el.name] = el.value.trim(); });
+    if (tab === "req") { data.details = data.details.split("\n").map(x => x.trim()).filter(Boolean).join(" | "); if (d) data.title = d.title; }
+    if (!data.title) return toast("Please fill the name");
+    const id = d ? d.id : ({ package: () => "package_" + String(9e12 - Date.now()).padStart(13, "0"), req: () => "req_" + slug(data.title), service: () => "service_" + slug(data.title) }[tab] || (() => tab + "_" + Date.now()))();
+    try { await save(id, data); $("#sheet").style.display = "none"; toast("Saved. Website updated."); } catch (e) { fail(e); }
+  };
+}
+if ("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js").catch(() => {});
+</script>
+</body>
+</html>
