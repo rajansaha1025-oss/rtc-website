@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /admin/
+
+Sitemap: https://rajansaha1025-oss.github.io/rtc-website/sitemap.xml
