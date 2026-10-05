@@ -1,0 +1,28 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Put the email(s) you use to sign in to /admin here.
+    function isAdmin() {
+      return request.auth != null && request.auth.token.email in ['REPLACE_WITH_ADMIN_EMAIL'];
+    }
+    // Website content: anyone can read, only admin can change.
+    match /rtc_content/{id} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+    // Track-your-file: a customer can read ONE file only if they know its code (no listing). Only admin writes.
+    match /track/{code} {
+      allow get: if true;
+      allow list: if false;
+      allow write: if isAdmin();
+    }
+    // Enquiries: visitors may only create a small, valid one. Only admin can read or change.
+    match /inquiries/{id} {
+      allow create: if request.resource.data.keys().hasOnly(['name','phone','service','location','note','status','source','createdAt'])
+        && request.resource.data.name is string && request.resource.data.name.size() > 0 && request.resource.data.name.size() <= 500
+        && request.resource.data.phone is string && request.resource.data.phone.size() > 0 && request.resource.data.phone.size() <= 500
+        && request.resource.data.status == 'new';
+      allow read, update, delete: if isAdmin();
+    }
+  }
+}
