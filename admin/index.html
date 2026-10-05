@@ -85,8 +85,8 @@ import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from
 import { getFirestore, collection, onSnapshot, doc, setDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 /* Built-in service names. Must match the public website exactly. */
-const SERVICES = ["India Tourist Visa","India Medical Visa","India Tirtha (Pilgrim) Visa","India Double Entry Visa","Malaysia Visit Visa","Malaysia Business Visa","Australia Visitor Visa","Australia Student Visa","Dubai / UAE Visa","Other Country Visa","New Passport","Passport Renewal","Lost or Damaged Re-issue","Passport Correction","New Ticket","Date Change","Ticket Refund","Ticket Cancellation","NID Service","TIN Certificate","Police Clearance","BRTA Service","School Admission","College Admission","University Admission","Domestic Tour","International Tour"];
-const CATN = ["Visa","Passport","Air Tickets","Documents","Admission","Tours"];
+const SERVICES = ["India Tourist Visa","India Medical Visa","India Tirtha (Pilgrim) Visa","India Double Entry Visa","Malaysia Visit Visa","Malaysia Business Visa","Australia Visitor Visa","Australia Student Visa","Dubai / UAE Visa","Other Country Visa","New Passport","Passport Renewal","Lost or Damaged Re-issue","Passport Correction","Domestic Ticket","Domestic Date Change","Domestic Refund / Cancellation","International Ticket","International Date Change","International Refund / Cancellation","Domestic Hotel Booking","Resort and Group Stay","International Hotel Booking","NID Service","TIN Certificate","Police Clearance","BRTA Service","BMET Registration / Clearance","Birth Certificate","Death Certificate","School Admission","College Admission","University Admission","Domestic Tour","International Tour"];
+const CATN = ["Visa","Passport","Air Tickets","Hotel Booking","Documents","Admission","Tours"];
 const BADGES = { "Most requested": "সবচেয়ে বেশি চাহিদা", "Running now": "এখন চলছে", "Special offer": "বিশেষ অফার" };
 const DT = [["Rajan Saha","Founder & CEO","ফাউন্ডার ও সিইও","rajanpic.png"],["Mitul Roy","Operations & IT Support","অপারেশন্স ও আইটি সাপোর্ট","mitulpic.png"],["Anik","Visa Consultant","ভিসা কনসালটেন্ট","anikpic.png"],["Rabbi","Ticketing Executive","টিকেটিং এক্সিকিউটিভ","rabbipic.png"],["Omey","Customer Support","কাস্টমার সাপোর্ট","omeypic.png"],["Tonmoy","Travel Advisor","ট্রাভেল অ্যাডভাইজার","tonmoypic.png"]];
 const CONTACT = [["phone","Phone","+880 2227720014"],["whatsapp","WhatsApp number (digits only)","8801711773086"],["email","Email","rajantravelrtc@gmail.com"],["facebook","Facebook page link","https://www.facebook.com/rajantravelrtc"],["address","Address","Kandapara, Narsingdi, Dhaka, Bangladesh"],["address_bn","Address (Bangla)",""],["map","Shop location: Google Maps link or coordinates","https://maps.app.goo.gl/..."],["trade_no","Trade License number",""],["travel_no","Travel Agency License number",""]];
@@ -134,7 +134,7 @@ const shrink = (file, w, h, q = .8) => new Promise((ok, no) => { const im = new 
   else { const k = Math.min(1, w / sw); c.width = Math.round(sw * k); c.height = Math.round(sh * k); }
   c.getContext("2d").drawImage(im, sx, sy, sw, sh, 0, 0, c.width, c.height);
   let u = c.toDataURL("image/webp", q); if (!u.startsWith("data:image/webp")) u = c.toDataURL("image/jpeg", q); ok(u); }; im.onerror = no; im.src = URL.createObjectURL(file); });
-const CTRY = [["India","🇮🇳"],["Malaysia","🇲🇾"],["Australia","🇦🇺"],["Dubai and other countries","🇦🇪"]];
+const CTRY = [["India","🇮🇳"],["Malaysia","🇲🇾"],["Australia","🇦🇺"],["Dubai and other countries","🇦🇪"],["Domestic Flights","✈️"],["International Flights","🌍"],["Domestic Hotels","🏨"],["International Hotels","🏙️"]];
 const del = id => deleteDoc(doc(db, COLLECTION, id)).then(r => { bump(); return r; });
 
 if (!firebaseConfig.projectId) { document.body.innerHTML = '<p style="padding:30px">Open <b>firebase-config.js</b> and paste your Firebase config first.</p>'; throw 0; }
