@@ -170,7 +170,7 @@ details ul{list-style:none}details li{position:relative;padding:3px 0 3px 24px}d
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.st{opacity:.88}.rv{opacity:1;transform:none}}
 
 /* ===== light premium theme ===== */
-html[data-theme="light"]{--ink:#f6f3ec;--txt:#0d1b3d;--mist:#56627f;--glass:#fff;--line:rgba(13,33,80,.12);--gold:#b8860b}
+html[data-theme="light"]{--ink:#f6f3ec;--txt:#0d1b3d;--mist:#56627f;--glass:#fff;--line:rgba(13,33,80,.12);--gold:#8a6508}
 html[data-theme="light"] body{background:radial-gradient(1100px 520px at 88% -8%,rgba(28,76,150,.12),transparent 60%),radial-gradient(900px 420px at -10% 28%,rgba(232,194,106,.2),transparent 60%),#f6f3ec;background-attachment:fixed}
 html[data-theme="light"] header{background:rgba(255,255,255,.78);box-shadow:0 6px 24px -14px rgba(13,33,80,.25)}
 html[data-theme="light"] .hero::before{background:radial-gradient(circle,rgba(28,76,150,.16),transparent 65%)}
@@ -201,19 +201,32 @@ h2.rv::after{width:0;transition:width 1s .35s}h2.rv.in::after{width:54px}
 .card:hover,.rev:hover,.tcard:hover,.step:hover{transform:translateY(-8px)}
 .step::before{background:linear-gradient(135deg,#b8860b,#e8c26a);-webkit-background-clip:text;background-clip:text;color:transparent}
 .fab-wa{transition:transform .3s}.fab-wa:hover{transform:scale(1.12) rotate(-6deg)}
+
+/* ===== v11 additions ===== */
+.pill a{margin-left:6px;padding:2px 12px;border-radius:20px;background:var(--blue);color:#fff;font-weight:600;font-size:12px}
+.ferr{display:none;color:#c8281a;font-size:13px;margin-top:4px}
+.ckl{list-style:none;padding-left:0!important}.ckl li{padding:5px 0!important}.ckl li::before{display:none!important}.ckl label{display:flex;gap:10px;align-items:flex-start;cursor:pointer;color:var(--mist)}.ckl input{width:20px;height:20px;margin:2px 0 0;flex-shrink:0;accent-color:#16794f}.ckl input:checked+span{text-decoration:line-through;opacity:.6}
+.gal{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:16px}.gal figure{margin:0;border-radius:16px;overflow:hidden;border:1px solid var(--line);background:var(--glass)}.gal img{width:100%;height:190px;object-fit:cover;display:block;cursor:zoom-in}.gal figcaption{padding:10px 14px;font-size:14px;color:var(--mist)}
+.rev b small{font-weight:400;color:var(--mist)}.gbpbtn{margin-top:22px}
+.payg{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px}.paycard{border:1px solid var(--line);background:var(--glass);border-radius:18px;padding:22px}.paycard h3{font-size:19px;margin-bottom:6px}.paycard .num{font:600 20px 'Poppins',sans-serif;letter-spacing:.5px;color:var(--gold);word-break:break-all}.paycard button{margin-top:10px;border:1px solid var(--line);background:none;color:var(--txt);border-radius:20px;padding:5px 14px;cursor:pointer;font:inherit;font-size:13px}
+.paynote{margin-top:22px;border-left:3px solid var(--gold);padding:12px 16px;background:var(--glass);border-radius:0 12px 12px 0;color:var(--mist);font-size:14px}.paynote ol{padding-left:20px;margin:6px 0}
+@media(max-width:899px){footer{padding-bottom:90px}}
+@media(max-width:560px){.nav{gap:8px;padding:10px 4%}.nav>.nav-r>.btn{display:none}.logo{font-size:20px}.logo img{height:38px;width:38px}.nav-r{gap:8px}}
 </style>
 </head>
 <body>
 
 <div id="notice"></div>
 <header><div class="nav">
-  <a href="#top" class="logo"><img src="1000173521.png" alt="" onerror="this.style.display='none'"> RTC</a>
+  <a href="#top" class="logo"><img src="logo-nav.webp" width="46" height="46" alt="Rajan Travel and Computers logo" onerror="this.style.display='none'"> RTC</a>
   <ul class="links">
     <li><a href="#services" data-bn="সেবা">Services</a></li>
     <li><a href="#packages" data-bn="প্যাকেজ">Packages</a></li>
     <li><a href="#how" data-bn="কিভাবে কাজ করি">How it works</a></li>
     <li><a href="#team" data-bn="আমাদের টিম">Team</a></li>
     <li><a href="#contact" data-bn="যোগাযোগ">Contact</a></li>
+    <li><a href="guides.html" data-bn="গাইড">Guides</a></li>
+    <li><a href="track.html" data-bn="ফাইল ট্র্যাক">Track file</a></li>
   </ul>
   <div class="nav-r"><button id="theme" class="lang" type="button" aria-label="Light or dark" style="padding:6px 13px;cursor:pointer;background:none;color:var(--mist);font:inherit"></button>
     <div class="lang"><button class="on" data-l="en">EN</button><button data-l="bn">বাংলা</button></div>
@@ -224,7 +237,7 @@ h2.rv::after{width:0;transition:width 1s .35s}h2.rv.in::after{width:54px}
 <main id="top">
 <section class="hero"><div class="wrap">
   <div>
-    <div class="pill" id="pill"><i></i><span></span></div>
+    <div class="pill" id="pill"><i></i><span></span><a id="pill-call" href="tel:+8802227720014"><span data-bn="কল করুন" style="display:inline">Call now</span></a></div>
     <h1 data-bn="ভিসা, টিকেট ও ডকুমেন্টের কাজ — নরসিংদী থেকে, সারা দেশের জন্য">Visa, tickets and documents, handled from Narsingdi for anyone, anywhere.</h1>
     <p data-bn="রাজন ট্রাভেল অ্যান্ড কম্পিউটার্স। অফিসে আসুন কান্দাপাড়ায়, অথবা পুরো কাজ করুন হোয়াটসঅ্যাপে।">Rajan Travel and Computers. Walk in at Kandapara, or do the whole process over WhatsApp.</p>
     <div class="cta">
@@ -280,12 +293,13 @@ h2.rv::after{width:0;transition:width 1s .35s}h2.rv.in::after{width:54px}
   <form id="f">
     <input name="website" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px">
     <label><span data-bn="আপনার নাম">Your name</span><input name="n" required></label>
-    <label><span data-bn="ফোন নম্বর">Phone number</span><input name="p" type="tel" required></label>
+    <label><span data-bn="মোবাইল নম্বর (১১ সংখ্যা)">Mobile number (11 digits)</span><input name="p" type="tel" inputmode="numeric" autocomplete="tel" placeholder="01XXXXXXXXX" required aria-describedby="perr"><small class="ferr" id="perr" role="alert"></small></label>
     <label><span data-bn="সেবা">Service</span><select name="s" id="sel"></select></label>
     <div><label><span data-bn="আপনি কোথায়?">Where are you?</span></label>
       <div class="radio"><label><input type="radio" name="w" value="Narsingdi (will visit office)" checked><span data-bn="নরসিংদী (অফিসে আসব)">Narsingdi (will visit)</span></label>
       <label><input type="radio" name="w" value="Other district / abroad (online)"><span data-bn="অন্য জেলা বা বিদেশ (অনলাইনে)">Elsewhere (online)</span></label></div></div>
     <label><span data-bn="অতিরিক্ত তথ্য">Anything else</span><textarea name="m" rows="3"></textarea></label>
+    <p id="sent" role="status" aria-live="polite" style="display:none;border:1px solid var(--gold);border-radius:12px;padding:12px 14px;font-size:14px"></p>
     <button class="btn red" type="submit"><i class="fab fa-whatsapp"></i> <span data-bn="হোয়াটসঅ্যাপে পাঠান">Send on WhatsApp</span></button>
   </form>
 </div></div></section>
@@ -296,13 +310,17 @@ h2.rv::after{width:0;transition:width 1s .35s}h2.rv.in::after{width:54px}
   <div class="trust rv" id="trust-grid"></div>
 </div></section>
 
-<section id="reviews" style="display:none;padding-top:0"><div class="wrap"><h2 class="rv" data-bn="ক্লায়েন্টদের কথা">What clients say</h2><div class="revs" id="rev-grid" style="margin-top:30px"></div></div></section>
+<section id="reviews" style="display:none;padding-top:0"><div class="wrap"><h2 class="rv" data-bn="ক্লায়েন্টদের কথা">What clients say</h2><div class="revs" id="rev-grid" style="margin-top:30px"></div><a id="gbp-rev" class="btn ghost gbpbtn" target="_blank" rel="noopener" style="display:none"><i class="fab fa-google"></i> <span data-bn="গুগলে রিভিউ দিন">Review us on Google</span></a></div></section>
 
 <section id="team" style="padding-top:0"><div class="wrap">
   <h2 class="rv" data-bn="আমাদের টিম">The team behind your file</h2>
   <p class="lead rv" data-bn="যাদের সঙ্গে আপনি কথা বলবেন।">The people you will be speaking with.</p>
   <div class="team rv" id="team-grid"></div>
 </div></section>
+
+<section id="gallery" style="display:none;padding-top:0"><div class="wrap"><h2 class="rv" data-bn="আমাদের অফিস ও কাজ">Our office and work</h2><p class="lead rv" data-bn="অফিস, কাজ বুঝিয়ে দেওয়া এবং ক্লায়েন্টদের সঙ্গে কিছু মুহূর্ত।">The office, handing over finished work, and moments with our clients.</p><div class="gal rv" id="gal-grid"></div></div></section>
+
+<section id="pay" style="display:none;padding-top:0"><div class="wrap"><h2 class="rv" data-bn="পেমেন্ট ও অগ্রিম">Payment and advance</h2><p class="lead rv" data-bn="সার্ভিস চার্জ হোয়াটসঅ্যাপে নিশ্চিত হওয়ার পরই অগ্রিম পাঠান।">Send an advance only after we confirm the service charge on WhatsApp.</p><div class="payg rv" id="pay-grid"></div><div class="paynote rv" id="pay-note"></div></div></section>
 
 <section id="contact" style="padding-top:0"><div class="wrap">
   <h2 class="rv" data-bn="যোগাযোগ ও ঠিকানা">Find us</h2>
@@ -318,13 +336,13 @@ h2.rv::after{width:0;transition:width 1s .35s}h2.rv.in::after{width:54px}
 
 <footer>
   <div class="soc"><a id="c-fb" href="https://www.facebook.com/rajantravelrtc" target="_blank" rel="noopener" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a><a href="https://wa.me/8801711773086" target="_blank" rel="noopener" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a></div>
-  <div class="fl"><a href="india-visa.html">India visa</a><a href="malaysia-visa.html">Malaysia visa</a><a href="australia-visa.html">Australia visa</a><a href="air-ticket.html">Air tickets</a><a href="dubai-visa.html">Dubai visa</a><a href="passport-service.html">Passport</a><a href="documents-service.html">NID, TIN, BMET, Certificates</a><a href="tour-packages.html">Tour packages</a><a href="privacy.html">Privacy</a></div>
+  <div class="fl"><a href="india-visa.html">India visa</a><a href="malaysia-visa.html">Malaysia visa</a><a href="australia-visa.html">Australia visa</a><a href="air-ticket.html">Air tickets</a><a href="dubai-visa.html">Dubai visa</a><a href="passport-service.html">Passport</a><a href="documents-service.html">NID, TIN, BMET, Certificates</a><a href="tour-packages.html">Tour packages</a><a href="guides.html">Guides</a><a href="track.html">Track your file</a><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a><a href="refund-policy.html">Refund policy</a></div>
   &copy; 2026 Rajan Travel and Computers (RTC). All rights reserved.
 </footer>
 <a class="fab-wa" href="https://wa.me/8801711773086" target="_blank" rel="noopener" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
-<div id="lb"><img alt=""></div>
+<div id="lb" role="dialog" aria-label="Enlarged licence" aria-modal="true"><img alt="Licence enlarged"></div>
 
-<script src="track.js"></script>
+<script src="track.js"></script><script src="extras.js"></script>
 <script>
 /* ================= SETTINGS: edit only this block ================= */
 const CFG = {
@@ -344,7 +362,7 @@ const CFG = {
   // Licences: write the number, add the picture, or both. Picture files go in the same folder.
   licences: [
     { en: "Trade License", bn: "ট্রেড লাইসেন্স", no: "No. 5625/1297 · Narsingdi Pourashava · valid to 30 Jun 2027", img: "" },
-    { en: "Travel Agency Registration", bn: "ট্রাভেল এজেন্সি রেজিস্ট্রেশন", no: "Reg. No. 0017514 · Ministry of Civil Aviation and Tourism · valid to 25 Jul 2029", img: "travellicense.png" }
+    { en: "Travel Agency Registration", bn: "ট্রাভেল এজেন্সি রেজিস্ট্রেশন", no: "Reg. No. 0017514 · Ministry of Civil Aviation and Tourism · valid to 25 Jul 2029", img: "travellicense.webp" }
   ],
   // Photo files go in the same folder with exactly these names.
   team: [
@@ -406,7 +424,7 @@ let CATS = [
 
 /* ================= Engine ================= */
 const BASE = JSON.parse(JSON.stringify(CATS));
-let lang = "en", cur = 0, over = {}, pkgs = CFG.packages, hot = { ...CFG.hot }, TEAM = CFG.team, S = {}, ST = null, R = [], custom = [], hidden = new Set(), IM = {}, CT = {};
+let lang = "en", cur = 0, over = {}, pkgs = CFG.packages, hot = { ...CFG.hot }, TEAM = CFG.team, S = {}, ST = null, R = [], GL = [], custom = [], hidden = new Set(), IM = {}, CT = {};
 const $ = s => document.querySelector(s);
 const t = (en, bn) => (lang === "bn" && bn) ? bn : en;
 const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
@@ -417,9 +435,9 @@ function item(it) {
   const list = over[it[0]] || REQ[it[2]] || [];
   const msg = lang === "bn" ? `আসসালামু আলাইকুম, আমি "${it[1]}" সম্পর্কে জানতে চাই।` : `Hello RTC, I would like to know about: ${it[0]}`;
   const h = hot[it[0]], b = h ? `<span class="badge"><i class="fas fa-fire"></i> ${esc(t(h[0], h[1]))}</span>` : "";
-  return `<details data-k="${esc(it[0])}"${h ? ' open' : ''}><summary><span><i class="fas ${iconFor(it)} ic"></i>${esc(t(it[0], it[1]))}${b}</span></summary><ul>${list.map(x => `<li>${esc(x)}</li>`).join("")}</ul>
+  return `<details data-k="${esc(it[0])}"${h ? ' open' : ''}><summary><span><i class="fas ${iconFor(it)} ic"></i>${esc(t(it[0], it[1]))}${b}</span></summary><ul class="ckl">${list.map(x => `<li><label><input type="checkbox"><span>${esc(x)}</span></label></li>`).join("")}</ul>
   <p class="note">${t("Your exact list depends on your case. We confirm it on WhatsApp.", "আপনার ক্ষেত্র অনুযায়ী তালিকা বদলাতে পারে। হোয়াটসঅ্যাপে নিশ্চিত করে দেওয়া হবে।")}</p>
-  <a class="btn red" target="_blank" rel="noopener" href="${wa(msg)}"><i class="fab fa-whatsapp"></i> ${t("Ask about this", "এ বিষয়ে জানুন")}</a></details>`;
+  <a class="btn red" target="_blank" rel="noopener" href="${wa(msg)}"><i class="fab fa-whatsapp"></i> ${t("Ask about this", "এ বিষয়ে জানুন")}</a> <button type="button" class="btn ghost" data-ckwa="${esc(it[0])}"><i class="fab fa-whatsapp"></i> ${t("Send my checklist", "আমার তালিকা পাঠান")}</button></details>`;
 }
 const flat = c => c.groups ? c.groups.flatMap(g => g.items) : c.items;
 const safe = u => /^(data:image\/|https?:)/.test(u || "") ? u : "";
@@ -446,12 +464,12 @@ function renderPkgs() {
   <a class="btn red" target="_blank" rel="noopener" href="${wa("Hello RTC, I am interested in the package: " + p.title)}"><i class="fab fa-whatsapp"></i> ${t("Book on WhatsApp", "হোয়াটসঅ্যাপে বুক করুন")}</a></div></div>`).join("");
 }
 function renderTrust() {
-  $("#trust-grid").innerHTML = CFG.licences.map(l => `<div class="tcard">${l.img ? `<img src="${l.img}" alt="${esc(l.en)}" onerror="this.outerHTML='<i class=&quot;fas fa-certificate&quot;></i>'" onclick="lb(this.src)">` : '<i class="fas fa-certificate"></i>'}
+  $("#trust-grid").innerHTML = CFG.licences.map(l => `<div class="tcard">${l.img ? `<img src="${l.img}" alt="${esc(l.en)}" loading="lazy" decoding="async" width="90" height="110" onerror="this.outerHTML='<i class=&quot;fas fa-certificate&quot;></i>'" onclick="lb(this.src)">` : '<i class="fas fa-certificate"></i>'}
   <div><strong>${esc(t(l.en, l.bn))}</strong><span>${l.no ? esc(l.no) : t("Number coming soon", "নম্বর শীঘ্রই যুক্ত হবে")}</span></div></div>`).join("");
 }
 function renderTeam() {
   $("#team-grid").innerHTML = TEAM.map((m, i) => {
-    const ph = `<img class="ph" src="${safe(m[4]) || m[3]}" alt="${esc(m[0])}" onerror="this.outerHTML='<div class=&quot;ph&quot;>${m[0][0]}</div>'">`;
+    const ph = `<img class="ph" loading="lazy" decoding="async" src="${safe(m[4]) || m[3]}" alt="${esc(m[0])}" onerror="this.outerHTML='<div class=&quot;ph&quot;>${m[0][0]}</div>'">`;
     return i === 0 ? `<div class="mem big">${ph}<div><span>${t(m[1], m[2])}</span><h4 style="font-size:26px;font-family:Fraunces,serif">${m[0]}</h4><p>${t(CFG.founderNote[0], CFG.founderNote[1])}</p></div></div>`
       : `<div class="mem">${ph}<h4>${m[0]}</h4><span>${t(m[1], m[2])}</span></div>`;
   }).join("");
@@ -467,6 +485,8 @@ function renderContact() {
   if (S.phone) { $("#c-tel").href = "tel:" + S.phone.replace(/[^\d+]/g, ""); $("#c-tel").textContent = S.phone; }
   if (S.email) { $("#c-mail").href = "mailto:" + S.email; $("#c-mail").textContent = S.email; }
   if (S.facebook) $("#c-fb").href = S.facebook;
+  $("#pill-call").href = "tel:" + String(S.phone || "+8802227720014").replace(/[^\d+]/g, "");
+  if (S.gbp) document.querySelectorAll('script[type="application/ld+json"]').forEach(s => { try { const j = JSON.parse(s.textContent), a = Array.isArray(j) ? j : [j]; a.forEach(o => { if (o["@type"] === "TravelAgency") o.sameAs = [...new Set([...(o.sameAs || []), S.gbp])]; }); s.textContent = JSON.stringify(Array.isArray(j) ? a : a[0]); } catch (x) {} });
   if (S.address) { const a = $("#c-addr"); a.dataset.en = S.address; a.dataset.bn = S.address_bn || S.address; a.textContent = t(S.address, S.address_bn); }
   const mv = S.map || CFG.mapLink, q = mapQ(S.map) || CFG.map, f = $("#mapf");
   if (f.dataset.q !== q) { f.src = "https://www.google.com/maps?q=" + encodeURIComponent(q) + "&z=17&output=embed"; f.dataset.q = q; }
@@ -484,42 +504,61 @@ function renderStatus() {
   else { open = m === "open"; en = ST.en || (open ? "Open now" : "Closed now"); bn = ST.bn || ST.en || (open ? "এখন খোলা" : "এখন বন্ধ"); }
   p.style.display = "inline-flex"; p.classList.toggle("closed", !open); p.querySelector("span").textContent = t(en, bn);
 }
-function renderReviews() { $("#reviews").style.display = R.length ? "block" : "none"; $("#rev-grid").innerHTML = R.map(r => `<div class="rev"><div class="s">${"★".repeat(r.stars)}</div><p>${esc(t(r.text, r.text_bn))}</p><b>${esc(r.name)}</b></div>`).join(""); }
+function renderReviews() { $("#reviews").style.display = R.length ? "block" : "none"; $("#rev-grid").innerHTML = R.map(r => `<div class="rev"><div class="s">${"★".repeat(r.stars)}</div><p>${esc(t(r.text, r.text_bn))}</p><b>${esc(r.name)}${r.city ? ` <small>· ${esc(r.city)}</small>` : ""}</b></div>`).join(""); const g = $("#gbp-rev"); if (S.gbp) { g.href = S.gbp; g.style.display = "inline-flex"; } else g.style.display = "none"; }
+function renderGallery() { const L = GL.filter(g => safe(g.img)); $("#gallery").style.display = L.length ? "block" : "none"; $("#gal-grid").innerHTML = L.map(g => `<figure><img loading="lazy" decoding="async" src="${safe(g.img)}" alt="${esc(g.cap)}" onclick="lb(this.src)">${g.cap ? `<figcaption>${esc(t(g.cap, g.cap_bn))}</figcaption>` : ""}</figure>`).join(""); }
+function renderPay() {
+  const rows = []; const bank = (S.bank || "").split("|").map(x => x.trim()).filter(Boolean);
+  if (S.bkash) rows.push(["bKash", S.bkash, t("Send Money (Personal)", "সেন্ড মানি (পার্সোনাল)")]);
+  if (S.nagad) rows.push(["Nagad", S.nagad, t("Send Money (Personal)", "সেন্ড মানি (পার্সোনাল)")]);
+  const any = rows.length || bank.length; $("#pay").style.display = any ? "block" : "none"; if (!any) return;
+  $("#pay-grid").innerHTML = rows.map(r => `<div class="paycard"><h3>${esc(r[0])}</h3><div class="num">${esc(r[1])}</div><small>${esc(r[2])}</small><br><button type="button" data-copy="${esc(r[1])}">${t("Copy number", "নম্বর কপি")}</button></div>`).join("") +
+    (bank.length ? `<div class="paycard"><h3>${t("Bank transfer", "ব্যাংক ট্রান্সফার")}</h3>${bank.map(x => `<div>${esc(x)}</div>`).join("")}</div>` : "");
+  $("#pay-note").innerHTML = `<b>${t("How to pay", "কিভাবে পেমেন্ট করবেন")}</b><ol><li>${t("Confirm the service charge with us on WhatsApp first.", "আগে হোয়াটসঅ্যাপে সার্ভিস চার্জ নিশ্চিত করুন।")}</li><li>${t("Send the advance to a number above. Use your name and phone as the reference.", "ওপরের নম্বরে অগ্রিম পাঠান। রেফারেন্সে আপনার নাম ও ফোন নম্বর দিন।")}</li><li>${t("Send the screenshot or TrxID on WhatsApp. We confirm and give you a receipt.", "স্ক্রিনশট বা TrxID হোয়াটসঅ্যাপে পাঠান। আমরা নিশ্চিত করে রসিদ দেব।")}</li></ol>${S.pay_note ? `<p>${esc(S.pay_note)}</p>` : ""}<p><b>${t("Pay only to the numbers on this page. We never ask for your PIN or OTP.", "শুধু এই পাতার নম্বরেই পেমেন্ট করুন। আমরা কখনও আপনার PIN বা OTP চাই না।")}</b></p>`;
+}
+document.addEventListener("click", e => { const b = e.target.closest("[data-copy]"); if (b) { try { navigator.clipboard.writeText(b.dataset.copy); b.textContent = "✓"; } catch (x) {} } });
+
 function buildCats() {
   CATS = JSON.parse(JSON.stringify(BASE)); const ok = it => !hidden.has(it[0]);
   CATS.forEach(c => { if (c.groups) { c.groups.forEach(g => g.items = g.items.filter(ok)); c.groups = c.groups.filter(g => g.items.length); } else c.items = c.items.filter(ok);
     custom.filter(x => x.cat === c.en).forEach(x => { if (c.groups && !c.groups.length) c.groups.push({ en: "More", bn: "অন্যান্য", items: [] }); (c.groups ? c.groups[c.groups.length - 1] : c).items.push([x.name, x.bn || x.name, "custom"]); }); });
   CATS = CATS.filter(c => flat(c).length); if (cur >= CATS.length) cur = 0;
 }
-function renderAll() { renderContact(); renderStatus(); renderReviews(); renderServices(); renderPkgs(); renderTrust(); renderTeam(); renderSelect(); }
+function renderAll() { renderContact(); renderStatus(); renderReviews(); renderGallery(); renderPay(); renderServices(); renderPkgs(); renderTrust(); renderTeam(); renderSelect(); }
 
 function setLang(l) {
   lang = l; document.documentElement.lang = l;
   document.querySelectorAll("[data-bn]").forEach(e => { if (!e.dataset.en) e.dataset.en = e.textContent; e.textContent = l === "bn" ? e.dataset.bn : e.dataset.en; });
-  document.querySelectorAll(".lang button").forEach(b => b.classList.toggle("on", b.dataset.l === l));
+  document.querySelectorAll(".lang button[data-l]").forEach(b => { b.classList.toggle("on", b.dataset.l === l); b.setAttribute("aria-pressed", b.dataset.l === l); });
   try { localStorage.setItem("rtc-lang", l); } catch (e) {}
   renderAll();
 }
 document.querySelectorAll(".lang button").forEach(b => b.onclick = () => setLang(b.dataset.l));
 $("#hotbar").onclick = e => { const b = e.target.closest(".hotchip"); if (!b) return; cur = +b.dataset.i; renderServices();
   const d = [...document.querySelectorAll("#panel details")].find(x => x.dataset.k === b.dataset.k); if (d) { d.open = true; d.scrollIntoView({ behavior: "smooth", block: "center" }); } };
+$("#panel").addEventListener("click", e => { const b = e.target.closest("[data-ckwa]"); if (!b) return; const d = b.closest("details"), L = [...d.querySelectorAll("li")], have = L.filter(l => l.querySelector("input").checked).map(l => l.textContent.trim()), miss = L.filter(l => !l.querySelector("input").checked).map(l => l.textContent.trim());
+  window.open(wa(`Assalamu alaikum, I need help with: ${b.dataset.ckwa}\nReady:\n${have.map(x => "- " + x).join("\n") || "- none yet"}\nStill need / not sure:\n${miss.map(x => "- " + x).join("\n") || "- nothing"}`), "_blank"); window.rtcTrack && rtcTrack("lead", b.dataset.ckwa); });
 $("#tabs").onclick = e => { const b = e.target.closest(".tab"); if (b) { cur = +b.dataset.i; renderServices(); } };
 $("#f").onsubmit = e => {
   e.preventDefault(); const d = new FormData(e.target);
-  const m = `Hello RTC,\nName: ${d.get("n")}\nPhone: ${d.get("p")}\nService: ${d.get("s")}\nLocation: ${d.get("w")}\nNote: ${d.get("m") || "-"}`;
+  const ph = (String(d.get("p") || "").replace(/[\s\-()]/g, "").match(/^(?:\+?88)?(01[3-9]\d{8})$/) || [])[1], pe = $("#perr");
+  if (!ph) { pe.textContent = lang === "bn" ? "সঠিক ১১ সংখ্যার মোবাইল নম্বর দিন (যেমন 01712345678)।" : "Enter a valid 11-digit Bangladeshi mobile number (e.g. 01712345678)."; pe.style.display = "block"; e.target.p.setAttribute("aria-invalid", "true"); e.target.p.focus(); return; }
+  pe.style.display = "none"; e.target.p.removeAttribute("aria-invalid");
+  const m = `Hello RTC,\nName: ${d.get("n")}\nPhone: ${ph}\nService: ${d.get("s")}\nLocation: ${d.get("w")}\nNote: ${d.get("m") || "-"}`;
   window.open(wa(m), "_blank");
   window.rtcTrack && rtcTrack("lead", d.get("s"));
+  const ok = $("#sent"); ok.textContent = lang === "bn" ? "ধন্যবাদ! আপনার তথ্য পাঠানো হয়েছে। হোয়াটসঅ্যাপে Send চাপুন, আমরা শীঘ্রই যোগাযোগ করব।" : "Thank you! Your details are sent. Press Send in WhatsApp and we will contact you shortly."; ok.style.display = "block"; e.target.reset();
   // Also save the enquiry to your admin Inbox (needs Firebase projectId). Spam bots fill the hidden field and are skipped.
   if (FB && FB.projectId && !d.get("website")) {
     const sv = v => ({ stringValue: String(v || "").slice(0, 500) });
     fetch(`https://firestore.googleapis.com/v1/projects/${FB.projectId}/databases/(default)/documents/inquiries`, {
       method: "POST", headers: { "Content-Type": "application/json" }, keepalive: true,
-      body: JSON.stringify({ fields: { name: sv(d.get("n")), phone: sv(d.get("p")), service: sv(d.get("s")), location: sv(d.get("w")), note: sv(d.get("m")), status: sv("new"), source: sv(window.rtcSource ? rtcSource() : ""), createdAt: { timestampValue: new Date().toISOString() } } })
+      body: JSON.stringify({ fields: { name: sv(d.get("n")), phone: sv(ph), service: sv(d.get("s")), location: sv(d.get("w")), note: sv(d.get("m")), status: sv("new"), source: sv(window.rtcSource ? rtcSource() : ""), createdAt: { timestampValue: new Date().toISOString() } } })
     }).catch(() => {});
   }
 };
 function lb(src) { const b = $("#lb"); b.querySelector("img").src = src; b.style.display = "flex"; }
 $("#lb").onclick = () => $("#lb").style.display = "none";
+document.addEventListener("keydown", e => { if (e.key === "Escape") $("#lb").style.display = "none"; });
 
 /* Google Sheet loader. Columns: type, title, details, price, title_bn, details_bn
    type = package | notice | req | hot
@@ -529,21 +568,22 @@ $("#lb").onclick = () => $("#lb").style.display = "none";
 function csv(s) { const r = []; let row = [], c = "", q = false; for (let i = 0; i < s.length; i++) { const ch = s[i]; if (q) { if (ch == '"') { if (s[i + 1] == '"') { c += '"'; i++; } else q = false; } else c += ch; } else if (ch == '"') q = true; else if (ch == ",") { row.push(c); c = ""; } else if (ch == "\n") { row.push(c); r.push(row); row = []; c = ""; } else if (ch != "\r") c += ch; } row.push(c); r.push(row); return r; }
 function apply(rows) {
   over = {}; $("#notice").style.display = "none";
-  const P = [], H = {}, IMG = {}, CTRY = {}, M = [], RV = [], CU = [], HD = new Set(), SS = {}; let SX = null;
+  const P = [], H = {}, IMG = {}, CTRY = {}, M = [], RV = [], GLL = [], CU = [], HD = new Set(), SS = {}; let SX = null;
   rows.filter(r => r[0]).forEach(r => { const k = r[0].trim().toLowerCase(), ti = (r[1] || "").trim();
     if (k == "package") P.push({ title: ti, details: r[2], price: r[3], title_bn: r[4], details_bn: r[5], img: r[6] });
     else if (k == "req") over[ti] = (r[2] || "").split("|").map(s => s.trim()).filter(Boolean);
     else if (k == "hot") H[ti] = [r[2] || "Popular now", r[5] || r[4] || r[2] || "এখন চলছে"];
-    else if (k == "notice") { const n = $("#notice"); n.textContent = ti + (r[2] ? " - " + r[2] : ""); n.style.display = "block"; }
+    else if (k == "gallery") GLL.push({ cap: ti, cap_bn: r[4], img: r[6] });
+    else if (k == "notice") { const exp = (r[3] || "").trim(), today = new Date(Date.now() + 216e5).toISOString().slice(0, 10); if (/^\d{4}-\d{2}-\d{2}$/.test(exp) && exp < today) return; const n = $("#notice"); n.textContent = ti + (r[2] ? " - " + r[2] : ""); n.style.display = "block"; }
     else if (k == "setting") SS[ti] = r[2] || "";
     else if (k == "status") SX = { mode: ti, en: r[2] || "", bn: r[5] || r[2] || "" };
-    else if (k == "review") RV.push({ name: ti, text: r[2], text_bn: r[5], stars: Math.min(5, Math.max(1, +r[3] || 5)) });
+    else if (k == "review") RV.push({ name: ti, text: r[2], text_bn: r[5], stars: Math.min(5, Math.max(1, +r[3] || 5)), city: r[4] });
     else if (k == "member") M.push([ti, r[2], r[5] || r[2], r[3] || "", r[6] || ""]);
     else if (k == "service") CU.push({ name: ti, bn: r[4], cat: r[3] });
     else if (k == "image") IMG[ti] = r[6];
     else if (k == "country") CTRY[ti] = r[6];
     else if (k == "hide") HD.add(ti); });
-  pkgs = P.length ? P : CFG.packages; hot = H; S = SS; ST = SX; R = RV; custom = CU; hidden = HD; IM = IMG; CT = CTRY; TEAM = M.length ? M : CFG.team;
+  pkgs = P.length ? P : CFG.packages; hot = H; S = SS; ST = SX; R = RV; GL = GLL; custom = CU; hidden = HD; IM = IMG; CT = CTRY; TEAM = M.length ? M : CFG.team;
   buildCats(); renderAll();
 }
 const FB = CFG.firebase, CK = "rtc-cache";
@@ -568,8 +608,9 @@ const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting
 document.querySelectorAll(".rv").forEach(e => io.observe(e));
 (function () { const bar = document.createElement("div"); bar.style.cssText = "position:fixed;top:0;left:0;height:3px;width:0;z-index:2000;background:linear-gradient(90deg,#b8860b,#e8c26a,#e33524)"; document.body.appendChild(bar); setInterval(renderStatus, 60000);
   addEventListener("scroll", () => { const h = document.documentElement; bar.style.width = (h.scrollTop / ((h.scrollHeight - h.clientHeight) || 1) * 100) + "%"; }, { passive: true }); })();
-(function () { const b = $("#theme"), r = document.documentElement, paint = () => b.textContent = r.dataset.theme === "dark" ? "☀" : "☾";
+(function () { const b = $("#theme"), r = document.documentElement, paint = () => { b.textContent = r.dataset.theme === "dark" ? "☀" : "☾"; b.setAttribute("aria-pressed", r.dataset.theme === "dark"); };
   b.onclick = () => { r.dataset.theme = r.dataset.theme === "dark" ? "light" : "dark"; try { localStorage.setItem("rtc-theme", r.dataset.theme); } catch (e) {} paint(); }; paint(); })();
+(function () { try { const q = new URLSearchParams(location.search).get("s"); if (!q) return; const go = () => { const sel = $("#sel"); const o = [...sel.options].find(x => x.value.toLowerCase().includes(q.toLowerCase())); if (o) sel.value = o.value; }; go(); setTimeout(go, 1200); } catch (e) {} })();
 </script>
 </body>
 </html>

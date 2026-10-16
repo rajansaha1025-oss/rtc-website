@@ -68,7 +68,7 @@ nav button{font-size:13px}.btn.full{padding:15px}.row .t small{display:block;mar
   <header><b>RTC Admin</b><span style="display:flex;gap:6px"><a class="ghost" href="../?fresh" target="_blank" title="Website" style="text-decoration:none">🌐</a><button class="ghost" id="bell" title="Alerts">🔔</button><button class="ghost" id="lg"></button><button class="ghost" id="out">Sign out</button></span></header>
   <main id="main"></main>
   <nav id="nav">
-    <button data-t="inbox"><span>📥</span>Inbox<b id="cnt"></b></button>
+    <button data-t="inbox"><span>📥</span>Leads<b id="cnt"></b></button>
     <button data-t="hot"><span>🔥</span>Popular</button>
     <button data-t="package"><span>🧳</span>Packages</button>
     <button data-t="req"><span>📄</span>Documents</button>
@@ -82,27 +82,28 @@ nav button{font-size:13px}.btn.full{padding:15px}.row .t small{display:block;mar
 import { firebaseConfig, COLLECTION } from "./firebase-config.js";
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-import { getFirestore, collection, onSnapshot, doc, setDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { getFirestore, collection, onSnapshot, doc, setDoc, deleteDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 /* Built-in service names. Must match the public website exactly. */
 const SERVICES = ["India Tourist Visa","India Medical Visa","India Tirtha (Pilgrim) Visa","India Double Entry Visa","Malaysia Visit Visa","Malaysia Business Visa","Australia Visitor Visa","Australia Student Visa","Dubai / UAE Visa","Other Country Visa","New Passport","Passport Renewal","Lost or Damaged Re-issue","Passport Correction","Domestic Ticket","Domestic Date Change","Domestic Refund / Cancellation","International Ticket","International Date Change","International Refund / Cancellation","Domestic Hotel Booking","Resort and Group Stay","International Hotel Booking","NID Service","TIN Certificate","Police Clearance","BRTA Service","BMET Registration / Clearance","Birth Certificate","Death Certificate","School Admission","College Admission","University Admission","Domestic Tour","International Tour"];
 const CATN = ["Visa","Passport","Air Tickets","Hotel Booking","Documents","Admission","Tours"];
 const BADGES = { "Most requested": "সবচেয়ে বেশি চাহিদা", "Running now": "এখন চলছে", "Special offer": "বিশেষ অফার" };
 const DT = [["Rajan Saha","Founder & CEO","ফাউন্ডার ও সিইও","rajanpic.png"],["Mitul Roy","Operations & IT Support","অপারেশন্স ও আইটি সাপোর্ট","mitulpic.png"],["Anik","Visa Consultant","ভিসা কনসালটেন্ট","anikpic.png"],["Rabbi","Ticketing Executive","টিকেটিং এক্সিকিউটিভ","rabbipic.png"],["Omey","Customer Support","কাস্টমার সাপোর্ট","omeypic.png"],["Tonmoy","Travel Advisor","ট্রাভেল অ্যাডভাইজার","tonmoypic.png"]];
-const CONTACT = [["phone","Phone","+880 2227720014"],["whatsapp","WhatsApp number (digits only)","8801711773086"],["email","Email","rajantravelrtc@gmail.com"],["facebook","Facebook page link","https://www.facebook.com/rajantravelrtc"],["address","Address","Kandapara, Narsingdi, Dhaka, Bangladesh"],["address_bn","Address (Bangla)",""],["map","Shop location: Google Maps link or coordinates","https://maps.app.goo.gl/..."],["trade_no","Trade License number",""],["travel_no","Travel Agency License number",""]];
-const MORE = [["photos","🖼️","Logo and country photos"],["status","🟢","Office status (open / closed)"],["review","⭐","Client reviews"],["svc","🧩","Services: show, hide, add"],["team","👥","Team"],["contact","📍","Contact, location and licences"],["notice","📢","Website notice"]];
+const CONTACT = [["gbp","Google Business Profile / review link","https://g.page/r/..."],["phone","Phone","+880 2227720014"],["whatsapp","WhatsApp number (digits only)","8801711773086"],["email","Email","rajantravelrtc@gmail.com"],["facebook","Facebook page link","https://www.facebook.com/rajantravelrtc"],["address","Address","Kandapara, Narsingdi, Dhaka, Bangladesh"],["address_bn","Address (Bangla)",""],["map","Shop location: Google Maps link or coordinates","https://maps.app.goo.gl/..."],["trade_no","Trade License number",""],["travel_no","Travel Agency License number",""]];
+const MORE = [["photos","🖼️","Logo and country photos"],["status","🟢","Office status (open / closed)"],["review","⭐","Client reviews"],["svc","🧩","Services: show, hide, add"],["team","👥","Team"],["contact","📍","Contact, location and licences"],["gallery","📸","Gallery photos"],["notice","📢","Website notice"],["pay","💳","Payment details"],["track","🔎","Customer file tracking"]];
 const T = {
   package: { h: "Tour packages", s: "Newest first. Shown in the Packages section.", f: [["title","Package name"],["details","Details","area"],["price","Price"],["title_bn","Name (Bangla)"],["details_bn","Details (Bangla)","area"],["img","Photo","img",900,600]], row: d => [d.title, d.price] },
   req: { h: "Document lists", s: "Replaces the default document list of a service.", f: [["title","Service","svc"],["details","Documents needed (one per line)","lines"]], row: d => [d.title, d.details] },
-  notice: { h: "Website notice", s: "Shows as a bar at the top of the website.", f: [["title","Headline"],["details","Extra text (optional)"]], row: d => [d.title, d.details] },
-  review: { h: "Client reviews", s: "Shown in a reviews section. Hidden while empty.", f: [["title","Customer name"],["details","Review","area"],["price","Stars (1 to 5)","num"],["details_bn","Review (Bangla, optional)","area"]], row: d => [d.title, "★".repeat(+d.price || 5)] },
+  notice: { h: "Website notice", s: "Shows as a bar at the top. Examples: Eid holiday, special offer. Set an end date and it hides itself.", f: [["title","Headline"],["details","Extra text (optional)"],["price","Show until (YYYY-MM-DD, optional)"]], row: d => [d.title, d.details] },
+  gallery: { h: "Gallery photos", s: "Office, delivery and customer photos. Shown in the Gallery section. Hidden while empty. Only add photos people agreed to share.", f: [["title","Caption"],["title_bn","Caption (Bangla, optional)"],["img","Photo","img",900,600]], row: d => [d.title, d.title_bn] },
+  review: { h: "Client reviews", s: "Only add real reviews from real customers, with their permission. Hidden while empty.", f: [["title","Customer name"],["title_bn","City / town"],["details","Review","area"],["price","Stars (1 to 5)","num"],["details_bn","Review (Bangla, optional)","area"]], row: d => [d.title, "★".repeat(+d.price || 5)] },
   member: { h: "Team", s: "The first person shows as the large founder card.", f: [["title","Name"],["details","Role"],["details_bn","Role (Bangla)"],["img","Photo (face in the middle)","img",400,400]], row: d => [d.title, d.details] },
   service: { h: "Services", s: "Switch off to hide a service. Add new ones at the bottom.", f: [["title","Service name"],["title_bn","Name (Bangla)"],["price","Category","cat"]], row: d => [d.title, d.price] }
 };
 const SUB = MORE.map(m => m[0]);
 let al = "bn"; try { al = localStorage.getItem("rtc-al") || "bn"; } catch (e) {}
 const X = o => o[al === "bn" ? 1 : 0];
-const HINT = { photos: ["Change website logo and country photos", "ওয়েবসাইটের লোগো ও দেশের ছবি বদলান"], status: ["Open/closed badge on the website (auto 10 AM–9 PM)", "ওয়েবসাইটের খোলা/বন্ধ ব্যাজ (অটো সকাল ১০–রাত ৯টা)"], review: ["Client reviews with stars on the website", "ক্লায়েন্টদের মতামত, স্টার সহ ওয়েবসাইটে দেখায়"], svc: ["Hide a service or add a new one", "সার্ভিস লুকান বা নতুন সার্ভিস যোগ করুন"], team: ["Team names, roles and photos", "টিমের নাম, পদ ও ছবি"], contact: ["Phone, WhatsApp, address, map, licence numbers", "ফোন, হোয়াটসঅ্যাপ, ঠিকানা, ম্যাপ, লাইসেন্স নম্বর"], notice: ["A bar at the very top of the website", "ওয়েবসাইটের একদম উপরে একটি খবরের বার"] };
+const HINT = { gallery: ["Office, delivery and customer photos", "অফিস, ডেলিভারি ও কাস্টমারের ছবি"], pay: ["bKash, Nagad and bank details for advance payment", "অগ্রিম পেমেন্টের জন্য বিকাশ, নগদ ও ব্যাংক তথ্য"], track: ["Give customers a code to check their file status", "কাস্টমারকে কোড দিন, সে নিজে ফাইলের অবস্থা দেখবে"], photos: ["Change website logo and country photos", "ওয়েবসাইটের লোগো ও দেশের ছবি বদলান"], status: ["Open/closed badge on the website (auto 10 AM–9 PM)", "ওয়েবসাইটের খোলা/বন্ধ ব্যাজ (অটো সকাল ১০–রাত ৯টা)"], review: ["Client reviews with stars on the website", "ক্লায়েন্টদের মতামত, স্টার সহ ওয়েবসাইটে দেখায়"], svc: ["Hide a service or add a new one", "সার্ভিস লুকান বা নতুন সার্ভিস যোগ করুন"], team: ["Team names, roles and photos", "টিমের নাম, পদ ও ছবি"], contact: ["Phone, WhatsApp, address, map, licence numbers", "ফোন, হোয়াটসঅ্যাপ, ঠিকানা, ম্যাপ, লাইসেন্স নম্বর"], notice: ["A bar at the very top of the website", "ওয়েবসাইটের একদম উপরে একটি খবরের বার"] };
 const TIPS = { inbox: ["Shows what visitors send from the website form. 🔴 = new. Tap 💬 WhatsApp to reply, then ✓ Done. Tap 🔔 above to turn on sound/pop-up alerts.", "ওয়েবসাইটের ফর্মে কেউ লিখলে এখানে আসে। 🔴 = নতুন। 💬 চেপে উত্তর দিন, তারপর ✓ শেষ। উপরে 🔔 চাপলে নতুন এনকোয়ারিতে শব্দ ও পপ-আপ আসবে।"], hot: ["Switch ON a service that is selling well. It gets a 🔥 badge on the website.", "যে সার্ভিস এখন বেশি চলছে তার সুইচ ON করুন। ওয়েবসাইটে 🔥 ব্যাজ আসবে।"], package: ["Example: Cox's Bazar 3 Days, price ৳8,500. Tap + Add.", "উদাহরণ: কক্সবাজার ৩ দিন, দাম ৳৮,৫০০। + নতুন যোগ চাপুন।"], req: ["Which papers a service needs. + Add → pick the service → one paper per line → Save. It appears under that service on the home page.", "কোন সার্ভিসে কী কী কাগজ লাগবে। + যোগ → সার্ভিস বাছুন → এক লাইনে একটি কাগজ → সেভ। হোম পেজে ওই সার্ভিসের নিচে দেখাবে।"], svc: ["Switch OFF to hide a service from the website. Use + Add below for a new service, then add its papers in Documents.", "সুইচ OFF করলে সার্ভিস ওয়েবসাইট থেকে লুকাবে। নতুন সার্ভিসে নিচের + যোগ চাপুন, তারপর কাগজের তালিকা Documents-এ দিন।"], team: ["The first person is the big Founder card. Tap Edit to change a photo.", "প্রথম জন বড় ফাউন্ডার কার্ডে দেখায়। ছবি বদলাতে Edit চাপুন।"], review: ["Example: Karim, Narsingdi — 5 stars — 'Visa came on time.' The Reviews section appears once there is one.", "উদাহরণ: করিম, নরসিংদী — ৫ স্টার — 'সময়মতো ভিসা পেয়েছি।' একটি দিলেই রিভিউ সেকশন আসবে।"], notice: ["Example: 'Eid special: ticket booking open'. Shows at the top of the website. Delete it to hide.", "উদাহরণ: 'ঈদ স্পেশাল: টিকেট বুকিং চলছে'। ওয়েবসাইটের উপরে দেখাবে। মুছলে লুকাবে।"], status: ["Auto = website shows Open 10 AM–9 PM every day by itself. For a holiday pick Manual: Closed, then switch back to Auto.", "অটো = ওয়েবসাইট নিজেই প্রতিদিন সকাল ১০–রাত ৯টা 'খোলা' দেখায়। ছুটির দিনে 'ম্যানুয়াল: বন্ধ' দিন, পরে আবার অটো করুন।"], contact: ["Leave a box empty to keep the website's built-in value.", "ঘর খালি রাখলে ওয়েবসাইটের আগের তথ্যই থাকবে।"], photos: ["Pick a photo — it is resized automatically and goes live.", "ছবি বাছুন — নিজেই ছোট হয়ে ওয়েবসাইটে চলে যাবে।"] };
 const WHERE = { package: ["Shows in the 'Tour packages' section of the home page.", "হোম পেজের 'ট্যুর প্যাকেজ' সেকশনে দেখাবে।"], req: ["Shows under that service in 'What we handle'.", "'আমাদের সেবা' সেকশনে ওই সার্ভিসের নিচে দেখাবে।"], notice: ["Shows as a bar at the very top of the website.", "ওয়েবসাইটের একদম উপরে বার হিসেবে দেখাবে।"], review: ["Shows in 'What clients say'.", "'ক্লায়েন্টদের কথা' সেকশনে দেখাবে।"], member: ["Shows in the Team section.", "টিম সেকশনে দেখাবে।"], service: ["Shows in the Services section under the category you pick.", "সার্ভিস সেকশনে আপনার বাছা ক্যাটাগরির নিচে দেখাবে।"] };
 const PH = { package: { title: "Cox's Bazar 3 Days 2 Nights", details: "Hotel, transport, breakfast. Family and group plans.", price: "From ৳8,500 per person", title_bn: "কক্সবাজার ৩ দিন ২ রাত", details_bn: "হোটেল, যাতায়াত ও সকালের নাস্তা সহ।" }, req: { details: "Passport (valid 6+ months)\nPassport-size photos\nBank statement" }, notice: { title: "Eid special: ticket booking open", details: "Call 01711-773086" }, review: { title: "Karim, Narsingdi", details: "Very helpful, visa came on time." }, member: { title: "Rajan Saha", details: "Founder & CEO", details_bn: "ফাউন্ডার ও সিইও" }, service: { title: "Thailand Visa", title_bn: "থাইল্যান্ড ভিসা" } };
@@ -110,7 +111,8 @@ const D = {"Inbox":"ইনবক্স","Popular":"জনপ্রিয়","Pa
 const tr = root => { if (al !== "bn" || !root) return; const w = document.createTreeWalker(root, NodeFilter.SHOW_TEXT); let n; while ((n = w.nextNode())) { const k = n.nodeValue.trim(); if (D[k]) n.nodeValue = n.nodeValue.replace(k, D[k]); }
   if (root.querySelectorAll) root.querySelectorAll("[placeholder]").forEach(e => { if (D[e.placeholder]) e.placeholder = D[e.placeholder]; }); };
 let seen = false;
-const ping = s => { if (seen) s.docChanges().forEach(c => { if (c.type === "added" && c.doc.data().status !== "done") alertNew(c.doc.data()); }); seen = true; };
+const ls = x => x.status === "done" ? "called" : (x.status || "new");
+const ping = s => { if (seen) s.docChanges().forEach(c => { if (c.type === "added" && ls(c.doc.data()) === "new") alertNew(c.doc.data()); }); seen = true; };
 function alertNew(x) {
   try { const c = new (window.AudioContext || window.webkitAudioContext)(), o = c.createOscillator(), g = c.createGain(); o.connect(g); g.connect(c.destination); o.frequency.value = 880; g.gain.setValueAtTime(.25, c.currentTime); o.start(); o.stop(c.currentTime + .6); } catch (e) {}
   try { navigator.vibrate && navigator.vibrate([250, 120, 250]); } catch (e) {}
@@ -139,7 +141,7 @@ const del = id => deleteDoc(doc(db, COLLECTION, id)).then(r => { bump(); return 
 
 if (!firebaseConfig.projectId) { document.body.innerHTML = '<p style="padding:30px">Open <b>firebase-config.js</b> and paste your Firebase config first.</p>'; throw 0; }
 const app = initializeApp(firebaseConfig), auth = getAuth(app), db = getFirestore(app);
-let docs = [], inq = [], tab = "inbox", unsubs = [], badge = "Most requested";
+let docs = [], inq = [], trk = [], tab = "inbox", unsubs = [], badge = "Most requested";
 const of = type => docs.filter(d => d.type === type);
 const svcNames = () => [...SERVICES, ...of("service").map(s => s.title)];
 const val = id => docs.find(d => d.id === id);
@@ -153,7 +155,8 @@ onAuthStateChanged(auth, u => {
   unsubs.forEach(f => f()); unsubs = [];
   if (u) unsubs = [
     onSnapshot(collection(db, COLLECTION), s => { docs = s.docs.map(d => ({ id: d.id, ...d.data() })); render(); }, e => toast("Cannot read: " + e.code)),
-    onSnapshot(collection(db, "inquiries"), s => { ping(s); inq = s.docs.map(d => ({ id: d.id, ...d.data() })).sort((a, b) => (a.status === "done") - (b.status === "done") || (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0)); render(); }, e => toast("Cannot read inbox: " + e.code))
+    onSnapshot(collection(db, "track"), s => { trk = s.docs.map(d => ({ id: d.id, ...d.data() })).sort((a, b) => (b.updatedAt?.seconds || 0) - (a.updatedAt?.seconds || 0)); render(); }, e => toast("Cannot read tracking: " + e.code)),
+    onSnapshot(collection(db, "inquiries"), s => { ping(s); inq = s.docs.map(d => ({ id: d.id, ...d.data() })).sort((a, b) => (ls(a) !== "new") - (ls(b) !== "new") || (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0)); render(); }, e => toast("Cannot read inbox: " + e.code))
   ];
 });
 $("#nav").onclick = e => { const b = e.target.closest("button"); if (b) { tab = b.dataset.t; render(); window.scrollTo(0, 0); } };
@@ -162,22 +165,36 @@ $("#main").onclick = e => { const b = e.target.closest("[data-go]"); if (b) { ta
 function render() {
   const top = ["inbox","hot","package","req"], m = $("#main");
   document.querySelectorAll("#nav button").forEach(b => b.classList.toggle("on", b.dataset.t === (top.includes(tab) ? tab : "more")));
-  const nw = inq.filter(x => x.status !== "done").length; $("#cnt").textContent = nw || "";
+  const nw = inq.filter(x => ls(x) === "new").length; $("#cnt").textContent = nw || "";
   const ae = document.activeElement; if (ae && m.contains(ae) && (/TEXTAREA|SELECT/.test(ae.tagName) || (ae.tagName === "INPUT" && ae.type !== "checkbox" && ae.type !== "file"))) return; // do not wipe what you are typing
-  ({ inbox, hot, more, svc, team, status, contact, photos }[tab] || (() => list(m)))(m);
+  ({ inbox, hot, more, svc, team, status, contact, photos, track, pay }[tab] || (() => list(m)))(m);
   if (TIPS[tab]) m.insertAdjacentHTML("afterbegin", `<div class="tip">💡 ${X(TIPS[tab])}</div>`);
 }
 
+function pay(m) {
+  const F = [["bkash","bKash number (Personal)","01XXXXXXXXX"],["nagad","Nagad number (Personal)","01XXXXXXXXX"],["bank","Bank details. Use | between lines","Bank name | Account name | Account no. | Branch"],["pay_note","Extra payment note (optional)","e.g. Advance is adjusted in the final bill"]];
+  m.innerHTML = bk + `<h2>Payment details</h2><p class="sub">Shown in a 'Payment and advance' section on the website. Leave all empty to hide it. Use your real, verified numbers only.</p>` +
+  F.map(([k, l, ph]) => `<label>${l}<input data-k="${k}" value="${esc(val("setting_" + k)?.details)}" placeholder="${esc(ph)}"></label>`).join("") + `<button class="btn full" id="sp">Save</button>`;
+  $("#sp").onclick = () => Promise.all([...m.querySelectorAll("[data-k]")].map(i => { const k = i.dataset.k, v = i.value.trim(); return v ? save("setting_" + k, { type: "setting", title: k, details: v }) : (val("setting_" + k) ? del("setting_" + k) : 0); })).then(() => toast("Saved. Website updated.")).catch(fail);
+}
+const LS = [["new","🔴 New"],["called","📞 Called"],["converted","✅ Converted"],["lost","❌ Lost"]];
+let lf = "all";
 function inbox(m) {
   const num = p => { const n = String(p || "").replace(/\D/g, ""); return n.startsWith("880") ? n : n.startsWith("0") ? "88" + n : "880" + n; };
   const when = x => x.createdAt?.seconds ? new Date(x.createdAt.seconds * 1000).toLocaleString("en-GB", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" }) : "";
-  m.innerHTML = `<h2>Inbox</h2><p class="sub">Enquiries from the website form. Reply on WhatsApp or call, then mark done.</p>` +
-  (inq.length ? inq.map(x => `<div class="row inq ${x.status === "done" ? "done" : ""}"><b>${x.status === "done" ? "" : "🔴 "}${esc(x.name)} · ${esc(x.service)}</b>
+  const cnt = k => inq.filter(x => ls(x) === k).length, shown = inq.filter(x => lf === "all" || ls(x) === lf);
+  m.innerHTML = `<h2>Leads</h2><p class="sub">Enquiries from the website form. Reply, then move each lead: New, Called, Converted or Lost.</p>
+  <div class="acts" style="margin-bottom:12px"><button class="ic" data-f="all" style="${lf === "all" ? "border-color:var(--gold)" : ""}">All ${inq.length}</button>${LS.map(([k, l]) => `<button class="ic" data-f="${k}" style="${lf === k ? "border-color:var(--gold)" : ""}">${l} ${cnt(k)}</button>`).join("")}</div>` +
+  (shown.length ? shown.map(x => `<div class="row inq ${ls(x) === "converted" || ls(x) === "lost" ? "done" : ""}" data-id="${x.id}"><b>${ls(x) === "new" ? "🔴 " : ""}${esc(x.name)} · ${esc(x.service)}</b>
     <p>${esc(x.phone)} · ${esc(x.location)} · ${when(x)}${x.source ? " · via " + esc(x.source) : ""}</p>${x.note ? `<p>“${esc(x.note)}”</p>` : ""}
+    <select data-s>${LS.map(([k, l]) => `<option value="${k}" ${ls(x) === k ? "selected" : ""}>${l}</option>`).join("")}</select>
+    <input data-n placeholder="Your private note (follow-up, price quoted...)" value="${esc(x.adminNote)}" maxlength="300">
     <div class="acts"><a class="ic" target="_blank" href="https://wa.me/${num(x.phone)}?text=${encodeURIComponent("Assalamu alaikum " + x.name + ", this is Rajan Travel (RTC). Regarding your enquiry for " + x.service + ": ")}">💬 WhatsApp</a>
-    <a class="ic" href="tel:${esc(x.phone)}">📞 Call</a><button class="ic" data-s="${x.id}" data-v="${x.status === "done" ? "new" : "done"}">${x.status === "done" ? "Reopen" : "✓ Done"}</button><button class="ic" data-d="${x.id}">🗑</button></div></div>`).join("") : '<p class="sub">No enquiries yet.</p>');
-  m.querySelectorAll("[data-s]").forEach(b => b.onclick = () => setDoc(doc(db, "inquiries", b.dataset.s), { status: b.dataset.v }, { merge: true }).catch(fail));
-  m.querySelectorAll("[data-d]").forEach(b => b.onclick = () => { if (confirm("Delete this enquiry?")) deleteDoc(doc(db, "inquiries", b.dataset.d)).catch(fail); });
+    <a class="ic" href="tel:${esc(x.phone)}">📞 Call</a><button class="ic" data-d="${x.id}">🗑</button></div></div>`).join("") : '<p class="sub">No leads here.</p>');
+  m.querySelectorAll("[data-f]").forEach(b => b.onclick = () => { lf = b.dataset.f; inbox(m); });
+  m.querySelectorAll("[data-s]").forEach(s => s.onchange = () => setDoc(doc(db, "inquiries", s.closest(".row").dataset.id), { status: s.value }, { merge: true }).catch(fail));
+  m.querySelectorAll("[data-n]").forEach(i => i.onchange = () => setDoc(doc(db, "inquiries", i.closest(".row").dataset.id), { adminNote: i.value.trim().slice(0, 300) }, { merge: true }).then(() => toast("Note saved")).catch(fail));
+  m.querySelectorAll("[data-d]").forEach(b => b.onclick = () => { if (confirm("Delete this lead?")) deleteDoc(doc(db, "inquiries", b.dataset.d)).catch(fail); });
 }
 
 function toggles(m, names, isOn, change) {
@@ -209,6 +226,26 @@ function team(m) {
   const b = $("#seed"); if (b) b.onclick = () => Promise.all(DT.map((x, i) => save("member_0" + (i + 1), { type: "member", title: x[0], details: x[1], details_bn: x[2], price: x[3] }))).then(() => toast("Added")).catch(fail);
 }
 
+/* Customer file tracking. Doc id = tracking code. Customers see name, service, status and note on track.html. */
+const TSTEPS = [["received","Documents received"],["processing","Processing"],["submitted","Submitted / applied"],["ready","Ready for customer"],["delivered","Delivered"]];
+function track(m) {
+  m.innerHTML = bk + `<h2>Customer file tracking</h2><p class="sub">Create a code, send it to the customer on WhatsApp. They check it at <b>track.html</b>. Use first name only; never put NID or passport numbers here.</p>
+  <label>Customer name (first name)<input id="tn"></label>
+  <label>Service<input id="ts" placeholder="India Tourist Visa"></label>
+  <button class="btn full" id="tc">Create code</button><div id="tl" style="margin-top:18px"></div>`;
+  const list = () => $("#tl").innerHTML = trk.map(x => `<div class="row" data-id="${esc(x.id)}"><div class="t"><b>${esc(x.id)} · ${esc(x.name)}</b><small>${esc(x.service)}</small>
+    <select data-st>${TSTEPS.map(s => `<option value="${s[0]}" ${x.status === s[0] ? "selected" : ""}>${s[1]}</option>`).join("")}</select>
+    <input data-nt placeholder="Note for customer (optional)" value="${esc(x.note)}"></div>
+    <div style="display:grid;gap:6px"><button class="ghost" data-sv>Save</button><button class="ghost" data-wa>💬</button><button class="ghost" data-dl>🗑</button></div></div>`).join("") || '<p class="sub">No files yet.</p>';
+  list();
+  $("#tc").onclick = () => { const n = $("#tn").value.trim(), s = $("#ts").value.trim(); if (!n) return toast("Enter a name");
+    const A = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789", b = crypto.getRandomValues(new Uint8Array(6)), id = "RTC-" + [...b].map(x => A[x % A.length]).join("");
+    setDoc(doc(db, "track", id), { name: n, service: s, status: "received", note: "", updatedAt: serverTimestamp() }).then(() => { toast("Created " + id); $("#tn").value = ""; $("#ts").value = ""; }).catch(fail); };
+  $("#tl").onclick = e => { const r = e.target.closest(".row"); if (!r) return; const id = r.dataset.id, x = trk.find(t => t.id === id);
+    if (e.target.closest("[data-sv]")) setDoc(doc(db, "track", id), { status: r.querySelector("[data-st]").value, note: r.querySelector("[data-nt]").value.trim().slice(0, 300), updatedAt: serverTimestamp() }, { merge: true }).then(() => toast("Saved")).catch(fail);
+    else if (e.target.closest("[data-wa]")) window.open("https://wa.me/?text=" + encodeURIComponent(`Hello ${x.name}, track your ${x.service} file here: ${new URL("../track.html?c=" + id, location.href).href}  (Code: ${id})`), "_blank");
+    else if (e.target.closest("[data-dl]") && confirm("Delete " + id + "?")) deleteDoc(doc(db, "track", id)).then(() => toast("Deleted")).catch(fail); };
+}
 function status(m) {
   const s = val("status") || {}, md = s.title || "auto", o = (v, l) => `<option value="${v}" ${md === v ? "selected" : ""}>${l}</option>`;
   m.innerHTML = bk + `<h2>Office status</h2><p class="sub">The green/red badge above the website headline.</p>

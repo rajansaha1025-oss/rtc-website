@@ -1,7 +1,7 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-    // Put the email(s) you use to sign in to /admin here.
+    // STEP 1: replace REPLACE_WITH_ADMIN_EMAIL with the email you use to sign in to /admin. Without it, admin cannot save anything.
     function isAdmin() {
       return request.auth != null && request.auth.token.email in ['REPLACE_WITH_ADMIN_EMAIL'];
     }
@@ -10,10 +10,10 @@ service cloud.firestore {
       allow read: if true;
       allow write: if isAdmin();
     }
-    // Track-your-file: a customer can read ONE file only if they know its code (no listing). Only admin writes.
+    // Track-your-file: a customer can read ONE file only if they know its code. Only admin can list or write. Keep names to first name only.
     match /track/{code} {
       allow get: if true;
-      allow list: if false;
+      allow list: if isAdmin();
       allow write: if isAdmin();
     }
     // Enquiries: visitors may only create a small, valid one. Only admin can read or change.
