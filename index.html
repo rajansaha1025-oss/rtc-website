@@ -58,10 +58,16 @@ header{position:sticky;top:0;z-index:1000;background:rgba(7,18,43,.82);backdrop-
 .chips{display:flex;flex-wrap:wrap;gap:10px;margin-top:34px;font-size:13px;color:var(--mist)}
 .chips span{border:1px solid var(--line);border-radius:30px;padding:5px 14px}
 .chips i{color:var(--gold);margin-right:6px}
-.pp{position:relative;background:#dde5f2;color:#14213d;border-radius:14px;max-width:370px;aspect-ratio:4/5;margin:auto;padding:26px;transform:rotate(3deg);box-shadow:0 40px 80px rgba(0,0,0,.5);background-image:repeating-linear-gradient(#dde5f2 0 33px,#c9d4e8 33px 34px)}
-.pp small{font-weight:600;letter-spacing:2px;font-size:11px;color:#4b5b7c}
-.pp b{display:block;font-family:'Fraunces',serif;font-size:26px;margin-top:2px}
-.st{position:absolute;border:3px solid;border-radius:10px;padding:5px 12px;font-weight:700;letter-spacing:2px;font-size:15px;opacity:0;animation:stamp .55s cubic-bezier(.2,.9,.3,1.25) forwards;background:rgba(221,229,242,.5)}
+.pp{position:relative;background:#0d2150;color:#fff;border-radius:20px;max-width:400px;width:100%;aspect-ratio:4/5;margin:auto;padding:22px;transform:rotate(2deg);box-shadow:0 40px 80px rgba(0,0,0,.55);border:2px solid rgba(232,194,106,.45);overflow:hidden;display:flex;flex-direction:column;justify-content:space-between}
+.pp-grid{position:absolute;inset:0;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:4px;opacity:.88}
+.pp-grid img{width:100%;height:100%;object-fit:cover;display:block;filter: saturate(1.1) contrast(1.05)}
+.pp-ov{position:absolute;inset:0;background:linear-gradient(180deg,rgba(7,18,43,.78) 0%,rgba(7,18,43,.25) 45%,rgba(7,18,43,.85) 100%)}
+.pp-top,.pp-bot{position:relative;z-index:2}
+.pp-bot{background:rgba(7,18,43,.72);backdrop-filter:blur(8px);border:1px solid rgba(232,194,106,.4);border-radius:12px;padding:10px 14px;font-size:13px;color:#e8edf8;display:flex;align-items:center;gap:10px}
+.pp-bot i{color:var(--gold);font-size:18px}
+.pp small{font-weight:600;letter-spacing:2px;font-size:11px;color:var(--gold)}
+.pp b{display:block;font-family:'Fraunces',serif;font-size:26px;margin-top:2px;color:#fff;text-shadow:0 2px 12px rgba(0,0,0,.6)}
+.st{position:absolute;z-index:2;border:2px solid;border-radius:10px;padding:5px 12px;font-weight:700;letter-spacing:2px;font-size:14px;opacity:0;animation:stamp .55s cubic-bezier(.2,.9,.3,1.25) forwards;background:rgba(255,255,255,.92);box-shadow:0 8px 20px rgba(0,0,0,.35)}
 @keyframes stamp{0%{opacity:0;transform:scale(2.4) rotate(var(--r))}55%{opacity:.95}100%{opacity:.88;transform:scale(1) rotate(var(--r))}}
 
 /* services */
@@ -155,7 +161,7 @@ footer .soc a:hover{background:var(--red);color:#fff}
 @keyframes blink{50%{opacity:.3}}
 .revs{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px}.rev{border:1px solid var(--line);background:var(--glass);border-radius:18px;padding:22px}.rev .s{color:var(--gold);letter-spacing:3px}.rev p{margin:8px 0 12px;font-size:15px}.rev b{font-size:14px;color:var(--mist);font-weight:500}
 #dir{margin-top:6px}
-.gh{position:relative;height:112px;border-radius:14px;margin:22px 0 8px;display:flex;align-items:flex-end;padding:12px 16px;font:800 20px 'Fraunces','Hind Siliguri',serif;background:linear-gradient(135deg,var(--blue),var(--navy)) center/cover;overflow:hidden}
+.gh{position:relative;height:148px;border-radius:16px;margin:22px 0 10px;display:flex;align-items:flex-end;padding:14px 18px;font:800 21px 'Fraunces','Hind Siliguri',serif;background:linear-gradient(135deg,var(--blue),var(--navy)) center/cover;overflow:hidden;border:1px solid var(--line);box-shadow:0 12px 28px -12px rgba(0,0,0,.35)}
 .gh::before{content:"";position:absolute;inset:0;background:linear-gradient(transparent 25%,rgba(7,18,43,.78))}.gh span{position:relative;color:#fff;text-shadow:0 2px 10px rgba(0,0,0,.45)}
 .ic{width:36px;height:36px;border-radius:11px;display:inline-flex;align-items:center;justify-content:center;background:rgba(232,194,106,.14);color:var(--gold);margin-right:12px;font-size:15px;flex-shrink:0;vertical-align:middle}
 summary>span{display:flex;align-items:center;flex-wrap:wrap}
@@ -257,11 +263,19 @@ dialog#ap::backdrop{background:rgba(7,18,43,.65)}
     <div class="chips"><span><i class="fas fa-passport"></i><b data-bn="ভিসা" style="font-weight:500">Visa</b></span><span><i class="fas fa-plane"></i><b data-bn="টিকেট" style="font-weight:500">Tickets</b></span><span><i class="fas fa-hotel"></i><b data-bn="হোটেল" style="font-weight:500">Hotels</b></span><span><i class="fas fa-id-card"></i><b data-bn="ডকুমেন্ট" style="font-weight:500">Documents</b></span><span><i class="fas fa-graduation-cap"></i><b data-bn="ভর্তি" style="font-weight:500">Admission</b></span><span><i class="fas fa-umbrella-beach"></i><b data-bn="ট্যুর" style="font-weight:500">Tours</b></span></div>
   </div>
   <div class="pp" aria-hidden="true">
-    <small>RTC · VISA</small><b>Entry stamps</b>
-    <div class="st" style="--r:-10deg;top:22%;left:8%;color:#1c4c96;animation-delay:.6s">INDIA</div>
-    <div class="st" style="--r:7deg;top:38%;right:6%;color:#c8281a;animation-delay:1.4s">MALAYSIA</div>
-    <div class="st" style="--r:-5deg;top:56%;left:10%;color:#16794f;animation-delay:2.2s">AUSTRALIA</div>
-    <div class="st" style="--r:9deg;top:74%;right:10%;color:#8a6508;animation-delay:3s">DUBAI</div>
+    <div class="pp-grid">
+      <img src="pk-india.webp" alt="" loading="eager">
+      <img src="pk-malaysia.webp" alt="" loading="eager">
+      <img src="bg-australia.webp" alt="" loading="eager">
+      <img src="pk-dubai.webp" alt="" loading="eager">
+    </div>
+    <div class="pp-ov"></div>
+    <div class="pp-top"><small>RTC · NARSINGDI</small><b data-bn="ভিসা, টিকেট ও ট্যুর">Visa, Tickets &amp; Tours</b></div>
+    <div class="st" style="--r:-10deg;top:24%;left:7%;color:#1c4c96;animation-delay:.6s">🇮🇳 INDIA</div>
+    <div class="st" style="--r:7deg;top:39%;right:6%;color:#c8281a;animation-delay:1.4s">🇲🇾 MALAYSIA</div>
+    <div class="st" style="--r:-5deg;top:55%;left:8%;color:#16794f;animation-delay:2.2s">🇦🇺 AUSTRALIA</div>
+    <div class="st" style="--r:8deg;top:69%;right:8%;color:#8a6508;animation-delay:3s">🇦🇪 DUBAI</div>
+    <div class="pp-bot"><i class="fas fa-passport"></i><span data-bn="সরকারি নিবন্ধিত ট্রাভেল এজেন্সি · রেজি নং ০০১৭৫১৪">Govt. Registered Travel Agency · Reg. 0017514</span></div>
   </div>
 </div></section>
 
@@ -383,7 +397,7 @@ const CFG = {
   hot: { "India Tourist Visa": ["Most requested", "সবচেয়ে বেশি চাহিদা"] },
   // Licences: write the number, add the picture, or both. Picture files go in the same folder.
   licences: [
-    { en: "Trade License", bn: "ট্রেড লাইসেন্স", no: "No. 5625/1297 · Narsingdi Pourashava · valid to 30 Jun 2027", img: "" },
+    { en: "Trade License", bn: "ট্রেড লাইসেন্স", no: "No. 5625/1297 · Narsingdi Pourashava · valid to 30 Jun 2027", img: "tradelicense.webp" },
     { en: "Travel Agency Registration", bn: "ট্রাভেল এজেন্সি রেজিস্ট্রেশন", no: "Reg. No. 0017514 · Ministry of Civil Aviation and Tourism · valid to 25 Jul 2029", img: "travellicense.webp" }
   ],
   // Photo files go in the same folder with exactly these names.
@@ -479,19 +493,20 @@ function item(it, g) {
   ${ap}<a class="btn ${ap ? "ghost" : "red"}" target="_blank" rel="noopener" href="${wa(msg)}"><i class="fab fa-whatsapp"></i> ${t("Ask about this", "এ বিষয়ে জানুন")}</a> <button type="button" class="btn ghost" data-ckwa="${esc(it[0])}"><i class="fab fa-whatsapp"></i> ${t("Send my checklist", "আমার তালিকা পাঠান")}</button></details>`;
 }
 const flat = c => c.groups ? c.groups.flatMap(g => g.items) : c.items;
-const safe = u => /^(data:image\/|https?:|[\w-]+\.(svg|webp|png|jpe?g)$)/.test(u || "") ? u : "";
+const safe = u => { if (!u || /\.svg$/i.test(u)) return ""; const v = /^(data:image\/|https?:|[\w-]+\.(webp|png|jpe?g)$)/.test(u) ? u : ""; return (window.RTC_B64 && window.RTC_B64[v]) || v; };
 const FL = { "India": "🇮🇳", "Malaysia": "🇲🇾", "Australia": "🇦🇺", "Dubai and other countries": "🇦🇪", "Domestic Flights": "🇧🇩", "International Flights": "🌍", "Domestic Hotels": "🇧🇩", "International Hotels": "🌍" };
 const GI = { "Train Tickets": "fa-train", "Bus Tickets": "fa-bus", "Domestic Flights": "fa-plane", "International Flights": "fa-earth-asia", "Domestic Hotels": "fa-hotel", "International Hotels": "fa-city" };
 // Default banner pictures for groups (admin "country photos" can replace them)
-const DEFBG = { "Train Tickets": "bg-train.svg", "Bus Tickets": "bg-bus.svg", "Any Country (Tourist)": "bg-visa-tourist.svg", "Other Visa Types (Any Country)": "bg-visa-other.svg", "Domestic Flights": "bg-flight-domestic.svg", "International Flights": "bg-flight-international.svg", "Domestic Hotels": "bg-hotel-domestic.svg", "International Hotels": "bg-hotel-international.svg" };
+const DEFBG = { "Any Country (Tourist)": "bg-visa-passport.webp", "India": "pk-india.webp", "Malaysia": "pk-malaysia.webp", "Australia": "bg-australia.webp", "Dubai and other countries": "pk-dubai.webp", "Other Visa Types (Any Country)": "bg-documents-admission.webp", "Domestic Flights": "bg-flight-domestic.webp", "International Flights": "bg-flight-international.webp", "Train Tickets": "bg-train.webp", "Bus Tickets": "bg-bus.webp", "Domestic Hotels": "pk-bangladesh.webp", "International Hotels": "bg-hotel.webp" };
+const CATBG = { "Passport": "bg-visa-passport.webp", "Documents": "bg-documents-admission.webp", "Admission": "bg-documents-admission.webp", "Tours": "pk-maldives.webp" };
 const KI = { visa: "fa-passport", medical: "fa-briefcase-medical", pass: "fa-book-open", tkt: "fa-plane-departure", tktd: "fa-ticket", tkt2: "fa-calendar-days", nid: "fa-id-card", tin: "fa-file-invoice", pol: "fa-user-shield", brta: "fa-car-side", bmet: "fa-people-group", bc: "fa-baby", dc: "fa-file-lines", hotel: "fa-hotel", hotelI: "fa-city", adm: "fa-graduation-cap", tour: "fa-umbrella-beach", custom: "fa-star", trn: "fa-train", bus: "fa-bus", work: "fa-briefcase" };
 const iconFor = it => /refund|cancel/i.test(it[0]) ? "fa-money-bill-transfer" : /student/i.test(it[0]) ? "fa-user-graduate" : /resort|group/i.test(it[0]) ? "fa-people-roof" : (KI[it[2]] || "fa-circle-check");
-const gh = g => { const bg = safe(CT[g.en]) || DEFBG[g.en] || ""; return `<div class="gh" ${bg ? `style="background-image:url('${bg}')"` : ""}><span>${GI[g.en] ? `<i class="fas ${GI[g.en]}"></i>` : (FL[g.en] || "🌍") + " "}${t(g.en, g.bn)}</span></div>`; };
+const gh = g => { const bg = safe(CT[g.en]) || safe(DEFBG[g.en]) || ""; return `<div class="gh" ${bg ? `style="background-image:url('${bg}')"` : ""}><span>${GI[g.en] ? `<i class="fas ${GI[g.en]}"></i>` : (FL[g.en] || "🌍") + " "}${t(g.en, g.bn)}</span></div>`; };
 const hotFirst = a => [...a].sort((x, y) => !!hot[y[0]] - !!hot[x[0]]);
 function renderServices() {
   $("#tabs").innerHTML = CATS.map((c, i) => `<button class="tab ${i === cur ? "on" : ""}" role="tab" aria-selected="${i === cur}" data-i="${i}"><i class="fas ${c.icon}"></i>${t(c.lb || c.en, c.lbb || c.bn)}${flat(c).some(x => hot[x[0]]) ? '<i class="fas fa-fire" style="margin:0 0 0 auto;color:var(--red)"></i>' : ""}</button>`).join("");
   const c = CATS[cur];
-  $("#panel").innerHTML = `<h3>${t(c.lb || c.en, c.lbb || c.bn)}</h3>` + (c.groups ? c.groups.map(g => `${gh(g)}${hotFirst(g.items).map(i => item(i, g)).join("")}`).join("") : hotFirst(c.items).map(item).join(""));
+  $("#panel").innerHTML = `<h3>${t(c.lb || c.en, c.lbb || c.bn)}</h3>` + (c.groups ? c.groups.map(g => `${gh(g)}${hotFirst(g.items).map(i => item(i, g)).join("")}`).join("") : (CATBG[c.en] ? `<div class="gh" style="background-image:url('${safe(CATBG[c.en])}')"><span><i class="fas ${c.icon}"></i> ${t(c.lb || c.en, c.lbb || c.bn)}</span></div>` : "") + hotFirst(c.items).map(item).join(""));
   const chips = CATS.flatMap((cc, i) => flat(cc).filter(x => hot[x[0]]).map(x => [i, x]));
   const hb = $("#hotbar"); hb.style.display = chips.length ? "flex" : "none";
   hb.innerHTML = chips.length ? `<span>${t("Popular right now:", "এখন সবচেয়ে চলছে:")}</span>` + chips.map(([i, x]) => `<button class="hotchip" data-i="${i}" data-k="${esc(x[0])}"><i class="fas fa-fire"></i>${esc(t(x[0], x[1]))}</button>`).join("") : "";
@@ -501,9 +516,9 @@ const CBN = { Bangladesh: "বাংলাদেশ", Nepal: "নেপাল", 
 const ORD = Object.keys(CBN);
 const flag = c => { c = (c || "").toLowerCase(); for (const k in FLG) if (c.includes(k)) return FLG[k]; return "🌍"; };
 const PT = p => p.ptype === "single" || p.ptype === "group" ? p.ptype : "both";
-const PIMG = { bangladesh: "pk-bangladesh.svg", nepal: "pk-nepal.svg", india: "pk-india.svg", maldives: "pk-maldives.svg", bhutan: "pk-bhutan.svg", "sri lanka": "pk-sri-lanka.svg", malaysia: "pk-malaysia.svg", singapore: "pk-singapore.svg", thailand: "pk-thailand.svg", dubai: "pk-dubai.svg", uae: "pk-dubai.svg" };
-// uploaded photo from admin wins; otherwise the built-in illustration for that country
-const pimg = p => safe(p.img) || PIMG[Object.keys(PIMG).find(k => (p.country || "").toLowerCase().includes(k))] || "";
+const PIMG = { bangladesh: "pk-bangladesh.webp", cox: "pk-bangladesh.webp", sylhet: "pk-bangladesh.webp", sajek: "pk-bangladesh.webp", sundarban: "pk-bangladesh.webp", nepal: "pk-nepal.webp", kathmandu: "pk-nepal.webp", pokhara: "pk-nepal.webp", india: "pk-india.webp", kashmir: "pk-india.webp", darjeeling: "pk-india.webp", agra: "pk-india.webp", maldives: "pk-maldives.webp", bhutan: "pk-bhutan.webp", "sri lanka": "pk-sri-lanka.webp", colombo: "pk-sri-lanka.webp", malaysia: "pk-malaysia.webp", "kuala lumpur": "pk-malaysia.webp", langkawi: "pk-malaysia.webp", singapore: "pk-singapore.webp", thailand: "pk-thailand.webp", bangkok: "pk-thailand.webp", phuket: "pk-thailand.webp", pattaya: "pk-thailand.webp", dubai: "pk-dubai.webp", uae: "pk-dubai.webp" };
+// uploaded photo from admin wins; otherwise the built-in photo for that country/title
+const pimg = p => safe(p.img) || safe(PIMG[Object.keys(PIMG).find(k => ((p.country || "") + " " + (p.title || "")).toLowerCase().includes(k))]) || safe("pk-maldives.webp");
 let pf = { c: "", t: "" };
 function renderPkgs() {
   const g = ["#1c4c96,#0d2150", "#e33524,#7a1a12", "#0f766e,#0d2150", "#8a6508,#3a2a00"];
@@ -515,18 +530,19 @@ function renderPkgs() {
   $("#pk").innerHTML = L.map((p, i) => {
     const ty = PT(p), sp = p.price || "", gp = p.gprice || sp, pr = ty === "single" ? sp : ty === "group" ? gp : (sp === gp ? sp : `${t("Single", "সিঙ্গেল")}: ${sp} · ${t("Group", "গ্রুপ")}: ${gp}`);
     const tags = (ty !== "group" ? `<span>👤 ${t("Single", "সিঙ্গেল")}</span>` : "") + (ty !== "single" ? `<span>👥 ${t("Group", "গ্রুপ")}</span>` : "") + (p.days ? `<span>🗓 ${esc(p.days)}</span>` : "");
-    return `<div class="card"><div class="top" style="${pimg(p) ? `background:linear-gradient(rgba(7,18,43,.05),rgba(7,18,43,.65)),url('${pimg(p)}') center/cover;height:160px` : `background:linear-gradient(135deg,${g[i % 4]})`}"><span style="font-size:44px;line-height:1">${flag(p.country)}</span></div>
+    return `<div class="card"><div class="top" ${pimg(p) ? `onclick="lb('${pimg(p)}')" title="${t('Click to enlarge photo', 'ছবি বড় করে দেখুন')}"` : ""} style="cursor:${pimg(p) ? 'zoom-in' : 'default'};${pimg(p) ? `background:linear-gradient(180deg,rgba(7,18,43,.02) 40%,rgba(7,18,43,.68) 100%),url('${pimg(p)}') center/cover;height:185px` : `background:linear-gradient(135deg,${g[i % 4]})`}"><span style="font-size:38px;line-height:1;filter:drop-shadow(0 2px 6px rgba(0,0,0,.5))">${flag(p.country)}</span></div>
   <div class="body"><h3>${esc(t(p.title, p.title_bn))}${hot[p.title] ? `<span class="badge"><i class="fas fa-fire"></i> ${esc(t(hot[p.title][0], hot[p.title][1]))}</span>` : ""}</h3><div class="tg">${tags}</div><p>${esc(t(p.details, p.details_bn))}</p><div class="price">${esc(pr)}</div>
   <button type="button" class="btn red" data-bk="${pkgs.indexOf(p)}"><i class="fab fa-whatsapp"></i> ${t("Book or enquire", "বুক করুন / জানুন")}</button></div></div>`;
   }).join("") || `<p class="lead">${t("No package matches. Try another filter.", "কোনো প্যাকেজ মেলেনি। অন্য ফিল্টার দিন।")}</p>`;
 }
 function renderTrust() {
-  $("#trust-grid").innerHTML = CFG.licences.map(l => `<div class="tcard">${l.img ? `<img src="${l.img}" alt="${esc(l.en)}" loading="lazy" decoding="async" width="90" height="110" onerror="this.outerHTML='<i class=&quot;fas fa-certificate&quot;></i>'" onclick="lb(this.src)">` : '<i class="fas fa-certificate"></i>'}
+  $("#trust-grid").innerHTML = CFG.licences.map(l => `<div class="tcard">${safe(l.img) ? `<img src="${safe(l.img)}" alt="${esc(l.en)}" loading="lazy" decoding="async" width="90" height="110" onerror="this.outerHTML='<i class=&quot;fas fa-certificate&quot;></i>'" onclick="lb(this.src)">` : '<i class="fas fa-certificate"></i>'}
   <div><strong>${esc(t(l.en, l.bn))}</strong><span>${l.no ? esc(l.no) : t("Number coming soon", "নম্বর শীঘ্রই যুক্ত হবে")}</span></div></div>`).join("");
 }
 function renderTeam() {
   $("#team-grid").innerHTML = TEAM.map((m, i) => {
-    const ph = `<img class="ph" loading="lazy" decoding="async" src="${safe(m[4]) || m[3]}" alt="${esc(m[0])}" onerror="this.outerHTML='<div class=&quot;ph&quot;>${m[0][0]}</div>'">`;
+    const defPic = (CFG.team.find(x => x[0].toLowerCase() === String(m[0] || "").toLowerCase()) || [])[3] || "";
+    const ph = `<img class="ph" loading="lazy" decoding="async" src="${safe(m[4]) || safe(m[3]) || safe(defPic)}" alt="${esc(m[0])}" onerror="this.outerHTML='<div class=&quot;ph&quot;>${m[0][0]}</div>'">`;
     return i === 0 ? `<div class="mem big">${ph}<div><span>${t(m[1], m[2])}</span><h4 style="font-size:26px;font-family:Fraunces,serif">${m[0]}</h4><p>${t(CFG.founderNote[0], CFG.founderNote[1])}</p></div></div>`
       : `<div class="mem">${ph}<h4>${m[0]}</h4><span>${t(m[1], m[2])}</span></div>`;
   }).join("");
@@ -606,11 +622,13 @@ $("#f").onsubmit = e => {
   const ok = $("#sent"); ok.textContent = lang === "bn" ? "ধন্যবাদ! আপনার তথ্য পাঠানো হয়েছে। হোয়াটসঅ্যাপে Send চাপুন, আমরা শীঘ্রই যোগাযোগ করব।" : "Thank you! Your details are sent. Press Send in WhatsApp and we will contact you shortly."; ok.style.display = "block"; e.target.reset();
   // Also save the enquiry to your admin Inbox (needs Firebase projectId). Spam bots fill the hidden field and are skipped.
   if (FB && FB.projectId && !d.get("website")) {
-    const sv = v => ({ stringValue: String(v || "").slice(0, 500) });
-    fetch(`https://firestore.googleapis.com/v1/projects/${FB.projectId}/databases/(default)/documents/inquiries`, {
-      method: "POST", headers: { "Content-Type": "application/json" }, keepalive: true,
-      body: JSON.stringify({ fields: { name: sv(d.get("n")), phone: sv(ph), service: sv(d.get("s")), location: sv(d.get("w")), note: sv(d.get("m")), status: sv("new"), source: sv(window.rtcSource ? rtcSource() : ""), createdAt: { timestampValue: new Date().toISOString() } } })
-    }).catch(() => {});
+    try {
+      const sv = v => ({ stringValue: String(v || "").slice(0, 500) });
+      fetch(`https://firestore.googleapis.com/v1/projects/${FB.projectId}/databases/(default)/documents/inquiries`, {
+        method: "POST", headers: { "Content-Type": "application/json" }, keepalive: true,
+        body: JSON.stringify({ fields: { name: sv(d.get("n")), phone: sv(ph), service: sv(d.get("s")), location: sv(d.get("w")), note: sv(d.get("m")), status: sv("new"), source: sv(window.rtcSource ? rtcSource() : ""), createdAt: { timestampValue: new Date().toISOString() } } })
+      }).catch(() => {});
+    } catch (e) {}
   }
 };
 const COUNTRIES = "Thailand,Singapore,Malaysia,Nepal,Bhutan,Maldives,Sri Lanka,India,Indonesia,Vietnam,Cambodia,Philippines,Japan,South Korea,China,Hong Kong,Turkey,Dubai / UAE,Saudi Arabia,Qatar,Oman,Kuwait,Bahrain,Egypt,United Kingdom,USA,Canada,Australia,New Zealand,Europe (Schengen),Germany,France,Italy,Spain,Switzerland,Russia,Azerbaijan,Georgia,Uzbekistan,Mauritius,South Africa".split(",");
@@ -641,9 +659,11 @@ $("#apf").onsubmit = e => {
   window.open(wa(`Hello RTC,\nName: ${d.get("n")}\nPhone: ${ph}\nService: ${svc}\n${X.join("\n")}\nNote: ${d.get("m") || "-"}`), "_blank");
   window.rtcTrack && rtcTrack("lead", svc);
   if (FB && FB.projectId && !d.get("website")) {
-    const sv = v => ({ stringValue: String(v || "").slice(0, 500) });
-    fetch(`https://firestore.googleapis.com/v1/projects/${FB.projectId}/databases/(default)/documents/inquiries`, { method: "POST", headers: { "Content-Type": "application/json" }, keepalive: true,
-      body: JSON.stringify({ fields: { name: sv(d.get("n")), phone: sv(ph), service: sv(svc), location: sv(KL[o.kind]), note: sv(X.join(" | ") + (d.get("m") ? " | " + d.get("m") : "")), status: sv("new"), source: sv(window.rtcSource ? rtcSource() : ""), createdAt: { timestampValue: new Date().toISOString() } } }) }).catch(() => {});
+    try {
+      const sv = v => ({ stringValue: String(v || "").slice(0, 500) });
+      fetch(`https://firestore.googleapis.com/v1/projects/${FB.projectId}/databases/(default)/documents/inquiries`, { method: "POST", headers: { "Content-Type": "application/json" }, keepalive: true,
+        body: JSON.stringify({ fields: { name: sv(d.get("n")), phone: sv(ph), service: sv(svc), location: sv(KL[o.kind]), note: sv(X.join(" | ") + (d.get("m") ? " | " + d.get("m") : "")), status: sv("new"), source: sv(window.rtcSource ? rtcSource() : ""), createdAt: { timestampValue: new Date().toISOString() } } }) }).catch(() => {});
+    } catch (e) {}
   }
   const ok = $("#aps"); ok.textContent = t("Thank you! Press Send in WhatsApp and we will contact you shortly.", "ধন্যবাদ! হোয়াটসঅ্যাপে Send চাপুন, আমরা শীঘ্রই যোগাযোগ করব।"); ok.style.display = "block"; $("#apb").disabled = true;
 };
@@ -678,7 +698,7 @@ function apply(rows) {
   buildCats(); renderAll();
 }
 const FB = CFG.firebase, CK = "rtc-cache";
-if (FB && FB.projectId) {
+if (FB && FB.projectId) try {
   // Reads Firestore through its public REST address. A tiny "_v" document changes whenever admin saves, so edits show on the next page load while normal visits cost only one read.
   const base = `https://firestore.googleapis.com/v1/projects/${FB.projectId}/databases/(default)/documents/${FB.collection}`, force = /[?&]fresh/.test(location.search);
   let c = null; try { c = JSON.parse(localStorage.getItem(CK) || "null"); } catch (e) {}
@@ -688,10 +708,10 @@ if (FB && FB.projectId) {
       return [g("type"), g("title"), g("details"), g("price"), g("title_bn"), g("details_bn"), g("img"), g("country"), g("ptype"), g("days"), g("gprice")]; });
     try { localStorage.setItem(CK, JSON.stringify({ t: Date.now(), v, rows })); } catch (e) {}
     apply(rows);
-  });
+  }).catch(() => {});
   fetch(base + "/_v").then(r => r.json()).then(j => { const v = (j.fields && j.fields.title && j.fields.title.stringValue) || "0";
     if (!c || force || c.v !== v || Date.now() - c.t > 21600000) return load(v); }).catch(() => { if (!c) load("0").catch(() => {}); });
-} else if (CFG.sheetCSV) fetch(CFG.sheetCSV).then(r => r.text()).then(x => apply(csv(x).slice(1))).catch(() => {});
+} catch (e) {} else if (CFG.sheetCSV) fetch(CFG.sheetCSV).then(r => r.text()).then(x => apply(csv(x).slice(1))).catch(() => {});
 
 let saved = "en"; try { saved = localStorage.getItem("rtc-lang") || "en"; } catch (e) {}
 setLang(saved);
