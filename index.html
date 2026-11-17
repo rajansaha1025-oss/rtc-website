@@ -503,7 +503,7 @@ const flag = c => { c = (c || "").toLowerCase(); for (const k in FLG) if (c.incl
 const PT = p => p.ptype === "single" || p.ptype === "group" ? p.ptype : "both";
 const PIMG = { bangladesh: "pk-bangladesh.svg", nepal: "pk-nepal.svg", india: "pk-india.svg", maldives: "pk-maldives.svg", bhutan: "pk-bhutan.svg", "sri lanka": "pk-sri-lanka.svg", malaysia: "pk-malaysia.svg", singapore: "pk-singapore.svg", thailand: "pk-thailand.svg", dubai: "pk-dubai.svg", uae: "pk-dubai.svg" };
 // uploaded photo from admin wins; otherwise the built-in illustration for that country
-const pimg = p => pimg(p) || PIMG[Object.keys(PIMG).find(k => (p.country || "").toLowerCase().includes(k))] || "";
+const pimg = p => safe(p.img) || PIMG[Object.keys(PIMG).find(k => (p.country || "").toLowerCase().includes(k))] || "";
 let pf = { c: "", t: "" };
 function renderPkgs() {
   const g = ["#1c4c96,#0d2150", "#e33524,#7a1a12", "#0f766e,#0d2150", "#8a6508,#3a2a00"];
