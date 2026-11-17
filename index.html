@@ -479,11 +479,11 @@ function item(it, g) {
   ${ap}<a class="btn ${ap ? "ghost" : "red"}" target="_blank" rel="noopener" href="${wa(msg)}"><i class="fab fa-whatsapp"></i> ${t("Ask about this", "এ বিষয়ে জানুন")}</a> <button type="button" class="btn ghost" data-ckwa="${esc(it[0])}"><i class="fab fa-whatsapp"></i> ${t("Send my checklist", "আমার তালিকা পাঠান")}</button></details>`;
 }
 const flat = c => c.groups ? c.groups.flatMap(g => g.items) : c.items;
-const safe = u => /^(data:image\/|https?:)/.test(u || "") ? u : "";
+const safe = u => /^(data:image\/|https?:|[\w-]+\.(svg|webp|png|jpe?g)$)/.test(u || "") ? u : "";
 const FL = { "India": "🇮🇳", "Malaysia": "🇲🇾", "Australia": "🇦🇺", "Dubai and other countries": "🇦🇪", "Domestic Flights": "🇧🇩", "International Flights": "🌍", "Domestic Hotels": "🇧🇩", "International Hotels": "🌍" };
 const GI = { "Train Tickets": "fa-train", "Bus Tickets": "fa-bus", "Domestic Flights": "fa-plane", "International Flights": "fa-earth-asia", "Domestic Hotels": "fa-hotel", "International Hotels": "fa-city" };
 // Default banner pictures for groups (admin "country photos" can replace them)
-const DEFBG = { "Domestic Flights": "bg-flight-domestic.svg", "International Flights": "bg-flight-international.svg", "Domestic Hotels": "bg-hotel-domestic.svg", "International Hotels": "bg-hotel-international.svg" };
+const DEFBG = { "Train Tickets": "bg-train.svg", "Bus Tickets": "bg-bus.svg", "Any Country (Tourist)": "bg-visa-tourist.svg", "Other Visa Types (Any Country)": "bg-visa-other.svg", "Domestic Flights": "bg-flight-domestic.svg", "International Flights": "bg-flight-international.svg", "Domestic Hotels": "bg-hotel-domestic.svg", "International Hotels": "bg-hotel-international.svg" };
 const KI = { visa: "fa-passport", medical: "fa-briefcase-medical", pass: "fa-book-open", tkt: "fa-plane-departure", tktd: "fa-ticket", tkt2: "fa-calendar-days", nid: "fa-id-card", tin: "fa-file-invoice", pol: "fa-user-shield", brta: "fa-car-side", bmet: "fa-people-group", bc: "fa-baby", dc: "fa-file-lines", hotel: "fa-hotel", hotelI: "fa-city", adm: "fa-graduation-cap", tour: "fa-umbrella-beach", custom: "fa-star", trn: "fa-train", bus: "fa-bus", work: "fa-briefcase" };
 const iconFor = it => /refund|cancel/i.test(it[0]) ? "fa-money-bill-transfer" : /student/i.test(it[0]) ? "fa-user-graduate" : /resort|group/i.test(it[0]) ? "fa-people-roof" : (KI[it[2]] || "fa-circle-check");
 const gh = g => { const bg = safe(CT[g.en]) || DEFBG[g.en] || ""; return `<div class="gh" ${bg ? `style="background-image:url('${bg}')"` : ""}><span>${GI[g.en] ? `<i class="fas ${GI[g.en]}"></i>` : (FL[g.en] || "🌍") + " "}${t(g.en, g.bn)}</span></div>`; };
@@ -501,6 +501,9 @@ const CBN = { Bangladesh: "বাংলাদেশ", Nepal: "নেপাল", 
 const ORD = Object.keys(CBN);
 const flag = c => { c = (c || "").toLowerCase(); for (const k in FLG) if (c.includes(k)) return FLG[k]; return "🌍"; };
 const PT = p => p.ptype === "single" || p.ptype === "group" ? p.ptype : "both";
+const PIMG = { bangladesh: "pk-bangladesh.svg", nepal: "pk-nepal.svg", india: "pk-india.svg", maldives: "pk-maldives.svg", bhutan: "pk-bhutan.svg", "sri lanka": "pk-sri-lanka.svg", malaysia: "pk-malaysia.svg", singapore: "pk-singapore.svg", thailand: "pk-thailand.svg", dubai: "pk-dubai.svg", uae: "pk-dubai.svg" };
+// uploaded photo from admin wins; otherwise the built-in illustration for that country
+const pimg = p => pimg(p) || PIMG[Object.keys(PIMG).find(k => (p.country || "").toLowerCase().includes(k))] || "";
 let pf = { c: "", t: "" };
 function renderPkgs() {
   const g = ["#1c4c96,#0d2150", "#e33524,#7a1a12", "#0f766e,#0d2150", "#8a6508,#3a2a00"];
@@ -512,7 +515,7 @@ function renderPkgs() {
   $("#pk").innerHTML = L.map((p, i) => {
     const ty = PT(p), sp = p.price || "", gp = p.gprice || sp, pr = ty === "single" ? sp : ty === "group" ? gp : (sp === gp ? sp : `${t("Single", "সিঙ্গেল")}: ${sp} · ${t("Group", "গ্রুপ")}: ${gp}`);
     const tags = (ty !== "group" ? `<span>👤 ${t("Single", "সিঙ্গেল")}</span>` : "") + (ty !== "single" ? `<span>👥 ${t("Group", "গ্রুপ")}</span>` : "") + (p.days ? `<span>🗓 ${esc(p.days)}</span>` : "");
-    return `<div class="card"><div class="top" style="${safe(p.img) ? `background:linear-gradient(rgba(7,18,43,.05),rgba(7,18,43,.65)),url('${safe(p.img)}') center/cover;height:160px` : `background:linear-gradient(135deg,${g[i % 4]})`}"><span style="font-size:44px;line-height:1">${flag(p.country)}</span></div>
+    return `<div class="card"><div class="top" style="${pimg(p) ? `background:linear-gradient(rgba(7,18,43,.05),rgba(7,18,43,.65)),url('${pimg(p)}') center/cover;height:160px` : `background:linear-gradient(135deg,${g[i % 4]})`}"><span style="font-size:44px;line-height:1">${flag(p.country)}</span></div>
   <div class="body"><h3>${esc(t(p.title, p.title_bn))}${hot[p.title] ? `<span class="badge"><i class="fas fa-fire"></i> ${esc(t(hot[p.title][0], hot[p.title][1]))}</span>` : ""}</h3><div class="tg">${tags}</div><p>${esc(t(p.details, p.details_bn))}</p><div class="price">${esc(pr)}</div>
   <button type="button" class="btn red" data-bk="${pkgs.indexOf(p)}"><i class="fab fa-whatsapp"></i> ${t("Book or enquire", "বুক করুন / জানুন")}</button></div></div>`;
   }).join("") || `<p class="lead">${t("No package matches. Try another filter.", "কোনো প্যাকেজ মেলেনি। অন্য ফিল্টার দিন।")}</p>`;

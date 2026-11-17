@@ -19,3 +19,4 @@ Guides are written without fee numbers or processing times on purpose: those cha
 - **Tickets:** Air, Train and Bus tickets (domestic and international) in the Tickets tab.
 - **Visa:** "Tourist Visa (Any Country)" plus Medical, Business, Student, Work and Transit visa. Every visa and ticket now has an "Apply now" form; packages have "Book or enquire". All go to WhatsApp and to Admin > Leads. firestore.rules is unchanged.
 - Admin > More > Services: new services can be hidden or shown; add your own under any category.
+- **Pictures:** `pk-*.svg` (one illustration per country) and `bg-train/bus/visa-*.svg` are built in. A photo uploaded in Admin > Packages replaces the illustration. Team and Gallery photos are still yours to add (real people only).
