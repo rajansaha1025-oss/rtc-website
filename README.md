@@ -13,3 +13,9 @@ Upload everything to GitHub (replace old files; delete the old `theme.css`). The
 10. New domain later: replace the github.io links in the HTML files, sitemap.xml, robots.txt.
 
 Guides are written without fee numbers or processing times on purpose: those change often. Update them if you want to quote current figures.
+
+## v12 additions
+- **Packages:** country filter (Nepal, India, Maldives, Bhutan, Sri Lanka, Malaysia, Singapore + more) and Single / Group type with separate prices. Admin > Packages > "Add starter packages" copies the 10 starters so you can edit prices; then add your own with + Add (any country).
+- **Tickets:** Air, Train and Bus tickets (domestic and international) in the Tickets tab.
+- **Visa:** "Tourist Visa (Any Country)" plus Medical, Business, Student, Work and Transit visa. Every visa and ticket now has an "Apply now" form; packages have "Book or enquire". All go to WhatsApp and to Admin > Leads. firestore.rules is unchanged.
+- Admin > More > Services: new services can be hidden or shown; add your own under any category.

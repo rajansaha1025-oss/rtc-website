@@ -212,6 +212,16 @@ h2.rv::after{width:0;transition:width 1s .35s}h2.rv.in::after{width:54px}
 .paynote{margin-top:22px;border-left:3px solid var(--gold);padding:12px 16px;background:var(--glass);border-radius:0 12px 12px 0;color:var(--mist);font-size:14px}.paynote ol{padding-left:20px;margin:6px 0}
 @media(max-width:899px){footer{padding-bottom:90px}}
 @media(max-width:560px){.nav{gap:8px;padding:10px 4%}.nav>.nav-r>.btn{display:none}.logo{font-size:20px}.logo img{height:38px;width:38px}.nav-r{gap:8px}}
+/* ===== v12: package filters, apply dialog ===== */
+.pkf{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 24px;align-items:center}
+.pkf button{border:1px solid var(--line);background:var(--glass);color:var(--txt);border-radius:30px;padding:7px 16px;cursor:pointer;font:inherit;font-size:14px;transition:.3s}
+.pkf button:hover,.pkf button.on{background:var(--gold);border-color:var(--gold);color:#241a00}
+html[data-theme="light"] .pkf button:hover,html[data-theme="light"] .pkf button.on{color:#fff}
+.pkf .sep{width:1px;height:24px;background:var(--line);margin:0 4px}
+.tg{display:flex;flex-wrap:wrap;gap:6px}.tg span{font-size:12px;border:1px solid var(--line);border-radius:20px;padding:1px 10px;color:var(--mist)}
+dialog#ap{margin:auto;border:1px solid var(--line);border-radius:22px;background:var(--ink);color:var(--txt);padding:26px;width:min(480px,94vw);max-height:92vh;overflow:auto}
+dialog#ap::backdrop{background:rgba(7,18,43,.65)}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 </style>
 </head>
 <body>
@@ -265,6 +275,7 @@ h2.rv::after{width:0;transition:width 1s .35s}h2.rv.in::after{width:54px}
 <section id="packages" style="background:linear-gradient(180deg,var(--ink),var(--navy) 50%,var(--ink))"><div class="wrap">
   <h2 class="rv" data-bn="ট্যুর প্যাকেজ">Tour packages</h2>
   <p class="lead rv" data-bn="পরিবার, দম্পতি ও গ্রুপের জন্য। দাম ও তারিখ বদলায়, তাই বুকিংয়ের আগে নিশ্চিত করে নিন।">For families, couples and groups. Prices and dates change, so confirm before booking.</p>
+  <div class="pkf" id="pkf"></div>
   <div class="pk" id="pk"></div>
 </div></section>
 
@@ -340,6 +351,17 @@ h2.rv::after{width:0;transition:width 1s .35s}h2.rv.in::after{width:54px}
   &copy; 2026 Rajan Travel and Computers (RTC). All rights reserved.
 </footer>
 <a class="fab-wa" href="https://wa.me/8801711773086" target="_blank" rel="noopener" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+<dialog id="ap"><form id="apf">
+<h3 id="apt" style="font-size:22px"></h3>
+<div id="apx" style="display:grid;gap:14px"></div>
+<input name="website" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px">
+<label><span data-bn="আপনার নাম">Your name</span><input name="n" required></label>
+<label><span data-bn="মোবাইল নম্বর (১১ সংখ্যা)">Mobile number (11 digits)</span><input name="p" type="tel" inputmode="numeric" autocomplete="tel" placeholder="01XXXXXXXXX" required><small class="ferr" id="aperr" role="alert"></small></label>
+<label><span data-bn="অতিরিক্ত তথ্য">Anything else</span><textarea name="m" rows="2"></textarea></label>
+<p id="aps" role="status" style="display:none;border:1px solid var(--gold);border-radius:12px;padding:12px 14px;font-size:14px"></p>
+<button class="btn red" id="apb" type="submit"><i class="fab fa-whatsapp"></i> <span data-bn="হোয়াটসঅ্যাপে পাঠান">Send on WhatsApp</span></button>
+<button class="btn ghost" id="apc" type="button"><span data-bn="বন্ধ করুন">Close</span></button>
+<datalist id="cl"></datalist></form></dialog>
 <div id="lb" role="dialog" aria-label="Enlarged licence" aria-modal="true"><img alt="Licence enlarged"></div>
 
 <script src="track.js"></script><script src="extras.js"></script>
@@ -374,11 +396,19 @@ const CFG = {
     ["Tonmoy", "Travel Advisor", "ট্রাভেল অ্যাডভাইজার", "tonmoypic.png"]
   ],
   founderNote: ["With years in travel and IT, Rajan founded RTC to give every client a clear, trustworthy process.", "ভ্রমণ ও আইটি খাতের অভিজ্ঞতা নিয়ে রাজন RTC শুরু করেছেন, যাতে প্রতিটি ক্লায়েন্ট স্বচ্ছ ও বিশ্বস্ত সেবা পায়।"],
+  // [title, title_bn, country, details]. Admin > Packages can replace these (use "Add starter packages").
   packages: [
-    { title: "Cox's Bazar", details: "Sea beach, hotel stay and transport. Group and family plans.", price: "Call for price", title_bn: "কক্সবাজার", details_bn: "সমুদ্রসৈকত, হোটেল ও যাতায়াত। গ্রুপ ও ফ্যামিলি প্ল্যান।" },
-    { title: "Thailand", details: "Flights, hotel and sightseeing with visa support.", price: "Call for price", title_bn: "থাইল্যান্ড", details_bn: "ফ্লাইট, হোটেল ও ঘোরাঘুরি, ভিসা সহায়তাসহ।" },
-    { title: "Dubai", details: "Visa, flights and city tours in one package.", price: "Call for price", title_bn: "দুবাই", details_bn: "ভিসা, ফ্লাইট ও সিটি ট্যুর এক প্যাকেজে।" }
-  ]
+    ["Cox's Bazar", "কক্সবাজার", "Bangladesh", "Sea beach, hotel stay and transport. Group and family plans."],
+    ["Nepal", "নেপাল", "Nepal", "Kathmandu and Pokhara: temples, lakes and mountain views."],
+    ["India", "ভারত", "India", "Delhi, Agra, Jaipur, Darjeeling, Kerala and more, planned to your dates."],
+    ["Maldives", "মালদ্বীপ", "Maldives", "Island resort stay with water activities. Resort and flight options."],
+    ["Bhutan", "ভুটান", "Bhutan", "Paro and Thimphu: monasteries, valleys and culture."],
+    ["Sri Lanka", "শ্রীলঙ্কা", "Sri Lanka", "Colombo, Kandy and Ella: beaches, tea hills and culture."],
+    ["Malaysia", "মালয়েশিয়া", "Malaysia", "Kuala Lumpur, Langkawi and Genting: city, island and highlands."],
+    ["Singapore", "সিঙ্গাপুর", "Singapore", "Marina Bay, Sentosa and Gardens by the Bay."],
+    ["Thailand", "থাইল্যান্ড", "Thailand", "Flights, hotel and sightseeing with visa support."],
+    ["Dubai", "দুবাই", "Dubai (UAE)", "Visa, flights and city tours in one package."]
+  ].map(([title, title_bn, country, details]) => ({ title, title_bn, country, details, ptype: "both", price: "Call for price", gprice: "", days: "" }))
 };
 
 /* Default document lists. The Google Sheet can override any of these. */
@@ -399,19 +429,26 @@ const REQ = {
   bmet: ["Passport copy", "NID copy", "Passport-size photos", "Visa, job offer or work permit copy (if any)", "Skill or training certificate (if any)", "Phone number and email"],
   bc: ["Parents' NID or birth certificates", "Child's hospital card, vaccination card or school certificate", "Existing certificate (for correction or copy)", "Address proof", "Applicant's phone number"],
   dc: ["Deceased person's NID or birth certificate", "Death proof (doctor or hospital certificate, or local chairman/councillor letter)", "Applicant's NID and relationship to the deceased", "Address details"],
-  tour: ["Number of travellers", "Travel dates", "Budget range", "Passport copies (international trips)"]
+  tour: ["Number of travellers", "Travel dates", "Budget range", "Passport copies (international trips)"],
+  trn: ["NID, passport or birth certificate copy (as per railway rule)", "From and to station, travel date and class", "Passenger name exactly as in NID or passport", "Contact phone number"],
+  bus: ["Route (from and to) and travel date", "AC or non-AC, seat preference", "Passenger name and number of seats", "Contact phone number"],
+  work: ["Passport (valid 6+ months)", "Passport-size photos", "Job offer or work permit (if any)", "Education and experience certificates", "Bank statement", "Phone number and email"]
 };
 let CATS = [
   { icon: "fa-passport", en: "Visa", bn: "ভিসা", groups: [
+    { en: "Any Country (Tourist)", bn: "যেকোনো দেশ (ট্যুরিস্ট ভিসা)", items: [["Tourist Visa (Any Country)", "ট্যুরিস্ট ভিসা (যেকোনো দেশ)", "visa"]] },
     { en: "India", bn: "ভারত", items: [["India Tourist Visa", "ভারত ট্যুরিস্ট ভিসা", "visa"], ["India Medical Visa", "ভারত মেডিকেল ভিসা", "medical"], ["India Tirtha (Pilgrim) Visa", "ভারত তীর্থ ভিসা", "visa"], ["India Double Entry Visa", "ভারত ডাবল এন্ট্রি ভিসা", "visa"]] },
     { en: "Malaysia", bn: "মালয়েশিয়া", items: [["Malaysia Visit Visa", "মালয়েশিয়া ভিজিট ভিসা", "visa"], ["Malaysia Business Visa", "মালয়েশিয়া বিজনেস ভিসা", "visa"]] },
     { en: "Australia", bn: "অস্ট্রেলিয়া", items: [["Australia Visitor Visa", "অস্ট্রেলিয়া ভিজিটর ভিসা", "visa"], ["Australia Student Visa", "অস্ট্রেলিয়া স্টুডেন্ট ভিসা", "adm"]] },
-    { en: "Dubai and other countries", bn: "দুবাই ও অন্যান্য দেশ", items: [["Dubai / UAE Visa", "দুবাই / UAE ভিসা", "visa"], ["Other Country Visa", "অন্যান্য দেশের ভিসা", "visa"]] }
+    { en: "Dubai and other countries", bn: "দুবাই ও অন্যান্য দেশ", items: [["Dubai / UAE Visa", "দুবাই / UAE ভিসা", "visa"], ["Other Country Visa", "অন্যান্য দেশের ভিসা", "visa"]] },
+    { en: "Other Visa Types (Any Country)", bn: "অন্য ধরনের ভিসা (যেকোনো দেশ)", items: [["Medical Visa (Any Country)", "মেডিকেল ভিসা (যেকোনো দেশ)", "medical"], ["Business Visa (Any Country)", "বিজনেস ভিসা (যেকোনো দেশ)", "visa"], ["Student Visa (Any Country)", "স্টুডেন্ট ভিসা (যেকোনো দেশ)", "adm"], ["Work Visa (Any Country)", "ওয়ার্ক ভিসা (যেকোনো দেশ)", "work"], ["Transit Visa (Any Country)", "ট্রানজিট ভিসা (যেকোনো দেশ)", "visa"]] }
   ]},
   { icon: "fa-book-open", en: "Passport", bn: "পাসপোর্ট", items: [["New Passport", "নতুন পাসপোর্ট", "pass"], ["Passport Renewal", "পাসপোর্ট নবায়ন", "pass"], ["Lost or Damaged Re-issue", "হারানো/নষ্ট পাসপোর্ট পুনরায় ইস্যু", "pass"], ["Passport Correction", "পাসপোর্ট তথ্য সংশোধন", "pass"]] },
-  { icon: "fa-plane-departure", en: "Air Tickets", bn: "এয়ার টিকেট", groups: [
+  { icon: "fa-plane-departure", en: "Air Tickets", bn: "এয়ার টিকেট", lb: "Air, Train & Bus Tickets", lbb: "এয়ার, ট্রেন ও বাস টিকেট", groups: [
     { en: "Domestic Flights", bn: "দেশীয় ফ্লাইট", items: [["Domestic Ticket", "দেশীয় নতুন টিকেট", "tktd"], ["Domestic Date Change", "দেশীয় তারিখ পরিবর্তন", "tkt2"], ["Domestic Refund / Cancellation", "দেশীয় রিফান্ড / বাতিল", "tkt2"]] },
-    { en: "International Flights", bn: "আন্তর্জাতিক ফ্লাইট", items: [["International Ticket", "আন্তর্জাতিক নতুন টিকেট", "tkt"], ["International Date Change", "আন্তর্জাতিক তারিখ পরিবর্তন", "tkt2"], ["International Refund / Cancellation", "আন্তর্জাতিক রিফান্ড / বাতিল", "tkt2"]] }
+    { en: "International Flights", bn: "আন্তর্জাতিক ফ্লাইট", items: [["International Ticket", "আন্তর্জাতিক নতুন টিকেট", "tkt"], ["International Date Change", "আন্তর্জাতিক তারিখ পরিবর্তন", "tkt2"], ["International Refund / Cancellation", "আন্তর্জাতিক রিফান্ড / বাতিল", "tkt2"]] },
+    { en: "Train Tickets", bn: "ট্রেন টিকেট", items: [["Domestic Train Ticket", "দেশীয় ট্রেন টিকেট", "trn"], ["International Train Ticket", "আন্তর্জাতিক ট্রেন টিকেট", "tkt"], ["Train Date Change / Refund", "ট্রেন তারিখ পরিবর্তন / রিফান্ড", "tkt2"]] },
+    { en: "Bus Tickets", bn: "বাস টিকেট", items: [["Domestic Bus Ticket", "দেশীয় বাস টিকেট", "bus"], ["International Bus Ticket", "আন্তর্জাতিক বাস টিকেট", "bus"], ["Bus Date Change / Refund", "বাস তারিখ পরিবর্তন / রিফান্ড", "tkt2"]] }
   ]},
   { icon: "fa-hotel", en: "Hotel Booking", bn: "হোটেল বুকিং", groups: [
     { en: "Domestic Hotels", bn: "দেশের হোটেল", items: [["Domestic Hotel Booking", "দেশে হোটেল বুকিং", "hotel"], ["Resort and Group Stay", "রিসোর্ট ও গ্রুপ বুকিং", "hotel"]] },
@@ -431,37 +468,54 @@ const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;",
 const wa = txt => `https://wa.me/${CFG.whatsapp}?text=${encodeURIComponent(txt)}`;
 const allItems = () => CATS.flatMap(c => c.groups ? c.groups.flatMap(g => g.items) : c.items);
 
-function item(it) {
+const kindOf = it => /visa/i.test(it[0]) ? "visa" : (["tkt", "tktd", "tkt2", "trn", "bus"].includes(it[2]) || /ticket/i.test(it[0])) ? "tkt" : "";
+const ctryOf = (it, g) => /Any Country|Other Country/.test(it[0]) ? "" : /Dubai/.test(it[0]) ? "UAE (Dubai)" : (g && ["India", "Malaysia", "Australia"].includes(g.en) ? g.en : "");
+function item(it, g) {
   const list = over[it[0]] || REQ[it[2]] || [];
   const msg = lang === "bn" ? `আসসালামু আলাইকুম, আমি "${it[1]}" সম্পর্কে জানতে চাই।` : `Hello RTC, I would like to know about: ${it[0]}`;
-  const h = hot[it[0]], b = h ? `<span class="badge"><i class="fas fa-fire"></i> ${esc(t(h[0], h[1]))}</span>` : "";
+  const k = kindOf(it), ap = k ? `<button type="button" class="btn red" data-ap="${esc(it[0])}" data-tt="${esc(t(it[0], it[1]))}" data-kd="${k}" data-c="${esc(ctryOf(it, g))}"><i class="fas fa-paper-plane"></i> ${t("Apply now", "আবেদন করুন")}</button> ` : "", h = hot[it[0]], b = h ? `<span class="badge"><i class="fas fa-fire"></i> ${esc(t(h[0], h[1]))}</span>` : "";
   return `<details data-k="${esc(it[0])}"${h ? ' open' : ''}><summary><span><i class="fas ${iconFor(it)} ic"></i>${esc(t(it[0], it[1]))}${b}</span></summary><ul class="ckl">${list.map(x => `<li><label><input type="checkbox"><span>${esc(x)}</span></label></li>`).join("")}</ul>
   <p class="note">${t("Your exact list depends on your case. We confirm it on WhatsApp.", "আপনার ক্ষেত্র অনুযায়ী তালিকা বদলাতে পারে। হোয়াটসঅ্যাপে নিশ্চিত করে দেওয়া হবে।")}</p>
-  <a class="btn red" target="_blank" rel="noopener" href="${wa(msg)}"><i class="fab fa-whatsapp"></i> ${t("Ask about this", "এ বিষয়ে জানুন")}</a> <button type="button" class="btn ghost" data-ckwa="${esc(it[0])}"><i class="fab fa-whatsapp"></i> ${t("Send my checklist", "আমার তালিকা পাঠান")}</button></details>`;
+  ${ap}<a class="btn ${ap ? "ghost" : "red"}" target="_blank" rel="noopener" href="${wa(msg)}"><i class="fab fa-whatsapp"></i> ${t("Ask about this", "এ বিষয়ে জানুন")}</a> <button type="button" class="btn ghost" data-ckwa="${esc(it[0])}"><i class="fab fa-whatsapp"></i> ${t("Send my checklist", "আমার তালিকা পাঠান")}</button></details>`;
 }
 const flat = c => c.groups ? c.groups.flatMap(g => g.items) : c.items;
 const safe = u => /^(data:image\/|https?:)/.test(u || "") ? u : "";
 const FL = { "India": "🇮🇳", "Malaysia": "🇲🇾", "Australia": "🇦🇺", "Dubai and other countries": "🇦🇪", "Domestic Flights": "🇧🇩", "International Flights": "🌍", "Domestic Hotels": "🇧🇩", "International Hotels": "🌍" };
-const GI = { "Domestic Flights": "fa-plane", "International Flights": "fa-earth-asia", "Domestic Hotels": "fa-hotel", "International Hotels": "fa-city" };
+const GI = { "Train Tickets": "fa-train", "Bus Tickets": "fa-bus", "Domestic Flights": "fa-plane", "International Flights": "fa-earth-asia", "Domestic Hotels": "fa-hotel", "International Hotels": "fa-city" };
 // Default banner pictures for groups (admin "country photos" can replace them)
 const DEFBG = { "Domestic Flights": "bg-flight-domestic.svg", "International Flights": "bg-flight-international.svg", "Domestic Hotels": "bg-hotel-domestic.svg", "International Hotels": "bg-hotel-international.svg" };
-const KI = { visa: "fa-passport", medical: "fa-briefcase-medical", pass: "fa-book-open", tkt: "fa-plane-departure", tktd: "fa-ticket", tkt2: "fa-calendar-days", nid: "fa-id-card", tin: "fa-file-invoice", pol: "fa-user-shield", brta: "fa-car-side", bmet: "fa-people-group", bc: "fa-baby", dc: "fa-file-lines", hotel: "fa-hotel", hotelI: "fa-city", adm: "fa-graduation-cap", tour: "fa-umbrella-beach", custom: "fa-star" };
+const KI = { visa: "fa-passport", medical: "fa-briefcase-medical", pass: "fa-book-open", tkt: "fa-plane-departure", tktd: "fa-ticket", tkt2: "fa-calendar-days", nid: "fa-id-card", tin: "fa-file-invoice", pol: "fa-user-shield", brta: "fa-car-side", bmet: "fa-people-group", bc: "fa-baby", dc: "fa-file-lines", hotel: "fa-hotel", hotelI: "fa-city", adm: "fa-graduation-cap", tour: "fa-umbrella-beach", custom: "fa-star", trn: "fa-train", bus: "fa-bus", work: "fa-briefcase" };
 const iconFor = it => /refund|cancel/i.test(it[0]) ? "fa-money-bill-transfer" : /student/i.test(it[0]) ? "fa-user-graduate" : /resort|group/i.test(it[0]) ? "fa-people-roof" : (KI[it[2]] || "fa-circle-check");
 const gh = g => { const bg = safe(CT[g.en]) || DEFBG[g.en] || ""; return `<div class="gh" ${bg ? `style="background-image:url('${bg}')"` : ""}><span>${GI[g.en] ? `<i class="fas ${GI[g.en]}"></i>` : (FL[g.en] || "🌍") + " "}${t(g.en, g.bn)}</span></div>`; };
 const hotFirst = a => [...a].sort((x, y) => !!hot[y[0]] - !!hot[x[0]]);
 function renderServices() {
-  $("#tabs").innerHTML = CATS.map((c, i) => `<button class="tab ${i === cur ? "on" : ""}" role="tab" aria-selected="${i === cur}" data-i="${i}"><i class="fas ${c.icon}"></i>${t(c.en, c.bn)}${flat(c).some(x => hot[x[0]]) ? '<i class="fas fa-fire" style="margin:0 0 0 auto;color:var(--red)"></i>' : ""}</button>`).join("");
+  $("#tabs").innerHTML = CATS.map((c, i) => `<button class="tab ${i === cur ? "on" : ""}" role="tab" aria-selected="${i === cur}" data-i="${i}"><i class="fas ${c.icon}"></i>${t(c.lb || c.en, c.lbb || c.bn)}${flat(c).some(x => hot[x[0]]) ? '<i class="fas fa-fire" style="margin:0 0 0 auto;color:var(--red)"></i>' : ""}</button>`).join("");
   const c = CATS[cur];
-  $("#panel").innerHTML = `<h3>${t(c.en, c.bn)}</h3>` + (c.groups ? c.groups.map(g => `${gh(g)}${hotFirst(g.items).map(item).join("")}`).join("") : hotFirst(c.items).map(item).join(""));
+  $("#panel").innerHTML = `<h3>${t(c.lb || c.en, c.lbb || c.bn)}</h3>` + (c.groups ? c.groups.map(g => `${gh(g)}${hotFirst(g.items).map(i => item(i, g)).join("")}`).join("") : hotFirst(c.items).map(item).join(""));
   const chips = CATS.flatMap((cc, i) => flat(cc).filter(x => hot[x[0]]).map(x => [i, x]));
   const hb = $("#hotbar"); hb.style.display = chips.length ? "flex" : "none";
   hb.innerHTML = chips.length ? `<span>${t("Popular right now:", "এখন সবচেয়ে চলছে:")}</span>` + chips.map(([i, x]) => `<button class="hotchip" data-i="${i}" data-k="${esc(x[0])}"><i class="fas fa-fire"></i>${esc(t(x[0], x[1]))}</button>`).join("") : "";
 }
+const FLG = { bangladesh: "🇧🇩", nepal: "🇳🇵", india: "🇮🇳", maldives: "🇲🇻", bhutan: "🇧🇹", "sri lanka": "🇱🇰", malaysia: "🇲🇾", singapore: "🇸🇬", thailand: "🇹🇭", dubai: "🇦🇪", uae: "🇦🇪" };
+const CBN = { Bangladesh: "বাংলাদেশ", Nepal: "নেপাল", India: "ভারত", Maldives: "মালদ্বীপ", Bhutan: "ভুটান", "Sri Lanka": "শ্রীলঙ্কা", Malaysia: "মালয়েশিয়া", Singapore: "সিঙ্গাপুর", Thailand: "থাইল্যান্ড", "Dubai (UAE)": "দুবাই" };
+const ORD = Object.keys(CBN);
+const flag = c => { c = (c || "").toLowerCase(); for (const k in FLG) if (c.includes(k)) return FLG[k]; return "🌍"; };
+const PT = p => p.ptype === "single" || p.ptype === "group" ? p.ptype : "both";
+let pf = { c: "", t: "" };
 function renderPkgs() {
   const g = ["#1c4c96,#0d2150", "#e33524,#7a1a12", "#0f766e,#0d2150", "#8a6508,#3a2a00"];
-  $("#pk").innerHTML = pkgs.map((p, i) => `<div class="card"><div class="top" style="${safe(p.img) ? `background:linear-gradient(rgba(7,18,43,.05),rgba(7,18,43,.65)),url('${safe(p.img)}') center/cover;height:160px` : `background:linear-gradient(135deg,${g[i % 4]})`}"><i class="fas fa-location-dot"></i></div>
-  <div class="body"><h3>${esc(t(p.title, p.title_bn))}${hot[p.title] ? `<span class="badge"><i class="fas fa-fire"></i> ${esc(t(hot[p.title][0], hot[p.title][1]))}</span>` : ""}</h3><p>${esc(t(p.details, p.details_bn))}</p><div class="price">${esc(p.price || "")}</div>
-  <a class="btn red" target="_blank" rel="noopener" href="${wa("Hello RTC, I am interested in the package: " + p.title)}"><i class="fab fa-whatsapp"></i> ${t("Book on WhatsApp", "হোয়াটসঅ্যাপে বুক করুন")}</a></div></div>`).join("");
+  const cs = [...new Set(pkgs.map(p => (p.country || "").trim()).filter(Boolean))].sort((a, b) => (ORD.indexOf(a) + 1 || 99) - (ORD.indexOf(b) + 1 || 99));
+  if (pf.c && !cs.includes(pf.c)) pf.c = "";
+  const L = pkgs.filter(p => (!pf.c || p.country === pf.c) && (!pf.t || PT(p) === "both" || PT(p) === pf.t));
+  const ch = (on, a, l) => `<button type="button" class="${on ? "on" : ""}" ${a}>${l}</button>`;
+  $("#pkf").innerHTML = ch(!pf.c, 'data-c=""', t("All countries", "সব দেশ")) + cs.map(c => ch(pf.c === c, `data-c="${esc(c)}"`, flag(c) + " " + esc(t(c, CBN[c])))).join("") + '<span class="sep"></span>' + ch(!pf.t, 'data-t=""', t("Any type", "সব ধরন")) + ch(pf.t === "single", 'data-t="single"', "👤 " + t("Single", "সিঙ্গেল")) + ch(pf.t === "group", 'data-t="group"', "👥 " + t("Group", "গ্রুপ"));
+  $("#pk").innerHTML = L.map((p, i) => {
+    const ty = PT(p), sp = p.price || "", gp = p.gprice || sp, pr = ty === "single" ? sp : ty === "group" ? gp : (sp === gp ? sp : `${t("Single", "সিঙ্গেল")}: ${sp} · ${t("Group", "গ্রুপ")}: ${gp}`);
+    const tags = (ty !== "group" ? `<span>👤 ${t("Single", "সিঙ্গেল")}</span>` : "") + (ty !== "single" ? `<span>👥 ${t("Group", "গ্রুপ")}</span>` : "") + (p.days ? `<span>🗓 ${esc(p.days)}</span>` : "");
+    return `<div class="card"><div class="top" style="${safe(p.img) ? `background:linear-gradient(rgba(7,18,43,.05),rgba(7,18,43,.65)),url('${safe(p.img)}') center/cover;height:160px` : `background:linear-gradient(135deg,${g[i % 4]})`}"><span style="font-size:44px;line-height:1">${flag(p.country)}</span></div>
+  <div class="body"><h3>${esc(t(p.title, p.title_bn))}${hot[p.title] ? `<span class="badge"><i class="fas fa-fire"></i> ${esc(t(hot[p.title][0], hot[p.title][1]))}</span>` : ""}</h3><div class="tg">${tags}</div><p>${esc(t(p.details, p.details_bn))}</p><div class="price">${esc(pr)}</div>
+  <button type="button" class="btn red" data-bk="${pkgs.indexOf(p)}"><i class="fab fa-whatsapp"></i> ${t("Book or enquire", "বুক করুন / জানুন")}</button></div></div>`;
+  }).join("") || `<p class="lead">${t("No package matches. Try another filter.", "কোনো প্যাকেজ মেলেনি। অন্য ফিল্টার দিন।")}</p>`;
 }
 function renderTrust() {
   $("#trust-grid").innerHTML = CFG.licences.map(l => `<div class="tcard">${l.img ? `<img src="${l.img}" alt="${esc(l.en)}" loading="lazy" decoding="async" width="90" height="110" onerror="this.outerHTML='<i class=&quot;fas fa-certificate&quot;></i>'" onclick="lb(this.src)">` : '<i class="fas fa-certificate"></i>'}
@@ -556,6 +610,40 @@ $("#f").onsubmit = e => {
     }).catch(() => {});
   }
 };
+const COUNTRIES = "Thailand,Singapore,Malaysia,Nepal,Bhutan,Maldives,Sri Lanka,India,Indonesia,Vietnam,Cambodia,Philippines,Japan,South Korea,China,Hong Kong,Turkey,Dubai / UAE,Saudi Arabia,Qatar,Oman,Kuwait,Bahrain,Egypt,United Kingdom,USA,Canada,Australia,New Zealand,Europe (Schengen),Germany,France,Italy,Spain,Switzerland,Russia,Azerbaijan,Georgia,Uzbekistan,Mauritius,South Africa".split(",");
+$("#cl").innerHTML = COUNTRIES.map(c => `<option value="${c}">`).join("");
+const KL = { visa: "Visa apply", pkg: "Package booking", tkt: "Ticket request" };
+let AP = null;
+const fd = (n, l, ty = "text", x = "") => `<label>${l}<input name="${n}" type="${ty}" ${x}></label>`;
+function openAp(o) {
+  AP = o; const ty = o.ptype || "both"; $("#apf").reset();
+  $("#apt").textContent = (o.kind === "visa" ? t("Apply: ", "আবেদন: ") : o.kind === "pkg" ? t("Book: ", "বুকিং: ") : t("Request: ", "অনুরোধ: ")) + (o.title || o.service);
+  $("#apx").innerHTML =
+    (o.kind === "visa" ? fd("country", t("Country you want to visit", "কোন দেশে যাবেন"), "text", `list="cl" required value="${esc(o.country || "")}" placeholder="${t("Type any country", "যেকোনো দেশ লিখুন")}"`) : "") +
+    (o.kind === "pkg" ? `<div><label><span>${t("Travel type", "ট্রিপের ধরন")}</span></label><div class="radio">${(ty === "both" ? ["Single", "Group"] : [ty === "single" ? "Single" : "Group"]).map((v, i) => `<label><input type="radio" name="ty" value="${v}" ${i ? "" : "checked"}> ${v === "Single" ? "👤 " + t("Single", "সিঙ্গেল") : "👥 " + t("Group", "গ্রুপ")}</label>`).join("")}</div></div>` : "") +
+    (o.kind === "tkt" ? `<div class="row2">${fd("from", t("From", "কোথা থেকে"))}${fd("to", t("To", "কোথায়"))}</div>` : "") +
+    `<div class="row2">${o.kind === "visa" ? fd("date", t("Travel month", "ভ্রমণের মাস")) : fd("date", t("Travel date", "ভ্রমণের তারিখ"), "date")}${fd("pax", t("Travellers", "যাত্রী সংখ্যা"), "number", 'min="1" max="99" value="1"')}</div>`;
+  $("#aps").style.display = "none"; $("#aperr").style.display = "none"; $("#apb").disabled = false; $("#ap").showModal();
+}
+$("#panel").addEventListener("click", e => { const b = e.target.closest("[data-ap]"); if (b) openAp({ kind: b.dataset.kd, service: b.dataset.ap, title: b.dataset.tt, country: b.dataset.c }); });
+$("#pkf").onclick = e => { const b = e.target.closest("button"); if (!b) return; if ("c" in b.dataset) pf.c = b.dataset.c; if ("t" in b.dataset) pf.t = b.dataset.t; renderPkgs(); };
+$("#pk").onclick = e => { const b = e.target.closest("[data-bk]"); if (!b) return; const p = pkgs[+b.dataset.bk]; if (p) openAp({ kind: "pkg", service: "Package: " + p.title, title: t(p.title, p.title_bn), ptype: PT(p), country: p.country }); };
+$("#apc").onclick = () => $("#ap").close();
+$("#apf").onsubmit = e => {
+  e.preventDefault(); const d = new FormData(e.target), o = AP, pe = $("#aperr");
+  const ph = (String(d.get("p") || "").replace(/[\s\-()]/g, "").match(/^(?:\+?88)?(01[3-9]\d{8})$/) || [])[1];
+  if (!ph) { pe.textContent = t("Enter a valid 11-digit Bangladeshi mobile number (e.g. 01712345678).", "সঠিক ১১ সংখ্যার মোবাইল নম্বর দিন (যেমন 01712345678)।"); pe.style.display = "block"; return; }
+  const X = [["country", "Country"], ["ty", "Type"], ["from", "From"], ["to", "To"], ["date", "Date"], ["pax", "Travellers"]].filter(([k]) => d.get(k)).map(([k, l]) => `${l}: ${d.get(k)}`);
+  const svc = o.service + (o.kind === "visa" && d.get("country") && !o.service.includes(d.get("country")) ? " - " + d.get("country") : "") + (d.get("ty") ? " (" + d.get("ty") + ")" : "");
+  window.open(wa(`Hello RTC,\nName: ${d.get("n")}\nPhone: ${ph}\nService: ${svc}\n${X.join("\n")}\nNote: ${d.get("m") || "-"}`), "_blank");
+  window.rtcTrack && rtcTrack("lead", svc);
+  if (FB && FB.projectId && !d.get("website")) {
+    const sv = v => ({ stringValue: String(v || "").slice(0, 500) });
+    fetch(`https://firestore.googleapis.com/v1/projects/${FB.projectId}/databases/(default)/documents/inquiries`, { method: "POST", headers: { "Content-Type": "application/json" }, keepalive: true,
+      body: JSON.stringify({ fields: { name: sv(d.get("n")), phone: sv(ph), service: sv(svc), location: sv(KL[o.kind]), note: sv(X.join(" | ") + (d.get("m") ? " | " + d.get("m") : "")), status: sv("new"), source: sv(window.rtcSource ? rtcSource() : ""), createdAt: { timestampValue: new Date().toISOString() } } }) }).catch(() => {});
+  }
+  const ok = $("#aps"); ok.textContent = t("Thank you! Press Send in WhatsApp and we will contact you shortly.", "ধন্যবাদ! হোয়াটসঅ্যাপে Send চাপুন, আমরা শীঘ্রই যোগাযোগ করব।"); ok.style.display = "block"; $("#apb").disabled = true;
+};
 function lb(src) { const b = $("#lb"); b.querySelector("img").src = src; b.style.display = "flex"; }
 $("#lb").onclick = () => $("#lb").style.display = "none";
 document.addEventListener("keydown", e => { if (e.key === "Escape") $("#lb").style.display = "none"; });
@@ -570,7 +658,7 @@ function apply(rows) {
   over = {}; $("#notice").style.display = "none";
   const P = [], H = {}, IMG = {}, CTRY = {}, M = [], RV = [], GLL = [], CU = [], HD = new Set(), SS = {}; let SX = null;
   rows.filter(r => r[0]).forEach(r => { const k = r[0].trim().toLowerCase(), ti = (r[1] || "").trim();
-    if (k == "package") P.push({ title: ti, details: r[2], price: r[3], title_bn: r[4], details_bn: r[5], img: r[6] });
+    if (k == "package") P.push({ title: ti, details: r[2], price: r[3], title_bn: r[4], details_bn: r[5], img: r[6], country: r[7], ptype: r[8], days: r[9], gprice: r[10] });
     else if (k == "req") over[ti] = (r[2] || "").split("|").map(s => s.trim()).filter(Boolean);
     else if (k == "hot") H[ti] = [r[2] || "Popular now", r[5] || r[4] || r[2] || "এখন চলছে"];
     else if (k == "gallery") GLL.push({ cap: ti, cap_bn: r[4], img: r[6] });
@@ -594,7 +682,7 @@ if (FB && FB.projectId) {
   if (c && !force) apply(c.rows);
   const load = v => fetch(base + "?pageSize=300").then(r => r.json()).then(j => {
     const rows = (j.documents || []).map(d => { const f = d.fields || {}, g = k => f[k] ? (f[k].stringValue ?? String(f[k].integerValue ?? "")) : "";
-      return [g("type"), g("title"), g("details"), g("price"), g("title_bn"), g("details_bn"), g("img")]; });
+      return [g("type"), g("title"), g("details"), g("price"), g("title_bn"), g("details_bn"), g("img"), g("country"), g("ptype"), g("days"), g("gprice")]; });
     try { localStorage.setItem(CK, JSON.stringify({ t: Date.now(), v, rows })); } catch (e) {}
     apply(rows);
   });
